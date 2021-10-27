@@ -16,24 +16,43 @@ function getComputerChoice() {
   const randomNumber = Math.floor(Math.random() * 3);
   return choices[randomNumber];
 }
-
+function convertToWord(letter) {
+  if (letter === "r") return "Rock";
+  if (letter === "p") return "Paper";
+  return "Scissors";
+}
 function win(userChoice, computerChoice) {
   userScore++;
   userScore_span.innerHTML = userScore;
   computerScore_span.innerHTML = computerScore;
-  result_div.innerHTML = userChoice + " beats " + computerChoice + " You win";
+  const smallUserWord = "user".fontsize(3).sup();
+  const smallCompWord = "comp".fontsize(3).sup();
+  result_div.innerHTML = `${convertToWord(userChoice)}  ${smallUserWord}
+     beats
+    ${convertToWord(computerChoice)} ${smallCompWord}
+     You win`;
 }
 function lose(userChoice, computerChoice) {
   computerScore++;
   userScore_span.innerHTML = userScore;
   computerScore_span.innerHTML = computerScore;
-  result_div.innerHTML =
-    userChoice + " does not beat " + computerChoice + " You lose";
+  const smallUserWord = "user".fontsize(3).sup();
+  const smallCompWord = "comp".fontsize(3).sup();
+  result_div.innerHTML = `
+    ${convertToWord(userChoice)} ${smallUserWord}
+     does not beat  
+    ${convertToWord(computerChoice)} ${smallCompWord}
+    You lose`;
 }
 function draw(userChoice, computerChoice) {
   userScore_span.innerHTML = userScore;
   computerScore_span.innerHTML = computerScore;
-  result_div.innerHTML = userChoice + " same as  " + computerChoice + " tie";
+  const smallUserWord = "user".fontsize(3).sup();
+  const smallCompWord = "comp".fontsize(3).sup();
+  result_div.innerHTML = ` ${convertToWord(userChoice)}   ${smallUserWord}
+ same as   
+${convertToWord(computerChoice)} ${smallCompWord}
+tie`;
 }
 function game(userChoice) {
   const computerChoice = getComputerChoice();

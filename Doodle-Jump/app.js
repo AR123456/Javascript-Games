@@ -13,7 +13,9 @@ function createDoodler() {
 }
 function createPlatforms() {
   for (let i = 0; i < platformCount; i++) {
-    ///
+    ///gap between platforms hight of grid/platformCount
+    let platGap = 600 / platformCount;
+    let newPlatBottom = 100 + i * platGap;
   }
 }
 

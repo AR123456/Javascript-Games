@@ -37,7 +37,7 @@ function createPlatforms() {
     //using for loop to increment the sizeof platform
     let newPlatBottom = 100 + i * platGap;
     // using class here to create new platform
-    let newPlatform = new Platform();
+    let newPlatform = new Platform(newPlatBottom);
   }
 }
 

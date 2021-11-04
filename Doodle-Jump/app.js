@@ -48,11 +48,25 @@ function movePlatforms() {
   }
 }
 function jump() {
+  // make sure the downtimerID gets cleared before jumpin
+  clearInterval(downTimerId);
   // time id stops the set interval
   upTimerId = setInterval(function () {
     // jump doodler up 20
     doodlerBottomSpace += 20;
     // apply to element so it is visibel
+    doodler.style.bottom = doodlerBottomSpace + "px";
+    // doodler fall
+    if (doodlerBottomSpace > 350) {
+      fall();
+    }
+  }, 30);
+}
+function fall() {
+  // clear up id
+  clearInterval(upTimerId);
+  downTimerId = setInterval(function () {
+    doodlerBottomSpace -= 5;
     doodler.style.bottom = doodlerBottomSpace + "px";
   }, 30);
 }
@@ -66,5 +80,6 @@ function start() {
     jump();
   }
 }
+// restart at  https://www.youtube.com/watch?v=8xPsg6yv7TU
 // TODO attach to button
 start();

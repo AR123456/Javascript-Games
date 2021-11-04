@@ -5,7 +5,8 @@ let doodlerBottomSpace = 150;
 let isGameOver = false;
 let platformCount = 5;
 let platforms = [];
-
+let upTimerId;
+let downTimerId;
 function createDoodler() {
   grid.appendChild(doodler);
   doodler.classList.add("doodler");
@@ -46,6 +47,15 @@ function movePlatforms() {
     });
   }
 }
+function jump() {
+  // time id stops the set interval
+  upTimerId = setInterval(function () {
+    // jump doodler up 20
+    doodlerBottomSpace += 20;
+    // apply to element so it is visibel
+    doodler.style.bottom = doodlerBottomSpace + "px";
+  }, 30);
+}
 function start() {
   if (!isGameOver) {
     //   if the game is not over create the doodler
@@ -53,6 +63,7 @@ function start() {
     createPlatforms();
     // put move platfroms on set interval so it moves a a frequesncy
     setInterval(movePlatforms, 30);
+    jump();
   }
 }
 // TODO attach to button

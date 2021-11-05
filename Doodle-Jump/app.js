@@ -1,7 +1,8 @@
 const grid = document.querySelector(".grid");
 const doodler = document.createElement("div");
 let doodlerLeftSpace = 50;
-let doodlerBottomSpace = 150;
+let startPoint = 150;
+let doodlerBottomSpace = startPoint;
 let isGameOver = false;
 let platformCount = 5;
 let platforms = [];
@@ -56,7 +57,7 @@ function jump() {
   upTimerId = setInterval(function () {
     doodlerBottomSpace += 20;
     doodler.style.bottom = doodlerBottomSpace + "px";
-    if (doodlerBottomSpace > 350) {
+    if (doodlerBottomSpace > startPoint + 200) {
       fall();
     }
   }, 30);
@@ -81,6 +82,7 @@ function fall() {
         !isJumping
       )
         console.log("landed on a platform so jump again  ");
+      startPoint = doodlerBottomSpace;
       jump();
     });
   }, 30);
@@ -110,6 +112,7 @@ function start() {
     jump();
   }
 }
-// restart at
+// doodler is jumping and never falling fix this before moving on
+// restart at  https://www.youtube.com/watch?v=8xPsg6yv7TU
 // TODO attach to button
 start();

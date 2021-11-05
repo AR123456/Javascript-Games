@@ -7,9 +7,14 @@ let platformCount = 5;
 let platforms = [];
 let upTimerId;
 let downTimerId;
+let isJumping = true;
+
 function createDoodler() {
   grid.appendChild(doodler);
   doodler.classList.add("doodler");
+  // when doodler created put him on the first platform
+  // position of platform in the 0 space in array
+  doodlerLeftSpace = platforms[0].left;
   doodler.style.left = doodlerLeftSpace + "px";
   doodler.style.bottom = doodlerBottomSpace + "px";
 }
@@ -36,11 +41,8 @@ function createPlatforms() {
   }
 }
 function movePlatforms() {
-  // only mover platforms if doodler is above 200
   if (doodlerBottomSpace > 200) {
-    // for each item in the platforms array
     platforms.forEach((platform) => {
-      // remove 4
       platform.bottom -= 4;
       let visual = platform.visual;
       visual.style.bottom = platform.bottom + "px";
@@ -48,29 +50,39 @@ function movePlatforms() {
   }
 }
 function jump() {
-  // make sure the downtimerID gets cleared before jumpin
   clearInterval(downTimerId);
-  // time id stops the set interval
+  // set is jumping to true
+  isJumping = true;
   upTimerId = setInterval(function () {
-    // jump doodler up 20
     doodlerBottomSpace += 20;
-    // apply to element so it is visibel
     doodler.style.bottom = doodlerBottomSpace + "px";
-    // doodler fall
     if (doodlerBottomSpace > 350) {
       fall();
     }
   }, 30);
 }
 function fall() {
-  // clear up id
   clearInterval(upTimerId);
+  isJumping = false;
   downTimerId = setInterval(function () {
     doodlerBottomSpace -= 5;
     doodler.style.bottom = doodlerBottomSpace + "px";
     if (doodlerBottomSpace <= 0) {
       gameOver();
     }
+    // check for colision with a platform - meaning doodler should jump again
+    platforms.forEach((platform) => {
+      // is bottom edge of doodler sharing same space as inside the platform?
+      if (
+        doodlerBottomSpace >= platform.bottom &&
+        doodlerBottomSpace <= platform.bottom + 15 &&
+        doodlerLeftSpace + 60 >= platform.left &&
+        doodlerLeftSpace <= platform.left + 85 &&
+        !isJumping
+      )
+        console.log("landed on a platform so jump again  ");
+      jump();
+    });
   }, 30);
 }
 function gameOver() {
@@ -78,16 +90,26 @@ function gameOver() {
   clearInterval(upTimerId);
   clearInterval(downTimerId);
 }
+// controle with arrow keys
+function control(e) {
+  if (e.key === "ArrowLeft") {
+    // move left
+  } else if (e.key === "ArrowRight") {
+    // move right
+  } else if (e.key === "ArrowUp") {
+    // moveStraight up
+  }
+}
+
 function start() {
   if (!isGameOver) {
-    //   if the game is not over create the doodler
-    createDoodler();
     createPlatforms();
-    // put move platfroms on set interval so it moves a a frequesncy
+    createDoodler();
+
     setInterval(movePlatforms, 30);
     jump();
   }
 }
-// restart at  https://www.youtube.com/watch?v=8xPsg6yv7TU
+// restart at
 // TODO attach to button
 start();

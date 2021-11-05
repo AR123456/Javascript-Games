@@ -9,6 +9,10 @@ let platforms = [];
 let upTimerId;
 let downTimerId;
 let isJumping = true;
+let isGoingLeft = false;
+let isGoingRight = false;
+let leftTimerId;
+let rightTimerId;
 
 function createDoodler() {
   grid.appendChild(doodler);
@@ -50,21 +54,10 @@ function movePlatforms() {
     });
   }
 }
-function jump() {
-  clearInterval(downTimerId);
-  // set is jumping to true
-  isJumping = true;
-  upTimerId = setInterval(function () {
-    doodlerBottomSpace += 20;
-    doodler.style.bottom = doodlerBottomSpace + "px";
-    if (doodlerBottomSpace > startPoint + 200) {
-      fall();
-    }
-  }, 30);
-}
+
 function fall() {
-  clearInterval(upTimerId);
   isJumping = false;
+  clearInterval(upTimerId);
   downTimerId = setInterval(function () {
     doodlerBottomSpace -= 5;
     doodler.style.bottom = doodlerBottomSpace + "px";
@@ -80,11 +73,24 @@ function fall() {
         doodlerLeftSpace + 60 >= platform.left &&
         doodlerLeftSpace <= platform.left + 85 &&
         !isJumping
-      )
+      ) {
         console.log("landed on a platform so jump again  ");
-      startPoint = doodlerBottomSpace;
-      jump();
+        startPoint = doodlerBottomSpace;
+        jump();
+      }
     });
+  }, 30);
+}
+function jump() {
+  clearInterval(downTimerId);
+  // set is jumping to true
+  isJumping = true;
+  upTimerId = setInterval(function () {
+    doodlerBottomSpace += 20;
+    doodler.style.bottom = doodlerBottomSpace + "px";
+    if (doodlerBottomSpace > startPoint + 200) {
+      fall();
+    }
   }, 30);
 }
 function gameOver() {
@@ -95,21 +101,28 @@ function gameOver() {
 // controle with arrow keys
 function control(e) {
   if (e.key === "ArrowLeft") {
-    // move left
+    moveLeft();
   } else if (e.key === "ArrowRight") {
     // move right
   } else if (e.key === "ArrowUp") {
     // moveStraight up
   }
 }
-
+function moveLeft() {
+  isGoingLeft = true;
+  leftTimerId = setInterval(function () {
+    doodlerLeftSpace -= 5;
+    doodler.style.left = doodlerLeftSpace + "px";
+  }, 30);
+}
 function start() {
   if (!isGameOver) {
     createPlatforms();
     createDoodler();
-
     setInterval(movePlatforms, 30);
     jump();
+    // event listener for keyboard arrows
+    document.addEventListener("keyup", control);
   }
 }
 // doodler is jumping and never falling fix this before moving on

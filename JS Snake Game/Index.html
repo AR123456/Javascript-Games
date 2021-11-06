@@ -5,11 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>JS Snake Game </title>
+    <!-- doing import this way tells browser to defer loading JS until page is drawn, type of module tells browswer we are going to be using imports into this file.  -->
+    <!-- defer
+This Boolean attribute is set to indicate to a browser that the script is meant to be executed after the document has been parsed, but before firing DOMContentLoaded.
+
+Scripts with the defer attribute will prevent the DOMContentLoaded event from firing until the script has loaded and finished evaluating. -->
+<!-- module: Causes the code to be treated as a JavaScript module. The processing of the script contents is not affected by the charset and defer attributes. For information on using module, see our JavaScript modules guide. Unlike classic scripts, module scripts require the use of the CORS protocol for cross-origin fetching. -->
+
+<script src="app.js" defer type="module"></script>
+<title>JS Snake Game </title>
 </head>
 <body>
     <div id="game-board"></div>
-    <script src="app.js"></script>
+    <!-- <script src="app.js"></script> -->
 </body>
 </html>
 

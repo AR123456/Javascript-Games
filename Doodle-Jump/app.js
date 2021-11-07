@@ -125,7 +125,7 @@ function start() {
     document.addEventListener("keyup", control);
   }
 }
-// doodler is jumping and never falling fix this before moving on
+
 // restart at  https://www.youtube.com/watch?v=8xPsg6yv7TU
 // TODO attach to button
 start();

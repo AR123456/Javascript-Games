@@ -105,7 +105,7 @@ function control(e) {
   } else if (e.key === "ArrowRight") {
     moveRight();
   } else if (e.key === "ArrowUp") {
-    // moveStraight up
+    moveStraight();
   }
 }
 function moveLeft() {
@@ -134,6 +134,12 @@ function moveRight() {
       doodler.style.left = doodlerLeftSpace + "px";
     } else moveLeft();
   }, 30);
+}
+function moveStraight() {
+  isGoingLeft = false;
+  isGoingRight = false;
+  clearInterval(rightTimerId);
+  clearInterval(leftTimerId);
 }
 function start() {
   if (!isGameOver) {

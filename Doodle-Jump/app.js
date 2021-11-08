@@ -51,6 +51,17 @@ function movePlatforms() {
       platform.bottom -= 4;
       let visual = platform.visual;
       visual.style.bottom = platform.bottom + "px";
+      if (platform.bottom < 10) {
+        // hide the first platform in the array
+        let firstPlatform = platforms[0].visual;
+        firstPlatform.classList.remove("platform");
+        // get rind of fist item in array
+        platforms.shift();
+        // hard coding 600 so it appears at top of grid
+        let newPlatform = new Platform(600);
+        // add new platform to end of array
+        platforms.push(newPlatform);
+      }
     });
   }
 }

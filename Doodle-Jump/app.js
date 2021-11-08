@@ -81,8 +81,6 @@ function fall() {
         console.log("landed on a platform so jump again  ");
         startPoint = doodlerBottomSpace;
         jump();
-        console.log("start", startPoint);
-        isJumping = true;
       }
     });
   }, 20);
@@ -95,9 +93,8 @@ function jump() {
     doodler.style.bottom = doodlerBottomSpace + "px";
     if (doodlerBottomSpace > startPoint + 200) {
       fall();
-      isJumping = false;
     }
-  }, 30);
+  }, 20);
 }
 function gameOver() {
   console.log("game over ");

@@ -16,6 +16,8 @@ body {
   height: 600px;
   background: yellow;
   position: relative;
+  font-size: 200px;
+  text-align: center;
 }
 .doodler {
   width: 60px;

@@ -13,6 +13,7 @@ let isGoingLeft = false;
 let isGoingRight = false;
 let leftTimerId;
 let rightTimerId;
+let score = 0;
 
 function createDoodler() {
   grid.appendChild(doodler);
@@ -57,6 +58,8 @@ function movePlatforms() {
         firstPlatform.classList.remove("platform");
         // get rind of fist item in array
         platforms.shift();
+        // increment score
+        score++;
         // hard coding 600 so it appears at top of grid
         let newPlatform = new Platform(600);
         // add new platform to end of array
@@ -90,7 +93,7 @@ function fall() {
         jump();
       }
     });
-  }, 30);
+  }, 20);
 }
 function jump() {
   clearInterval(downTimerId);
@@ -102,12 +105,21 @@ function jump() {
     if (doodlerBottomSpace > startPoint + 200) {
       fall();
     }
-  }, 30);
+  }, 20);
 }
 function gameOver() {
+  console.log("game over ");
   isGameOver = true;
+  // clear the grid
+  while (grid.firstChild) {
+    grid.removeChild(grid.firstChild);
+  }
+  // display score
+  grid.innerHTML = score;
   clearInterval(upTimerId);
   clearInterval(downTimerId);
+  clearInterval(leftTimerId);
+  clearInterval(rightTimerId);
 }
 // controle with arrow keys
 function control(e) {
@@ -144,7 +156,7 @@ function moveRight() {
       doodlerLeftSpace += 5;
       doodler.style.left = doodlerLeftSpace + "px";
     } else moveLeft();
-  }, 30);
+  }, 20);
 }
 function moveStraight() {
   isGoingLeft = false;

@@ -18,13 +18,11 @@ let score = 0;
 function createDoodler() {
   grid.appendChild(doodler);
   doodler.classList.add("doodler");
-  // when doodler created put him on the first platform
-  // position of platform in the 0 space in array
   doodlerLeftSpace = platforms[0].left;
   doodler.style.left = doodlerLeftSpace + "px";
   doodler.style.bottom = doodlerBottomSpace + "px";
 }
-// constructor class for platform
+
 class Platform {
   constructor(newPlatBottom) {
     this.bottom = newPlatBottom;
@@ -43,7 +41,6 @@ function createPlatforms() {
     let newPlatBottom = 100 + i * platGap;
     let newPlatform = new Platform(newPlatBottom);
     platforms.push(newPlatform);
-    // console.log(platforms);
   }
 }
 function movePlatforms() {
@@ -53,16 +50,11 @@ function movePlatforms() {
       let visual = platform.visual;
       visual.style.bottom = platform.bottom + "px";
       if (platform.bottom < 10) {
-        // hide the first platform in the array
         let firstPlatform = platforms[0].visual;
         firstPlatform.classList.remove("platform");
-        // get rind of fist item in array
         platforms.shift();
-        // increment score
         score++;
-        // hard coding 600 so it appears at top of grid
         let newPlatform = new Platform(600);
-        // add new platform to end of array
         platforms.push(newPlatform);
       }
     });
@@ -78,9 +70,7 @@ function fall() {
     if (doodlerBottomSpace <= 0) {
       gameOver();
     }
-    // check for colision with a platform - meaning doodler should jump again
     platforms.forEach((platform) => {
-      // is bottom edge of doodler sharing same space as inside the platform?
       if (
         doodlerBottomSpace >= platform.bottom &&
         doodlerBottomSpace <= platform.bottom + 15 &&
@@ -91,37 +81,37 @@ function fall() {
         console.log("landed on a platform so jump again  ");
         startPoint = doodlerBottomSpace;
         jump();
+        console.log("start", startPoint);
+        isJumping = true;
       }
     });
   }, 20);
 }
 function jump() {
   clearInterval(downTimerId);
-  // set is jumping to true
   isJumping = true;
   upTimerId = setInterval(function () {
     doodlerBottomSpace += 20;
     doodler.style.bottom = doodlerBottomSpace + "px";
     if (doodlerBottomSpace > startPoint + 200) {
       fall();
+      isJumping = false;
     }
-  }, 20);
+  }, 30);
 }
 function gameOver() {
   console.log("game over ");
   isGameOver = true;
-  // clear the grid
   while (grid.firstChild) {
     grid.removeChild(grid.firstChild);
   }
-  // display score
   grid.innerHTML = score;
   clearInterval(upTimerId);
   clearInterval(downTimerId);
   clearInterval(leftTimerId);
   clearInterval(rightTimerId);
 }
-// controle with arrow keys
+
 function control(e) {
   if (e.key === "ArrowLeft") {
     moveLeft();
@@ -170,11 +160,9 @@ function start() {
     createDoodler();
     setInterval(movePlatforms, 30);
     jump();
-    // event listener for keyboard arrows
+
     document.addEventListener("keyup", control);
   }
 }
-
-// restart at  https://www.youtube.com/watch?v=8xPsg6yv7TU
 // TODO attach to button
 start();

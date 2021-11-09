@@ -1,5 +1,5 @@
 const bird = document.querySelector(".bird");
-const gameDispaly = document.querySelector(".game-container");
+const gameDisplay = document.querySelector(".game-container");
 const ground = document.querySelector(".ground");
 
 let birdLeft = 200;
@@ -33,3 +33,11 @@ function jump() {
   console.log(birdBottom);
 }
 document.addEventListener("keyup", control);
+
+function generateObstacle() {
+  const obstacle = document.createElement("div");
+  obstacle.classList.add("obstacle");
+  gameDisplay.appendChild(obstacle);
+}
+
+generateObstacle();

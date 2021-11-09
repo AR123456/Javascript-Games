@@ -18,9 +18,18 @@ let timerId = setInterval(startGame, 20);
 // use clearInterval to stop it from running
 // clearInterval(timerId);
 // jump up aginst gravity
-function jump() {
-  // each time the jump function is called adding 50px
-  birdBottom += 50;
-  bird.style.bottom = birdBottom + "px";
+
+function control(e) {
+  //space bar
+  if (e.keyCode === 32) {
+    jump();
+  }
 }
-document.addEventListener("keyup", jump);
+
+function jump() {
+  // each time the jump function is called adding 50px but not if it would cause bird to jump off page
+  if (birdBottom < 500) birdBottom += 50;
+  bird.style.bottom = birdBottom + "px";
+  console.log(birdBottom);
+}
+document.addEventListener("keyup", control);

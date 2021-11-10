@@ -5,7 +5,7 @@ const ground = document.querySelector(".ground");
 let birdLeft = 200;
 let birdBottom = 100;
 let gravity = 2;
-
+let isGameOver = false;
 // move bird to bottom center of sky div
 function startGame() {
   birdBottom -= gravity;
@@ -14,7 +14,7 @@ function startGame() {
   //
 }
 // run startGame every 20 ms
-let timerId = setInterval(startGame, 20);
+let gameTimerId = setInterval(startGame, 20);
 // use clearInterval to stop it from running
 // clearInterval(timerId);
 // jump up aginst gravity
@@ -48,10 +48,29 @@ function generateObstacle() {
   function moveObstacle() {
     obstacleLeft -= 2;
     obstacle.style.left = obstacleLeft + "px";
+    if (obstacleLeft === -60) {
+      clearTimeout(timerId);
+      gameDisplay.removeChild(obstacle);
+    }
+    if (
+      // bird colides with obstacle
+      (obstacleLeft > 200 && obstacleLeft < 280 && birdLeft === 220) ||
+      // bird hit ground
+      birdBottom === 0
+    ) {
+      gameOver();
+    }
   }
   // move obstacle every 20ms
   let timerId = setInterval(moveObstacle, 20);
+  // genrate more obstacles by putting generateObstacle in setTimeout
+  setTimeout(generateObstacle, 3000);
 }
 
 generateObstacle();
-// https://www.youtube.com/watch?v=8xPsg6yv7TU
+function gameOver() {
+  console.log("game over");
+  clearInterval(gameTimerId);
+  isGameOver = true;
+  document.removeEventListener("keyup", control);
+}

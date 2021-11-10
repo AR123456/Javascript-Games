@@ -2,7 +2,7 @@ const bird = document.querySelector(".bird");
 const gameDisplay = document.querySelector(".game-container");
 const ground = document.querySelector(".ground");
 
-let birdLeft = 200;
+let birdLeft = 220;
 let birdBottom = 100;
 let gravity = 2;
 let isGameOver = false;
@@ -30,41 +30,42 @@ function jump() {
   // each time the jump function is called adding 50px but not if it would cause bird to jump off page
   if (birdBottom < 500) birdBottom += 50;
   bird.style.bottom = birdBottom + "px";
-  console.log(birdBottom);
+  // console.log(birdBottom);
 }
 document.addEventListener("keyup", control);
 
 function generateObstacle() {
   let obstacleLeft = 500;
   let randomHeight = Math.random() * 60;
-  console.log(randomHeight);
+  // console.log(randomHeight);
   let obstacleBottom = randomHeight;
   const obstacle = document.createElement("div");
   obstacle.classList.add("obstacle");
-  gameDisplay.appendChild(obstacle);
+  if (!isGameOver) gameDisplay.appendChild(obstacle);
   obstacle.style.left = obstacleLeft + "px";
   obstacle.style.bottom = obstacleBottom + "px";
   //   moving the obstacle
   function moveObstacle() {
     obstacleLeft -= 2;
     obstacle.style.left = obstacleLeft + "px";
+    console.log(obstacleLeft);
     if (obstacleLeft === -60) {
       clearTimeout(timerId);
       gameDisplay.removeChild(obstacle);
     }
+    // bird colides with obstacle or bird hits ground
     if (
-      // bird colides with obstacle
       (obstacleLeft > 200 && obstacleLeft < 280 && birdLeft === 220) ||
-      // bird hit ground
       birdBottom === 0
     ) {
       gameOver();
+      clearInterval(timerId);
     }
   }
   // move obstacle every 20ms
   let timerId = setInterval(moveObstacle, 20);
   // genrate more obstacles by putting generateObstacle in setTimeout
-  setTimeout(generateObstacle, 3000);
+  if (!isGameOver) setTimeout(generateObstacle, 3000);
 }
 
 generateObstacle();

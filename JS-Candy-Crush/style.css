@@ -10,3 +10,15 @@ body {
   justify-content: center;
   height: 100vh;
 }
+.grid {
+  height: 560px;
+  width: 560px;
+  display: flex;
+  flex-wrap: wrap;
+  background: blue;
+}
+.grid div {
+  height: 70px;
+  width: 70px;
+  
+}

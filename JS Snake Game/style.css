@@ -25,7 +25,7 @@ grid-template-rows: repeat(21,1fr);
 grid-template-columns: repeat(21,1fr);
 }
 .snake{
-    color: hsl(200,100%,50%);
+    background: hsl(200,100%,50%);
     /* border scales with size of screen */
     border: .25vmin solid black;
 }

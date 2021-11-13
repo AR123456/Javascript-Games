@@ -4,6 +4,7 @@ import{update as updateSnake, draw as drawSnake, SNAKE_SPEED} from "./snake.js"
 
 // game loop 
 let lastRenderTime =0;
+const gameBoard = document.getElementById("game-board")
 
 
 
@@ -26,5 +27,7 @@ function update(){
     updateSnake()
 }
 function draw(){
-    drawSnake()
+    // remove the extra segments from end of snake
+    gameBoard.innerHTML=""
+    drawSnake(gameBoard)
 }

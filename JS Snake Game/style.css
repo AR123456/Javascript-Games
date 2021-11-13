@@ -20,11 +20,13 @@ background: #ccc;
 width: 100vmin;
 height: 100vmin;
 display: grid;
+/* 21 same size squares  */
 grid-template-rows: repeat(21,1fr);
 grid-template-columns: repeat(21,1fr);
 }
 .snake{
-    color: hls(200,100%,50%);
+    color: hsl(200,100%,50%);
+    /* border scales with size of screen */
     border: .25vmin solid black;
 }
 .food{

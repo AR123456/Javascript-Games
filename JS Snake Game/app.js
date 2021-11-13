@@ -1,6 +1,6 @@
 import{update as updateSnake, draw as drawSnake, SNAKE_SPEED} from "./snake.js"
-
-// restart here https://www.youtube.com/watch?v=QTcIXok9wNY
+import {update as updateFood, draw as drawFood} from "./food.js"
+ 
 
 // game loop 
 let lastRenderTime =0;
@@ -25,9 +25,11 @@ update()
 
 function update(){
     updateSnake()
+    updateFood()
 }
 function draw(){
     // remove the extra segments from end of snake
     gameBoard.innerHTML=""
     drawSnake(gameBoard)
+    drawFood(gameBoard)
 }

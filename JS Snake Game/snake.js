@@ -35,9 +35,11 @@ export function draw(gameBoard){
 export function expandSnake(amount){
     newSegments += amount
 }
-export function onSnake(position){
+export function onSnake(position, {ignoreHead = false}={}){
     // if any part of snakeBody 
-    return snakeBody.some(segment =>{
+    return snakeBody.some(segment, index =>{
+        if (ingoreHead && index ===0 )return false          
+        
         return equalPositions(segment,position)
     })
 }
@@ -45,7 +47,11 @@ export function getSnakeHead(){
     // the first position in the array 
     return snakeBody[0]
 }
-
+// is the head of the snake touching any of the other snake body parts
+// or is the head position === to any of the other position array index values 
+export function snakeIntersection(){
+    return onSnake(snakeBody[0],{ignoreHead:true})
+}
 function equalPositions(pos1,pos2){
     return pos1.x === pos2.x && pos1.y === pos2.y
 }
@@ -58,4 +64,4 @@ function addSegments(){
     newSegments =0
 }
 
-//  restart   https://www.youtube.com/watch?v=QTcIXok9wNY
+//  restart    https://www.youtube.com/watch?v=QTcIXok9wNY

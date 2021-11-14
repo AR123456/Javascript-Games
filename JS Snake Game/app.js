@@ -1,6 +1,6 @@
-import{update as updateSnake, draw as drawSnake, SNAKE_SPEED} from "./snake.js"
+import{update as updateSnake, draw as drawSnake, SNAKE_SPEED,getSnakeHead,snakeIntersection} from "./snake.js"
 import {update as updateFood, draw as drawFood} from "./food.js"
- 
+ import {outsideGrid} from "./grid.js"
 
 // game loop 
 let lastRenderTime =0;
@@ -41,5 +41,5 @@ function draw(){
 // check for failure state
 function checkDeath(){
     // is the snake off the page or has it intersected with it body
-    gameOver = outsideGrid(getSnakeHead())|| snakeInterscetion()
+    gameOver = outsideGrid(getSnakeHead())|| snakeIntersection()
 }

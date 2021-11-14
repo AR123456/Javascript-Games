@@ -35,14 +35,12 @@ export function draw(gameBoard){
 export function expandSnake(amount){
     newSegments += amount
 }
-export function onSnake(position, {ignoreHead = false}={}){
-    // if any part of snakeBody 
-    return snakeBody.some(segment, index =>{
-        if (ingoreHead && index ===0 )return false          
-        
-        return equalPositions(segment,position)
-    })
-}
+     export function onSnake(position, {ignoreHead = false} = {}){
+return snakeBody.some((segment, index)=>{
+    if(ignoreHead && index ===0) return false
+    return equalPositions(segment,position)
+})
+  }
 export function getSnakeHead(){
     // the first position in the array 
     return snakeBody[0]

@@ -4,14 +4,15 @@ import {randomGridPosition} from "./grid.js"
 // let food = {x:10, y:2}
 let food = getRandomFoodPosition()
 // rate at which snake will grow with food eaten
-const EXPANSION_RATE = 1
+const EXPANSION_RATE = 2
 
 export function update(){
     // if the snake is on top of food
     if(onSnake(food)){
         // this is true so snake needs to grow
         expandSnake(EXPANSION_RATE)
-        food = {x:20, y:10}
+        // food = {x:20, y:10}
+        food = getRandomFoodPosition()
     }
  
 }
@@ -23,7 +24,7 @@ export function draw(gameBoard) {
     gameBoard.appendChild(foodElement)
   }
 
-// return a randome poition of the food that is not on the snake
+// return a random poition of the food that is not on the snake
 function getRandomFoodPosition(){
     let newFoodPosition 
     while (newFoodPosition == null || onSnake(newFoodPosition)) {

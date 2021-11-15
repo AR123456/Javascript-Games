@@ -11,7 +11,11 @@ const gameBoard = document.getElementById("game-board")
 
 function main(currentTime){
     if (gameOver) {
-      return  alert("game over")
+     if (confirm("Game over press ok to restart")){
+         // restart game by reloading browser at current postion 
+         window.location ="/"
+     }
+     return
     }
     window.requestAnimationFrame(main)
     const secondsSinceLastRender = (currentTime - lastRenderTime)/1000

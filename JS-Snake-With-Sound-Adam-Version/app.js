@@ -11,6 +11,8 @@ let headY = 10;
 
 let xVelocity = 0;
 let yVelocity = 0;
+let appleX = 5;
+let appleY = 5;
 
 //game loop runs continueusly updating screen could be done in one of 3 ways
 // requestAnimationFrame
@@ -19,6 +21,7 @@ let yVelocity = 0;
 function drawGame() {
   clearScreen();
   changeSnakePosition();
+  drawApple();
   drawSnake();
   setTimeout(drawGame, 1000 / speed);
 }
@@ -36,6 +39,11 @@ function changeSnakePosition() {
   headX = headX + xVelocity;
   // updown
   headY = headY + yVelocity;
+}
+
+function drawApple() {
+  ctx.fillStyle = "red";
+  ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
 }
 
 document.body.addEventListener("keydown", keyDown);

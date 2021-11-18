@@ -15,7 +15,7 @@ body {
   width: 560px;
   display: flex;
   flex-wrap: wrap;
-  background: blue;
+  /* background: blue; */
 }
 .grid div {
   height: 70px;

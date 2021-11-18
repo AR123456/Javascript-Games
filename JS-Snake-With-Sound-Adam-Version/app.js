@@ -23,9 +23,6 @@ let yVelocity = 0;
 let appleX = 5;
 let appleY = 5;
 let score = 0;
-// create audio constructor for sounds
-// https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement/Audio
-const gulpSound = new Audio("gulp.mp3");
 
 //game loop runs continueusly updating screen could be done in one of 3 ways
 // requestAnimationFrame
@@ -44,7 +41,6 @@ function drawGame() {
   drawApple();
   drawSnake();
   drawScore();
-  // increase the difficulty of the game based on score
   setTimeout(drawGame, 1000 / speed);
 }
 function isGameOver() {
@@ -141,8 +137,6 @@ function checkAppleCollision() {
     appleY = Math.floor(Math.random() * tileCount);
     tailLength++;
     score++;
-    // play the sound
-    gulpSound.play();
   }
 }
 

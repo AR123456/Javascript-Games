@@ -25,4 +25,29 @@ function createBoard() {
 createBoard();
 
 // drag candies
-// add event listeners for each of 5 stages of draggin
+// add event listeners for each of 5 stages of dragging syntax is the "event", function
+squares.forEach((square) => square.addEventListener("dragstart", dragStart));
+squares.forEach((square) => square.addEventListener("dragend", dragEnd));
+squares.forEach((square) => square.addEventListener("dragover", dragOver));
+squares.forEach((square) => square.addEventListener("dragenter", dragEnter));
+squares.forEach((square) => square.addEventListener("dragleave", dragLeave));
+squares.forEach((square) => square.addEventListener("drop", dragDrop));
+
+function dragStart() {
+  console.log(this.id, "dragstart");
+}
+function dragEnd() {
+  console.log(this.id, "dragend");
+}
+function dragOver() {
+  console.log(this.id, "dragover");
+}
+function dragEnter() {
+  console.log(this.id, "dragenter");
+}
+function dragLeave() {
+  console.log(this.id, "dragleave");
+}
+function dragDrop() {
+  console.log(this.id, "dragdrop");
+}

@@ -26,19 +26,20 @@ createBoard();
 let colorBeingDragged;
 let colorBeingReplaced;
 let squareIdBeingDragged;
-let squeareIdBeingReplaced;
+let squareIdBeingReplaced;
 // drag candies
 // add event listeners for each of 5 stages of dragging syntax is the "event", function
+
 squares.forEach((square) => square.addEventListener("dragstart", dragStart));
 squares.forEach((square) => square.addEventListener("dragend", dragEnd));
 squares.forEach((square) => square.addEventListener("dragover", dragOver));
 squares.forEach((square) => square.addEventListener("dragenter", dragEnter));
-squares.forEach((square) => square.addEventListener("dragleave", dragLeave));
+squares.forEach((square) => square.addEventListener("drageleave", dragLeave));
 squares.forEach((square) => square.addEventListener("drop", dragDrop));
 
 function dragStart() {
   colorBeingDragged = this.style.backgroundColor;
-  console.log(colorBeingDragged);
+  // console.log(colorBeingDragged);
   // need ID to replace in dropped to square, use parseInt to make sure it is an integer
   squareIdBeingDragged = parseInt(this.id);
   console.log(this.id, "dragstart");
@@ -55,6 +56,17 @@ function dragEnter(e) {
 function dragLeave() {
   console.log(this.id, "dragleave");
 }
+function dragDrop() {
+  // in candy crush the colors(candies) are swapped out when the dragged one is dropped onto target one
+  // console.log(this.id, "dragdrop");
+  colorBeingReplaced = this.style.backgroundColor;
+  // need ID to replace in dropped to square
+  squareIdBeingReplaced = parseInt(this.id);
+  // set style
+  this.style.backgroundImage = colorBeingDragged;
+  // set the color of the squared being dragged and dropped to that of the one it is dropped upon
+  squares[squareIdBeingDragged].style.backgroundColor = colorBeingReplaced;
+}
 function dragEnd() {
   console.log(this.id, "dragend");
   // what is a valid move ?
@@ -65,26 +77,19 @@ function dragEnd() {
     squareIdBeingDragged + width,
   ];
   // valid move is one of the ones in the validMoves array
-  let validMove = validMoves.includes(squeareIdBeingReplaced);
-  if (squeareIdBeingReplaced && validMove) {
-    squeareIdBeingReplaced = null;
-  } else if (squeareIdBeingReplaced && !validMove) {
-    squares[squeareIdBeingReplaced].style.backgroundColor = colorBeingReplaced;
-    squares[squeareIdBeingDragged].style.backgroundColor = colorBeingDragged;
-  } else {
-    squares[squareIdBeingDragged].style.backgroundColor = colorBeingDragged;
-  }
+  let validMove = validMoves.includes(squareIdBeingReplaced);
+
+  if (squareIdBeingReplaced && validMove) {
+    squareIdBeingReplaced = null;
+  } else if (squareIdBeingReplaced && !validMove) {
+    squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
+    squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+  } else
+    squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
 }
-function dragDrop() {
-  // in candy crush the colors(candies) are swapped out when the dragged one is dropped onto target one
-  console.log(this.id, "dragdrop");
-  colorBeingReplaced = this.backgroundColor;
-  // need ID to replace in dropped to square
-  squeareIdBeingReplaced = parseInt(this.id);
-  // set style
-  this.style.backgroundImage = colorBeingDragged;
-  // set the color of the squared being dragged and dropped to that of the one it is dropped upon
-  squares[squareIdBeingDragged].style.backgroundColor = colorBeingReplaced;
-}
+
+/// check for matches
+// check for fow of Three
+function checkRowForThree() {}
 
 // resume   https://www.youtube.com/watch?v=XD5sZWxwJUk

@@ -23,7 +23,10 @@ function createBoard() {
   }
 }
 createBoard();
-
+let colorBeingDragged;
+let colorBeingReplaced;
+let squareIdBeingDragged;
+let squeareIdBeingReplaced;
 // drag candies
 // add event listeners for each of 5 stages of dragging syntax is the "event", function
 squares.forEach((square) => square.addEventListener("dragstart", dragStart));
@@ -34,11 +37,13 @@ squares.forEach((square) => square.addEventListener("dragleave", dragLeave));
 squares.forEach((square) => square.addEventListener("drop", dragDrop));
 
 function dragStart() {
+  colorBeingDragged = this.style.backgroundColor;
+  console.log(colorBeingDragged);
+  // need ID to replace in dropped to square, use parseInt to make sure it is an integer
+  squareIdBeingDragged = parseInt(this.id);
   console.log(this.id, "dragstart");
 }
-function dragEnd() {
-  console.log(this.id, "dragend");
-}
+
 function dragOver() {
   console.log(this.id, "dragover");
 }
@@ -48,6 +53,14 @@ function dragEnter() {
 function dragLeave() {
   console.log(this.id, "dragleave");
 }
-function dragDrop() {
-  console.log(this.id, "dragdrop");
+function dragEnd() {
+  console.log(this.id, "dragend");
 }
+function dragDrop() {
+  // in candy crush the colors(candies) are swapped out when the dragged one is dropped onto target one
+  console.log(this.id, "dragdrop");
+  colorBeingReplaced = this.backgroundColor;
+  // need ID to replace in dropped to square
+}
+
+// resume   https://www.youtube.com/watch?v=XD5sZWxwJUk

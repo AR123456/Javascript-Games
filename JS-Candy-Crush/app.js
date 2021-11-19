@@ -44,23 +44,47 @@ function dragStart() {
   console.log(this.id, "dragstart");
 }
 
-function dragOver() {
-  console.log(this.id, "dragover");
+function dragOver(e) {
+  e.preventDefault();
+  // console.log(this.id, "dragover");
 }
-function dragEnter() {
-  console.log(this.id, "dragenter");
+function dragEnter(e) {
+  e.preventDefault();
+  // console.log(this.id, "dragenter");
 }
 function dragLeave() {
   console.log(this.id, "dragleave");
 }
 function dragEnd() {
   console.log(this.id, "dragend");
+  // what is a valid move ?
+  let validMoves = [
+    squareIdBeingDragged - 1,
+    squareIdBeingDragged - width,
+    squareIdBeingDragged + 1,
+    squareIdBeingDragged + width,
+  ];
+  // valid move is one of the ones in the validMoves array
+  let validMove = validMoves.includes(squeareIdBeingReplaced);
+  if (squeareIdBeingReplaced && validMove) {
+    squeareIdBeingReplaced = null;
+  } else if (squeareIdBeingReplaced && !validMove) {
+    squares[squeareIdBeingReplaced].style.backgroundColor = colorBeingReplaced;
+    squares[squeareIdBeingDragged].style.backgroundColor = colorBeingDragged;
+  } else {
+    squares[squareIdBeingDragged].style.backgroundColor = colorBeingDragged;
+  }
 }
 function dragDrop() {
   // in candy crush the colors(candies) are swapped out when the dragged one is dropped onto target one
   console.log(this.id, "dragdrop");
   colorBeingReplaced = this.backgroundColor;
   // need ID to replace in dropped to square
+  squeareIdBeingReplaced = parseInt(this.id);
+  // set style
+  this.style.backgroundImage = colorBeingDragged;
+  // set the color of the squared being dragged and dropped to that of the one it is dropped upon
+  squares[squareIdBeingDragged].style.backgroundColor = colorBeingReplaced;
 }
 
 // resume   https://www.youtube.com/watch?v=XD5sZWxwJUk

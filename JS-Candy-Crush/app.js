@@ -79,14 +79,17 @@ function dragEnd() {
 
 //drop candies once some have been cleared
 function moveIntoSquareBelow() {
+  // check squares below for an empty square
   for (i = 0; i < 55; i++) {
     if (squares[i + width].style.backgroundColor === "") {
       squares[i + width].style.backgroundColor =
         squares[i].style.backgroundColor;
       squares[i].style.backgroundColor = "";
+      // now add new candies into the empty spaces
       const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
       const isFirstRow = firstRow.includes(i);
       if (isFirstRow && squares[i].style.backgroundColor === "") {
+        // fill the empty space with a random color
         let randomColor = Math.floor(Math.random() * candyColors.length);
         squares[i].style.backgroundColor = candyColors[randomColor];
       }
@@ -101,7 +104,7 @@ function checkRowForFour() {
     let rowOfFour = [i, i + 1, i + 2, i + 3];
     let decidedColor = squares[i].style.backgroundColor;
     const isBlank = squares[i].style.backgroundColor === "";
-
+    // every index to not start a row of 4 on
     const notValid = [
       5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53,
       54, 55,
@@ -153,7 +156,7 @@ function checkRowForThree() {
     let rowOfThree = [i, i + 1, i + 2];
     let decidedColor = squares[i].style.backgroundColor;
     const isBlank = squares[i].style.backgroundColor === "";
-
+    // every index to not start a row of 3 on
     const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55];
     if (notValid.includes(i)) continue;
 
@@ -204,3 +207,10 @@ window.setInterval(function () {
   checkColumnForThree();
   moveIntoSquareBelow();
 }, 100);
+
+// resume https://www.youtube.com/watch?v=XD5sZWxwJUk
+//TODO add check for column of five
+//TODO add button to stop
+
+//  same game same developer in react
+//https://www.youtube.com/watch?v=PBrEq9Wd6_U&t=76s

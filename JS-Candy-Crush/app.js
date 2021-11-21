@@ -1,6 +1,7 @@
 const grid = document.querySelector(".grid");
 const width = 8;
 const squares = [];
+let score = 0;
 const candyColors = ["red", "yellow", "orange", "purple", "green", "blue"];
 
 // create the game board
@@ -23,6 +24,7 @@ function createBoard() {
   }
 }
 createBoard();
+// Dragging the Candy
 let colorBeingDragged;
 let colorBeingReplaced;
 let squareIdBeingDragged;
@@ -42,7 +44,7 @@ function dragStart() {
   // console.log(colorBeingDragged);
   // need ID to replace in dropped to square, use parseInt to make sure it is an integer
   squareIdBeingDragged = parseInt(this.id);
-  console.log(this.id, "dragstart");
+  // console.log(this.id, "dragstart");
 }
 
 function dragOver(e) {
@@ -63,7 +65,7 @@ function dragDrop() {
   // need ID to replace in dropped to square
   squareIdBeingReplaced = parseInt(this.id);
   // set style
-  this.style.backgroundImage = colorBeingDragged;
+  this.style.backgroundColor = colorBeingDragged;
   // set the color of the squared being dragged and dropped to that of the one it is dropped upon
   squares[squareIdBeingDragged].style.backgroundColor = colorBeingReplaced;
 }
@@ -82,14 +84,61 @@ function dragEnd() {
   if (squareIdBeingReplaced && validMove) {
     squareIdBeingReplaced = null;
   } else if (squareIdBeingReplaced && !validMove) {
-    squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
-    squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+    squares[squareIdBeingReplaced].style.backgroundColor = colorBeingReplaced;
+    squares[squareIdBeingDragged].style.backgroundColor = colorBeingDragged;
   } else
-    squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+    squares[squareIdBeingDragged].style.backgroundColor = colorBeingDragged;
 }
 
 /// check for matches
 // check for fow of Three
-function checkRowForThree() {}
+function checkRowForThree() {
+  // looping over all the rows
+  for (let i = 0; i < 61; i++) {
+    let rowOfThree = [i, i + 1, i + 2];
+    let decidedColor = squares[i].style.backgroundColor;
+    const isBlank = squares[i].style.backgroundColor === "";
+    if (
+      rowOfThree.every(
+        (index) =>
+          squares[index].style.backgroundColor === decidedColor && !isBlank
+      )
+    ) {
+      score += 3;
+      scoreDisplay.innerHTML = score;
+      rowOfThree.forEach((index) => {
+        squares[index].style.backgroundColor = "";
+      });
+    }
+  }
+}
+checkRowForThree();
+// check columns for 3 in a row
+//for column of Three
+function checkColumnForThree() {
+  for (i = 0; i < 47; i++) {
+    let columnOfThree = [i, i + width, i + width * 2];
+    let decidedColor = squares[i].style.backgroundColor;
+    const isBlank = squares[i].style.backgroundColor === "";
 
+    if (
+      columnOfThree.every(
+        (index) =>
+          squares[index].style.backgroundColor === decidedColor && !isBlank
+      )
+    ) {
+      score += 3;
+      scoreDisplay.innerHTML = score;
+      columnOfThree.forEach((index) => {
+        squares[index].style.backgroundColor = "";
+      });
+    }
+  }
+}
+checkColumnForThree();
+
+window.setInterval(function () {
+  checkRowForThree();
+  checkColumnForThree();
+}, 100);
 // resume   https://www.youtube.com/watch?v=XD5sZWxwJUk

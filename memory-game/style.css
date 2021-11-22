@@ -9,3 +9,9 @@ body {
   justify-content: center;
   height: 100vh;
 }
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  height: 400px;
+}

@@ -11,3 +11,21 @@ body {
   height: 100vh;
   background: cornsilk;
 }
+.square {
+  width: 200px;
+  height: 200px;
+  border-style: solid;
+  border-color: black;
+}
+.grid {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+  height: 618px;
+  width: 618px;
+}
+.mole {
+  background-image: url("./molepic.jpg");
+  background-size: cover;
+}

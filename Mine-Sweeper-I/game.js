@@ -1,4 +1,5 @@
 // game logic 
+// https://www.youtube.com/watch?v=kBMnD_aElCQ
 const TILE_STATUSES = {
     HIDDEN:"hidden" ,
     MINE:"mine", 
@@ -9,7 +10,8 @@ export function createBoard(boardSize, numberOfMines){
     //board is an array of arrays 
     const board =[]
     // to create mines- array of values 
-    const minePostionts = getMinePositions(boardSize,numberOfMines)
+    const minePositions = getMinePositions(boardSize,numberOfMines)
+    console.log(minePositions)
     for (let x = 0; x < boardSize; x++) {
         const row =[]
         for (let y = 0; y < boardSize; y++) {
@@ -45,10 +47,22 @@ function getMinePositions(boardSize, numberOfMines){
            x:randomNumber(boardSize),
            y:randomNumber(boardSize)
        }
+    //    if any of the postions in the position array match positionMatch are not a match
+
+    //    if(!positions.some(p => positionMatch(p.position)))
+    // witten using bind looks like this 
+       if(!positions.some(positionMatch.bind(null,position)))
+       {
+           // add position to the array
+           positions.push(position)
+       }
    }
 
     return  positions
 }
+function positionMatch(a,b){
+    return a.x ===b.x && a.y === b.y
+}
 function randomNumber(size){
-    
+return Math.floor(Math.random()*size)
 }

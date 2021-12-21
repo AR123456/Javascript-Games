@@ -11,6 +11,7 @@ const logsRight = document.querySelectorAll(".log-right");
 
 const width = 9;
 let currentIndex = 76;
+let currentTime = 20;
 let timerId;
 
 squares[currentIndex].classList.add("frog");
@@ -131,4 +132,65 @@ function moveLogRight(logRight) {
   }
 }
 
-document.addEventListener("keyup", moveFrog);
+// to win
+function win() {
+  if (squares[4].classList.contains("frog")) {
+    result.innerHTML = "You won";
+    squares[currentIndex].classList.remove("frog");
+    clearInterval(timerId);
+    document.removeEventListener("keyup", moveFrog);
+  }
+}
+// to lose
+function lose() {
+  if (
+    currentTime === 0 ||
+    squares[currentIndex].classList.contains("c1") ||
+    squares[currentIndex].classList.contains("l5") ||
+    squares[currentIndex].classList.contains("l4")
+  ) {
+    result.innerHTML = "You lost";
+    squares[currentIndex].classList.remove("frog");
+    clearInterval(timerId);
+    document.removeEventListener("keyup", moveFrog);
+  }
+}
+// move frog left 
+function moveWithLogLeft(){
+  if(currentIndex >= 27 && currentIndex<35){
+    squares[currentIndex].classList.remove("frog")
+    currentIndex +=1;
+    squares[currentIndex].classList.add("frog")
+  }
+}
+
+// move frog right 
+function moveWithLogRight(){
+  if(currentIndex >18 && currentIndex <=26){
+    squares[currentIndex].classList.remove("frog")
+    currentIndex -=;
+    squares[currentIndex].classList.add("frog")
+  }
+}
+// move cars, logs and fog
+function movePieces(){
+  currentTime --;
+  timeLeft.textContent=currentTime;
+  autoMoveCars()
+  autoMoveLogs()
+  moveWithLogLeft()
+  moveWithLogRight()
+  lose()
+}
+
+// start game 
+startBtn.addEventListener("click",()=>{
+  if(timerId){
+    clearInterval(timerId)
+  }else{
+    timerId = setInterval(movePieces, 1000)
+    document.addEventListener("keyup", moveFrog)
+  }
+})
+
+ 

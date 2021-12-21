@@ -2,8 +2,12 @@ const squares = document.querySelectorAll(".grid div");
 const timeLeft = document.querySelector("#time-left");
 const result = document.querySelector("#result");
 const ending = document.querySelector(".ending-block");
-const starting = document.querySelector("starting-block");
+const starting = document.querySelector(".starting-block");
 const startBtn = document.querySelector("#button");
+const carsLeft = document.querySelectorAll(".car-left");
+const carsRight = document.querySelectorAll(".car-right");
+const logsLeft = document.querySelectorAll(".log-left");
+const logsRight = document.querySelectorAll(".log-right");
 
 const width = 9;
 let currentIndex = 76;
@@ -32,8 +36,99 @@ function moveFrog(e) {
       break;
   }
   squares[currentIndex].classList.add("frog");
-  //   lose();
-  //   window();
+  lose();
+  window();
 }
+function autoMoveCars() {
+  carsLeft.forEach((carLeft) => moveCarLeft(carLeft));
+  carsRight.forEach((carRight) => moveCarRight(carRight));
+}
+function moveCarLeft(carLeft) {
+  switch (true) {
+    case carLeft.classList.contains("c1"):
+      carsLeft.classList.remove("c1");
+      carsLeft.classList.add("c2");
+      break;
+    case carLeft.classList.contains("c2"):
+      carsLeft.classList.remove("c2");
+      carsLeft.classList.add("c3");
+      break;
+    case carLeft.classList.contains("c3"):
+      carsLeft.classList.remove("c3");
+      carsLeft.classList.add("c1");
+      break;
+  }
+}
+function moveCarRight(carRight) {
+  switch (true) {
+    case carRight.classList.contains("c1"):
+      carsRight.classList.remove("c1");
+      carsRight.classList.add("c3");
+      break;
+    case carRight.classList.contains("c2"):
+      carsRight.classList.remove("c2");
+      carsRight.classList.add("c1");
+      break;
+    case carRight.classList.contains("c3"):
+      carsRight.classList.remove("c3");
+      carsRight.classList.add("c2");
+      break;
+  }
+}
+function autoMoveLogs() {
+  logsLeft.forEach((logLeft) => moveCarLeft(logLeft));
+  logsRight.forEach((logRight) => moveCarRight(logRight));
+}
+
+function moveLogLeft(logLeft) {
+  switch (true) {
+    case logLeft.classList.contains("l1"):
+      logLeft.classList.remove("l1");
+      logLeft.classList.add("l2");
+      break;
+    case logLeft.classList.contains("l2"):
+      logLeft.classList.remove("l2");
+      logLeft.classList.add("l3");
+      break;
+    case logLeft.classList.contains("l3"):
+      logLeft.classList.remove("l3");
+      logLeft.classList.add("l4");
+      break;
+    case logLeft.classList.contains("l4"):
+      logLeft.classList.remove("l4");
+      logLeft.classList.add("l5");
+      break;
+    case logLeft.classList.contains("l5"):
+      logLeft.classList.remove("l5");
+      logLeft.classList.add("l1");
+      break;
+  }
+}
+
+//logs going right
+function moveLogRight(logRight) {
+  switch (true) {
+    case logRight.classList.contains("l1"):
+      logRight.classList.remove("l1");
+      logRight.classList.add("l5");
+      break;
+    case logRight.classList.contains("l2"):
+      logRight.classList.remove("l2");
+      logRight.classList.add("l1");
+      break;
+    case logRight.classList.contains("l3"):
+      logRight.classList.remove("l3");
+      logRight.classList.add("l2");
+      break;
+    case logRight.classList.contains("l4"):
+      logRight.classList.remove("l4");
+      logRight.classList.add("l3");
+      break;
+    case logRight.classList.contains("l5"):
+      logRight.classList.remove("l5");
+      logRight.classList.add("l4");
+      break;
+  }
+}
+
 document.addEventListener("keyup", moveFrog);
-// https://www.youtube.com/watch?v=lhNdUVh3qCc

@@ -27,6 +27,25 @@ body {
 .starting-block {
   background: blue;
 }
+.c1 {
+  background: black;
+}
+.l1,
+.l2,
+.l3 {
+  background: brown;
+}
+.l4,
+.l5,
+.lf2,
+.lf3 {
+  background: lightblue;
+}
+.c2,
+.c3 {
+  background: grey;
+}
+
 .frog {
   background: green;
 }

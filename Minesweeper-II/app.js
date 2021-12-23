@@ -17,11 +17,14 @@ function createBoard() {
   //   console.log(emptyArray);
   // join the 2 arrays and mix them up randomly
   // join them
-  mixedArray.push(...bombsArray, ...emptyArray);
-  //   console.log(mixedArray);
+  const gameArray = emptyArray.concat(bombsArray);
+  // mix them
+  //   https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
+  const shuffledArray = gameArray.sort(() => Math.random() - 0.5);
+  console.log(shuffledArray);
+  // another way using Fisher-Yates algorith
+  //https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
 
-  let mixedArrayRandom = shuffle(mixedArray);
-  //   console.log(mixedArrayRandom);
   for (let i = 0; i < width * height; i++) {
     const square = document.createElement("div");
     square.setAttribute("id", i);
@@ -30,17 +33,5 @@ function createBoard() {
   }
 }
 createBoard();
-function shuffle(mixedArray) {
-  let currentIndex = mixedArray.length,
-    mixedArrayRadomIndex;
-  while (currentIndex != 0) {
-    mixedArrayRadomIndex = Math.floor(Math.random() * currentIndex);
-    --currentIndex;
-    [mixedArray[currentIndex], mixedArray[mixedArrayRadomIndex]] = [
-      mixedArray[mixedArrayRadomIndex],
-      mixedArray[currentIndex],
-    ];
-    console.log(mixedArray);
-    return mixedArray;
-  }
-}
+
+//  https://www.youtube.com/watch?v=W0No1JDc6vE

@@ -3,6 +3,7 @@ const grid = document.querySelector(".grid");
 let width = 10;
 let height = 10;
 let squares = [];
+let isGameOver = false;
 
 let bombAmount = 20;
 
@@ -79,5 +80,27 @@ createBoard();
 
 // the click function being called in create board - we are passing in the square
 function click(square) {
-  console.log("click");
+  if (isGameOver) {
+    return;
+  }
+  if (
+    square.classList.contains("checked") ||
+    square.classList.contains("flag")
+  ) {
+    return;
+  }
+  if (square.classList.contains("bomb")) {
+    return;
+  }
+  if (square.classList.contains("bomb")) {
+    console.log("clicked bomb");
+  } else {
+    let total = square.getAttribute("data");
+    if (total != 0) {
+      square.classList.add("checked");
+      square.innerHTML = total;
+      return;
+    }
+    square.classList.add("checked");
+  }
 }

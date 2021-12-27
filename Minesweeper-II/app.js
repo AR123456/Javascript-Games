@@ -32,6 +32,11 @@ function createBoard() {
     square.classList.add(shuffledArray[i]);
     grid.appendChild(square);
     squares.push(square);
+    //// add on click
+    square.addEventListener("click", function (e) {
+      // do the click function passing in the square
+      click(square);
+    });
   }
   // putting numbers into squares that are the bombs neighbors
   for (let i = 0; i < squares.length; i++) {
@@ -87,14 +92,12 @@ function createBoard() {
       if (
         i < 88 &&
         !isRightEdge &&
-        squares[i + 1 + width].classlist.contains("bomb")
+        squares[i + 1 + width].classList.contains("bomb")
       ) {
         total++;
       }
       // south    https://www.youtube.com/watch?v=W0No1JDc6vE
-      if (i < 89 && squares[i + width].classList.contains("bomb")) {
-        total++;
-      }
+      if (i < 89 && squares[i + width].classList.contains("bomb")) total++;
       // this sets the data attribute with the incremented total
       squares[i].setAttribute("data", total);
       // console.log(squares[i]);
@@ -103,4 +106,7 @@ function createBoard() {
 }
 createBoard();
 
-//  https://www.youtube.com/watch?v=W0No1JDc6vE
+// the click function being called in create board - we are passing in the square
+function click(square) {
+  console.log("click");
+}

@@ -2,6 +2,7 @@ const grid = document.querySelector(".grid");
 
 let width = 10;
 let height = 10;
+let flags = 0;
 let squares = [];
 let isGameOver = false;
 
@@ -26,11 +27,16 @@ function createBoard() {
     square.classList.add(shuffledArray[i]);
     grid.appendChild(square);
     squares.push(square);
-    //// add on click
+    //// //////////////////////add on click
     square.addEventListener("click", function (e) {
       // do the click function passing in the square
       click(square);
     });
+    //////////////////on left click
+    square.oncontextmenu = function (e) {
+      e.preventDefault();
+      addFlagg(square);
+    };
   }
   // checking for bombs
   for (let i = 0; i < squares.length; i++) {
@@ -84,6 +90,21 @@ function createBoard() {
   }
 }
 createBoard();
+// function to add flag using left click
+function addFlagg(square) {
+  if (isGameOver) return;
+  if (!square.classList.contains("checked") && flags < bombAmount) {
+    if (!square.classList.contains("flag")) {
+      square.classList.add(".flag");
+      square.innerHTML = "🚩";
+      flags++;
+    } else {
+      square.classList.remove("flag");
+      square.innerHTML = "";
+      flags--;
+    }
+  }
+}
 
 // the click function being called in create board - we are passing in the square
 function click(square) {

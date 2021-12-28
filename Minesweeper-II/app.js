@@ -98,7 +98,7 @@ function click(square) {
     return;
   }
   if (square.classList.contains("bomb")) {
-    return;
+    gameOver(square);
   }
   if (square.classList.contains("bomb")) {
     console.log("clicked bomb");
@@ -171,4 +171,16 @@ function checkSquare(square, currentId) {
       click(newSquare);
     }
   }, 10);
+}
+
+// game over
+function gameOver(square) {
+  console.log("You hit a bomb, game over ");
+  isGameOver = true;
+  // show all bombs
+  squares.forEach((square) => {
+    if (square.classList.contains("bomb")) {
+      square.innerHTML = " 💣";
+    }
+  });
 }

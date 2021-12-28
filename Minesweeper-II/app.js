@@ -80,6 +80,7 @@ createBoard();
 
 // the click function being called in create board - we are passing in the square
 function click(square) {
+  let currentId = square.id;
   if (isGameOver) {
     return;
   }
@@ -101,6 +102,13 @@ function click(square) {
       square.innerHTML = total;
       return;
     }
-    square.classList.add("checked");
+    // funciton that uses recursion to fill non bomb squares chained to the square clicked
+    checkSquare(square, currentId);
   }
+  square.classList.add("checked");
+}
+// check square
+function checkSquare(square, currentId) {
+  //check the 8 surrounding squares of any square we are checking
+  // and make sure we are not at an edge
 }

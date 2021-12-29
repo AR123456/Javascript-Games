@@ -1,5 +1,7 @@
 // game logic 
-// https://www.youtube.com/watch?v=kBMnD_aElCQ
+// https://
+// https://
+// 
 const TILE_STATUSES = {
     HIDDEN:"hidden" ,
     MINE:"mine", 
@@ -23,7 +25,7 @@ export function createBoard(boardSize, numberOfMines){
             x,
             y,
             // number of mines 
-            mine:true,
+            mine:minePositions.some(positionMatch.bind(null,{x,y})),
             //getter setter  change status based on click
             get status(){
                 return this.element.dataset.status

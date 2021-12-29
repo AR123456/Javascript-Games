@@ -1,26 +1,29 @@
-const grid = document.querySelector(".grid");
+// for Display / UI 
+// 1 populate board with mines - logic and display parts
+import {createBoard} from "./game.js"
 
-let width = 10;
-let height = 10;
-let squares = [];
+const BOARD_SIZE = 10;
+const NUMBER_OF_MINES = 2;
+ 
+const board =(createBoard(BOARD_SIZE,NUMBER_OF_MINES))
+const boardElement = document.querySelector(".board")
 
-let bombAmount = 20;
+board.forEach(row =>{
+    row.forEach(tile =>{
+        boardElement.append(tile.element)
+    })
+})
+// set BOARD_SIZE to css --size property
+boardElement.style.setProperty("--size",BOARD_SIZE)
 
-// create Board function
-function createBoard() {
-  // create the bombs
-  // make array of 20 indexes
-  const bombsArray = Array(bombAmount).fill("bomb");
-  // empty array of the remaining squares (100-20)
-  const emptyArray = Array(width * height - bombAmount).fill("valid");
-  console.log(bombsArray);
-  console.log(emptyArray);
-  // join the 2 arrays and mix them up randomly
-  for (let i = 0; i < width * height; i++) {
-    const square = document.createElement("div");
-    square.setAttribute("id", i);
-    grid.appendChild(square);
-    squares.push(square);
-  }
-}
-createBoard();
+
+
+// 2 left click on tiles reviels 
+
+
+// 3 right click on tiles- marks
+// 4 check for win/ loss
+
+// 2 files game logic and display logic 
+
+

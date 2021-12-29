@@ -42,6 +42,20 @@ console.log(board)
     return board
     
 }
+
+export function markTile(tile){
+    // is the tile seletceted eligible ? Only if it is 
+    //hidden or un mark a tile that is already marked 
+    if(tile.status!== TILE_STATUSES.HIDDEN &&
+        tile.status !== TILE_STATUSES.MARKED){
+            return
+        }
+    if(tile.status === TILE_STATUSES.MARKED){
+        tile.status = TILE_STATUSES.HIDDEN
+    }else{
+        tile.status = TILE_STATUSES.MARKED
+    }
+}
 function getMinePositions(boardSize, numberOfMines){
     const positions =[]
    while (positions.length < numberOfMines){

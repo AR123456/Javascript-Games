@@ -86,7 +86,7 @@ export function revealTile(board, tile) {
   }
 }
 
-function getMinePositions(boardSize, numberOfMines) {
+export function getMinePositions(boardSize, numberOfMines) {
   const positions = [];
   while (positions.length < numberOfMines) {
     const position = {
@@ -104,6 +104,12 @@ function getMinePositions(boardSize, numberOfMines) {
   }
 
   return positions;
+}
+export function checkWin(board) {
+  //
+}
+export function checkLose(board) {
+  //
 }
 function positionMatch(a, b) {
   return a.x === b.x && a.y === b.y;

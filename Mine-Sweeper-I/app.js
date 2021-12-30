@@ -1,6 +1,13 @@
 // for Display / UI
 // 1 populate board with mines - logic and display parts
-import { createBoard, markTile, TILE_STATUSES, revealTile } from "./game.js";
+import {
+  createBoard,
+  markTile,
+  TILE_STATUSES,
+  revealTile,
+  checkWin,
+  checkLose,
+} from "./game.js";
 
 const BOARD_SIZE = 10;
 const NUMBER_OF_MINES = 10;
@@ -8,6 +15,7 @@ const NUMBER_OF_MINES = 10;
 const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES);
 const boardElement = document.querySelector(".board");
 const minesLeftText = document.querySelector("[data-mine-count]");
+
 board.forEach((row) => {
   row.forEach((tile) => {
     boardElement.append(tile.element);
@@ -18,6 +26,7 @@ board.forEach((row) => {
       // get near by elements of a tile that has been clicked on and see if any of them are mines
       // start by passing the board into the revealTile function here and int the game.js file
       revealTile(board, tile);
+      checkGameEnd();
     });
 
     // 3 right click on tiles- marks-marks mean there is a mine there
@@ -41,10 +50,29 @@ function listMinesLeft() {
   }, 0);
   minesLeftText.textContent = NUMBER_OF_MINES - markedTilesCount;
 }
+
+// 4 check for win/ loss
+function checkGameEnd() {
+  const win = checkWin(board);
+  const lose = checkLose(board);
+
+  if (win || lose) {
+    // https://www.youtube.com/watch?v=kBMnD_aElCQ
+    // taking advantage of event propigation to remove event listeners
+    // remove ability to continue to click on tiles and reveal things
+    // pass in the capture phase which occurs before the bubble phase
+    //geeksforgeeks.org/phases-of-javascript-event/
+    // Capturing Phase is when event goes down to the element. Target phase is when event reach the element and Bubbling phase is when the event bubbles up from the element.
+    // written this way it will fire before  the bubble event above so we will never get to the event that listens for the click to reveal the tiles
+    boardElement.addEventListener("click", stopProp, { capture: true });
+    boardElement.addEventListener("contextmenu", stopProp, { capture: true });
+  }
+}
+function stopProp() {
+  // https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation
+  e.stopImmediatePropagation();
+}
+// 2 files game logic and display logic
 // set BOARD_SIZE to css --size property
 boardElement.style.setProperty("--size", BOARD_SIZE);
 minesLeftText.textContent = NUMBER_OF_MINES;
-
-// 4 check for win/ loss
-
-// 2 files game logic and display logic

@@ -11,7 +11,7 @@ import {
 
 const BOARD_SIZE = 10;
 const NUMBER_OF_MINES = 10;
-
+const messageText = document.querySelector(".subtext");
 const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES);
 const boardElement = document.querySelector(".board");
 const minesLeftText = document.querySelector("[data-mine-count]");
@@ -68,7 +68,7 @@ function checkGameEnd() {
     boardElement.addEventListener("contextmenu", stopProp, { capture: true });
   }
 }
-function stopProp() {
+function stopProp(e) {
   // https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation
   e.stopImmediatePropagation();
 }

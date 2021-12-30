@@ -15,7 +15,9 @@ board.forEach((row) => {
     // 2 left click on tiles reveals
     tile.element.addEventListener("click", () => {
       //reveal the tile function
-      revealTile(tile);
+      // get near by elements of a tile that has been clicked on and see if any of them are mines
+      // start by passing the board into the revealTile function here and int the game.js file
+      revealTile(board, tile);
     });
 
     // 3 right click on tiles- marks-marks mean there is a mine there

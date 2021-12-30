@@ -13,7 +13,7 @@ export function createBoard(boardSize, numberOfMines) {
   const board = [];
   // to create mines- array of values
   const minePositions = getMinePositions(boardSize, numberOfMines);
-  console.log(minePositions);
+  // console.log(minePositions);
   for (let x = 0; x < boardSize; x++) {
     const row = [];
     for (let y = 0; y < boardSize; y++) {
@@ -55,8 +55,9 @@ export function markTile(tile) {
     tile.status = TILE_STATUSES.MARKED;
   }
 }
-
-export function revealTile(tile) {
+// get near by elements of a tile that has been clicked on and see if any of them are mines
+// start by passing the board into the revealTile function
+export function revealTile(board, tile) {
   // console.log("revieal tile with a left click ");
   // only reveal tiles which are hidden
   if (tile.status !== TILE_STATUSES.HIDDEN) {
@@ -67,9 +68,17 @@ export function revealTile(tile) {
     tile.status = TILE_STATUSES.MINE;
     return;
   }
-  // else
+  // else give the tile a number
   tile.status = TILE_STATUSES.NUMBER;
   // look for near by tiles - need access to board for this
+  // putting in a function becuase it is complicated logic
+  const adjacentTiles = nearbyTiles(board, tile);
+  const mines = adjacentTiles.filter((t) => t.mine);
+  if (mines.length === 0) {
+    //
+  } else {
+    tile.element.textContent = mines.length;
+  }
 }
 
 function getMinePositions(boardSize, numberOfMines) {
@@ -96,4 +105,19 @@ function positionMatch(a, b) {
 }
 function randomNumber(size) {
   return Math.floor(Math.random() * size);
+}
+// function nearbyTiles(board, tile) {
+// destructureing tile to x and y
+function nearbyTiles(board, { x, y }) {
+  // starting with empty array that willl be pushed to before we return
+  const tiles = [];
+  // we need all the tiles in a 3x3 grid around the tile with the staus of number -1 ofsset
+  for (let xOffset = -1; xOffset <= 1; xOffset++) {
+    for (let yOffset = -1; yOffset <= 1; yOffset++) {
+      const tile = board[x + xOffset]?.[y + yOffset];
+      if (tile) tiles.push(tile);
+    }
+  }
+
+  return tiles;
 }

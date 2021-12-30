@@ -75,8 +75,13 @@ export function revealTile(board, tile) {
   const adjacentTiles = nearbyTiles(board, tile);
   const mines = adjacentTiles.filter((t) => t.mine);
   if (mines.length === 0) {
-    //
+    // this is not a mine and there are no mines around it so reveile all of the
+    // adjacent squreas that also do not have mines around them
+    // recursivly call the reveal function fr all the adjecent neighbors that are empty
+    // this syndax .bind  pulls in the third param automatically
+    adjacentTiles.forEach(revealTile.bind(null, board));
   } else {
+    // put the number of mines in the 3x3 grid
     tile.element.textContent = mines.length;
   }
 }

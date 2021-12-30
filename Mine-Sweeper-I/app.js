@@ -14,7 +14,8 @@ board.forEach((row) => {
 
     // 2 left click on tiles reveals
     tile.element.addEventListener("click", () => {
-      //
+      //reveal the tile function
+      revealTile(tile);
     });
 
     // 3 right click on tiles- marks-marks mean there is a mine there

@@ -55,6 +55,23 @@ export function markTile(tile) {
     tile.status = TILE_STATUSES.MARKED;
   }
 }
+
+export function revealTile(tile) {
+  // console.log("revieal tile with a left click ");
+  // only reveal tiles which are hidden
+  if (tile.status !== TILE_STATUSES.HIDDEN) {
+    return;
+  }
+  // is this a mine ?
+  if (tile.mine) {
+    tile.status = TILE_STATUSES.MINE;
+    return;
+  }
+  // else
+  tile.status = TILE_STATUSES.NUMBER;
+  // look for near by tiles - need access to board for this
+}
+
 function getMinePositions(boardSize, numberOfMines) {
   const positions = [];
   while (positions.length < numberOfMines) {

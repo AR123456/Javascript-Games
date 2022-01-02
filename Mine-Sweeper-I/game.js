@@ -105,9 +105,25 @@ export function getMinePositions(boardSize, numberOfMines) {
 
   return positions;
 }
-export function checkWin(board) {}
+export function checkWin(board) {
+  return board.every((row) => {
+    return row.every((tile) => {
+      return (
+        tile.status === TILE_STATUSES.NUMBER ||
+        (tile.mine &&
+          (tile.status === TILE_STATUSES.HIDDEN ||
+            tile.status === TILE_STATUSES.MARKED))
+      );
+    });
+  });
+}
 export function checkLose(board) {
   // if a single bomb has been clicked on
+  return board.some((row) => {
+    return row.some((tile) => {
+      return tile.status === TILE_STATUSES.MINE;
+    });
+  });
 }
 function positionMatch(a, b) {
   return a.x === b.x && a.y === b.y;

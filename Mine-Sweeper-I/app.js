@@ -69,18 +69,14 @@ function checkGameEnd() {
   }
 
   if (win) {
-    messageText.textContent = "Win";
+    messageText.textContent = "You Win";
   }
   if (lose) {
-    messageText.textContent = "Loss";
+    messageText.textContent = "You Lose";
     board.forEach((row) => {
       row.forEach((tile) => {
-        if (tile.status === TILE_STATUSES.MARKED) {
-          markTile(tile);
-        }
-        if (tile.mine) {
-          revealTile(board, tile);
-        }
+        if (tile.status === TILE_STATUSES.MARKED) markTile(tile);
+        if (tile.mine) revealTile(board, tile);
       });
     });
   }

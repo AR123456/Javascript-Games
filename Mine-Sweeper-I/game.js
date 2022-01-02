@@ -105,9 +105,7 @@ export function getMinePositions(boardSize, numberOfMines) {
 
   return positions;
 }
-export function checkWin(board) {
-  //
-}
+export function checkWin(board) {}
 export function checkLose(board) {
   //
 }

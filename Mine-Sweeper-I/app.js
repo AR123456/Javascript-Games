@@ -67,6 +67,13 @@ function checkGameEnd() {
     boardElement.addEventListener("click", stopProp, { capture: true });
     boardElement.addEventListener("contextmenu", stopProp, { capture: true });
   }
+
+  if (win) {
+    messageText.textContent = "You Win";
+  }
+  if (lose) {
+    messageText.textContent = "You Lose";
+  }
 }
 function stopProp(e) {
   // https://developer.mozilla.org/en-US/docs/Web/API/Event/stopImmediatePropagation

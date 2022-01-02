@@ -118,7 +118,6 @@ export function checkWin(board) {
   });
 }
 export function checkLose(board) {
-  // if a single bomb has been clicked on
   return board.some((row) => {
     return row.some((tile) => {
       return tile.status === TILE_STATUSES.MINE;

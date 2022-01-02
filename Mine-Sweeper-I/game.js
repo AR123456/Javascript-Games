@@ -107,7 +107,7 @@ export function getMinePositions(boardSize, numberOfMines) {
 }
 export function checkWin(board) {}
 export function checkLose(board) {
-  //
+  // if a single bomb has been clicked on
 }
 function positionMatch(a, b) {
   return a.x === b.x && a.y === b.y;

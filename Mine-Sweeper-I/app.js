@@ -69,10 +69,20 @@ function checkGameEnd() {
   }
 
   if (win) {
-    messageText.textContent = "You Win";
+    messageText.textContent = "Win";
   }
   if (lose) {
-    messageText.textContent = "You Lose";
+    messageText.textContent = "Loss";
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        if (tile.status === TILE_STATUSES.MARKED) {
+          markTile(tile);
+        }
+        if (tile.mine) {
+          revealTile(board, tile);
+        }
+      });
+    });
   }
 }
 function stopProp(e) {

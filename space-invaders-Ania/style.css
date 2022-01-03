@@ -1,12 +1,40 @@
-* {
+/* * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-}
+} */
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
+}
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  border: solid 1px;
+  width: 300px;
+  height: 300px;
+}
+/* each div in the 300x300 needs to be 20px */
+.grid div {
+  width: 20px;
+  height: 20px;
+  /* border: solid 1px;
+  color: aqua; */
+}
+.shooter {
+  background-color: blue;
+}
+/* invaders are circles */
+.invader {
+  background: purple;
+  border-radius: 10px;
+}
+.boom {
+  background: red;
+}
+.laser {
+  background: yellow;
 }

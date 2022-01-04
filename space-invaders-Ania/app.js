@@ -42,3 +42,31 @@ function moveShooter(e) {
 }
 // event listener for moving shooter
 document.addEventListener("keydown", moveShooter);
+// moving the aliens in a timer
+function moveInvaders() {
+  // define left and right edge
+  const leftEdge = alienInvaders[0] % width === 0;
+  const rightEdge =
+    alienInvaders[alienInvaders.length - 1] % width === width - 1;
+
+  if ((leftEdge && direction === -1) || (rightEdge && direction === 1)) {
+    // move down a row in the grid
+    direction = width;
+    // if the direction is already 15 carry on
+  } else if (direction === width) {
+    //carry on with same logic as above
+    if (leftEdge) direction = 1;
+    else direction = -1;
+  }
+  /// loop over the array to move the invaders
+  for (let i = 0; i <= alienInvaders.length - 1; i++) {
+    // remove the class list
+    squares[alienInvaders[i]].classList.remove("invader");
+  }
+  for (let i = 0; i <= alienInvaders.length - 1; i++) {
+    alienInvaders[i] += direction;
+  }
+  for (let i = 0; i <= alienInvaders.length - 1; i++) {
+    squares[alienInvaders[i]].classList.add("invader");
+  }
+}

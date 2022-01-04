@@ -69,4 +69,21 @@ function moveInvaders() {
   for (let i = 0; i <= alienInvaders.length - 1; i++) {
     squares[alienInvaders[i]].classList.add("invader");
   }
+  // check for game over - the invaders are on same row as shooter
+  if (squares[currentShooterIndex].classList.contains("invader", "shooter")) {
+    //game over
+    resultDisplay.textContent = "Game over";
+    squares[currentShooterIndex].classList.add("boom");
+    clearInterval(invaderId);
+  }
+  // checkk to see if any alien has missed the shooter but gotton to shooters row game is over (in one of the last 15 squares of the grid)
+  for (let i = 0; i < alienInvaders.length - 1; i++) {
+    if (alienInvaders[i] > squares.length - (width - 1)) {
+      resultDisplay.textContent = "Game over";
+
+      clearInterval(invaderId);
+    }
+  }
 }
+// invoke the function every 1/2 second
+invaderId = setInterval(moveInvaders, 500);

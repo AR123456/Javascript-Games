@@ -87,3 +87,30 @@ function moveInvaders() {
 }
 // invoke the function every 1/2 second
 invaderId = setInterval(moveInvaders, 500);
+// shooting the invaders
+
+function shoot(e) {
+  let laserId;
+  let currentLaserIndex = currentShooterIndex;
+  function moveLaser() {
+    //remove the class to give the appearance of moving up
+    squares[currentLaserIndex].classList.remove("laser");
+    // removing the width removes the row
+    currentLaserIndex -= width;
+    // make new row appear
+    squares[currentLaserIndex].classList.add("laser");
+    // check to see if invader hit
+    if (squares[currentLaserIndex].contains("invader")) {
+      squares[currentLaserIndex].classList.remove("laser");
+      squares[currentLaserIndex].classList.remove("invader");
+      squares[currentLaserIndex].classList.add("boom");
+      // using setTime out to remove the boom
+      setTimeout(
+        () => squares[currentLaserIndex].classList.remove("boom"),
+        250
+      );
+      clearInterval(laserId);
+      // use array to track aliens taken down
+    }
+  }
+}

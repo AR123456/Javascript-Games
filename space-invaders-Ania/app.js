@@ -23,7 +23,8 @@ squares[currentShooterIndex].classList.add("shooter");
 // move shooter along the bottom row
 // use key codes for the eventlistener  37 abd 39 left and right arrows
 function moveShooter(e) {
-  squares[currentInvaderIndex].classList.remove("shooter");
+  // remove shooter from where we started so it is not a blue line with each valide key press
+  squares[currentShooterIndex].classList.remove("shooter");
   switch (e.keyCode) {
     case 37:
       // 37 is move left check to see if next to l edge

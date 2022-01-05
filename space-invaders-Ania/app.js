@@ -67,7 +67,10 @@ function moveInvaders() {
     alienInvaders[i] += direction;
   }
   for (let i = 0; i <= alienInvaders.length - 1; i++) {
-    squares[alienInvaders[i]].classList.add("invader");
+    // check the taken down array , if not in that array ok ot add invader class
+    if (!alienInvadersTakenDown.includes(i)) {
+      squares[alienInvaders[i]].classList.add("invader");
+    }
   }
   // check for game over - the invaders are on same row as shooter
   if (squares[currentShooterIndex].classList.contains("invader", "shooter")) {
@@ -83,6 +86,13 @@ function moveInvaders() {
 
       clearInterval(invaderId);
     }
+  }
+  // check for win
+  // if same number taken down as number in array you win
+  if (alienInvadersTakenDown.length === alienInvaders.length) {
+    // win
+    resultDisplay.textContent = "You win";
+    clearInterval(invaderId);
   }
 }
 // invoke the function every 1/2 second

@@ -111,6 +111,25 @@ function shoot(e) {
       );
       clearInterval(laserId);
       // use array to track aliens taken down
+      const alienTakenDown = alienInvaders.indexOf(currentLaserIndex);
+      alienInvadersTakenDown.push(alienTakenDown);
+      result++;
+      resultDisplay.textContent = result;
+    }
+    // if the laser is within the first 15 ( ) remove it from grid
+    if (currentLaserIndex < width) {
+      clearInterval(laserId);
+      setTimeout(
+        () => squares[currentLaserIndex].classList.remove("laser"),
+        100
+      );
     }
   }
+  // add on key up to space bar to shoot
+  document.addEventListener("keyup", (e) => {
+    if (e.keyCode === 32) {
+      laserId = setInterval(moveLaser, 100);
+    }
+  });
 }
+document.addEventListener("keyup", shoot);

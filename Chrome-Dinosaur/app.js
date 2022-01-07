@@ -7,8 +7,23 @@ setPixelToWorldScale();
 // call the sizeing function every time the window is resized
 window.addEventListener("resize", setPixelToWorldScale);
 // update all the stuff on the screen
+let lastTime;
 function update(time) {
+  // doing this for first time through to avoid problem with large delta at start of the game
+  if (lastTime === null) {
+    lastTime = time;
+    window.requestAnimationFrame(update);
+    return;
+  }
+
+  // get the time between updates in case update is slow
+  // to scale move based on time of frame rate
+  // time goes up so time - last time is time between
+  const delta = time - lastTime;
+  //   console.log(delta);
+  lastTime = time;
   //update loop
+  window.requestAnimationFrame(update);
 }
 // refresh based on refresh rate of browser and monitor
 window.requestAnimationFrame(update);

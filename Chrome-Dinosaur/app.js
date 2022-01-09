@@ -6,10 +6,10 @@ const worldElem = document.querySelector("[data-world]");
 setPixelToWorldScale();
 
 window.addEventListener("resize", setPixelToWorldScale);
-
-setupGround();
+document.addEventListener("keydown", handleStart, { once: true });
 
 let lastTime;
+let speedScale;
 function update(time) {
   if (lastTime === null) {
     lastTime = time;
@@ -18,13 +18,21 @@ function update(time) {
   }
 
   const delta = time - lastTime;
-  updateGround(delta);
+  updateGround(delta, 1);
   lastTime = time;
+  updateSpeedScale(delta);
 
   window.requestAnimationFrame(update);
 }
-
-window.requestAnimationFrame(update);
+function updateSpeedScale() {
+  //
+}
+function handleStart() {
+  lastTime = null;
+  speedScale = 1;
+  setupGround();
+  window.requestAnimationFrame(update);
+}
 
 function setPixelToWorldScale() {
   let worldToPixelScale;

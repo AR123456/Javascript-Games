@@ -36,10 +36,11 @@ function handleRun(delta, speedScale) {
     // modulo ensures looping back automatically
     // update frame to next frame
     // updating this way would work if we had more frames in the annimation vs hard coding 0 and 2 for dinoFrame and DINO_FRAME_COUNT
-    console.log("before", dinoFrame);
+    // console.log("before", dinoFrame);
     // 0 + 1 % 2
     dinoFrame = (dinoFrame + 1) % DINO_FRAME_COUNT;
-    console.log("after", dinoFrame);
+    // console.log("after", dinoFrame);
+    // this works due to naming convention dino-run-1 or -0.png
     dinoElem.src = `imgs/dino-run-${dinoFrame}.png`;
     // reset to 0
     currentFrameTime -= FRAME_TIME;

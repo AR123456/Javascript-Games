@@ -35,3 +35,7 @@ function createCactus() {
   setCustomProperty(cactus, "--left", 100);
   worldElem.append(cactus);
 }
+function randomNumberBetween(min, max) {
+  // the lowest number possible is the min
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}

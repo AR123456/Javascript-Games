@@ -1,4 +1,8 @@
-import { setCustomProperty } from "./updateCustomProperty.js";
+import {
+  setCustomProperty,
+  incrementCustomProperty,
+  getCustomProperty,
+} from "./updateCustomProperty.js";
 
 // cactus speed needs to be same as ground
 const SPEED = 0.05;
@@ -13,6 +17,17 @@ export function setupCactus() {
 }
 
 export function updateCactus(delta, speedScale) {
+  // draw and move the cacti
+  document.querySelectorAll("[data-cactus]").forEach((cactus) => {
+    //   note this is the same speed as ground
+    incrementCustomProperty(cactus, "--left", delta * speedScale * SPEED * -1);
+    // is the cactus way off the edge of the screen?
+    if (getCustomProperty(cactus, "--left") <= -100) {
+      // its off screen so get rid of if so it dosent slow down the game
+      cactus.remove();
+    }
+  });
+
   if (nextCactusTime <= 0) {
     // need a new cacttus
     createCactus();

@@ -14,6 +14,10 @@ const worldElem = document.querySelector("[data-world]");
 let nextCactusTime;
 export function setupCactus() {
   nextCactusTime = CACTUS_INTERVAL_MIN;
+  // get all the cacti on the screen and remove them
+  document.querySelectorAll("[data-cactus]").forEach((cactus) => {
+    cactus.remove();
+  });
 }
 
 export function updateCactus(delta, speedScale) {

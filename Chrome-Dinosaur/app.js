@@ -1,7 +1,7 @@
 import { updateGround, setupGround } from "./ground.js";
 import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js";
 import { updateCactus, setupCactus, getCactusRects } from "./cactus.js";
-import { runInNewContext } from "vm";
+
 const WORLD_WIDTH = 100;
 const WORLD_HEIGHT = 30;
 const SPEED_SCALE_INCREASE = 0.00001;
@@ -39,7 +39,7 @@ function checkLose() {
   const dinoRect = getDinoRect();
   // if any of the cati return true then return true for entier .some()
   // is there a colision between dino and cacti then there is a game loss
-  return getCactusRects().some((rect) => isColission(rect, dinoRect));
+  return getCactusRects().some((rect) => isCollision(rect, dinoRect));
 }
 
 function isCollision(rect1, rect2) {
@@ -80,6 +80,7 @@ function handleLose() {
 
   setTimeout(() => {
     document.addEventListener("keydown", handleStart, { once: true });
+    startScreenElem.classList.remove("hide");
   }, 100);
 }
 

@@ -31,6 +31,12 @@ export function updateDino(delta, speedScale) {
   //jump
   handleJump(delta);
 }
+export function getDinoRect() {
+  return dinoElem.getBoundingClientRect();
+}
+export function setDinoLose() {
+  dinoElem.src = "imgs/dino-lose.png";
+}
 function handleRun(delta, speedScale) {
   // the image to show when in the air or jumping
   if (isJumping) {

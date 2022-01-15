@@ -43,7 +43,14 @@ export function updateCactus(delta, speedScale) {
   // constantly making this number smaller
   nextCactusTime -= delta;
 }
-
+// detect collison there is a companipn function being exported from the dion
+export function getCactusRects() {
+  // get dimensions ie: all the rects for the cactus's on the screen
+  return;
+  [...document.querySelectorAll("[data-cactus]")].map((cactus) => {
+    return cactus.getBoundingClientRect();
+  });
+}
 function createCactus() {
   const cactus = document.createElement("img");
   cactus.dataset.cactus = true;

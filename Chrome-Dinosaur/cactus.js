@@ -5,7 +5,7 @@ import {
 } from "./updateCustomProperty.js";
 
 // cactus speed needs to be same as ground
-const SPEED = 0.05;
+const SPEED = 0.04;
 // time before generating a new cactus
 const CACTUS_INTERVAL_MIN = 500;
 const CACTUS_INTERVAL_MAX = 2000;

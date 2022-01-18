@@ -1,25 +1,41 @@
+import {
+  getCustomProperty,
+  setCustomProperty,
+  incrementCustomProperty,
+} from "./updateCustomProperty.js";
+
 const dinoElem = document.querySelector("[data-dino]");
 
 // could add more const here to control arc of jump ect.
 const JUMP_SPEED = 0.45;
-const GRAVITY = 0.011;
+const GRAVITY = 0.0015;
 // ossolate between the 2 dion png's to make it look like they are moving
 // 2 pics
 const DINO_FRAME_COUNT = 2;
 // the speed at which the pics change in mili seconds
 const FRAME_TIME = 100;
-let isJumping, dinoFrame, currentFrameTime;
+let isJumping, dinoFrame, currentFrameTime, yVelocity;
 
 export function setupDino() {
   isJumping = false;
   dinoFrame = 0;
   currentFrameTime = 0;
+  yVelocity = 0;
+  setCustomProperty(dinoElem, "--bottom", 0);
+  document.removeEventListener("keydown", onJump);
+  document.addEventListener("keydown", onJump);
 }
 export function updateDino(delta, speedScale) {
   // run
   handleRun(delta, speedScale);
   //jump
-  handleJump();
+  handleJump(delta);
+}
+export function getDinoRect() {
+  return dinoElem.getBoundingClientRect();
+}
+export function setDinoLose() {
+  dinoElem.src = "imgs/dino-lose.png";
 }
 function handleRun(delta, speedScale) {
   // the image to show when in the air or jumping
@@ -49,4 +65,24 @@ function handleRun(delta, speedScale) {
   currentFrameTime += delta * speedScale;
 }
 
-function handleJump() {}
+function handleJump(delta) {
+  // are we jumping ?
+  if (!isJumping) return;
+  // we are jumping but at what velocity meaning headed up or down?(a positive but decreasing velocity or is it a negatively increasing number meaning it is headed down)
+  // gravity pulls down
+  // will use the previously created incrementeCustomProperty to change the yVelocity or up down
+  incrementCustomProperty(dinoElem, "--bottom", yVelocity * delta);
+  // look at the y value if it gets to 0 you are on the ground so do not drop any further
+  if (getCustomProperty(dinoElem, "--bottom") <= 0) {
+    // dont go below the ground
+    setCustomProperty(dinoElem, "--bottom", 0);
+    isJumping = false;
+  }
+  // scale to frame rate using delta
+  yVelocity -= GRAVITY * delta;
+}
+function onJump(e) {
+  if (e.code !== "Space" || isJumping) return;
+  yVelocity = JUMP_SPEED;
+  isJumping = true;
+}

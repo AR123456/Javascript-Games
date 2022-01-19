@@ -5,6 +5,7 @@
 }
 /* vars  */
 :root {
+  /* will be adjusing hue in js to change the background color */
   --hue: 200;
   --saturation: 50%;
   --foreground-color: hsl(var(--hue), var(--saturation), 75%);
@@ -16,11 +17,13 @@ body {
   overflow: hidden;
 }
 .paddle {
+  /* will be changing this in the js  */
   --position: 50;
 
   position: absolute;
   background-color: var(--foreground-color);
   top: calc(var(--position) * 1vh);
+  /* this centers along y axi  */
   transform: translateY(-50%);
   width: 1vh;
   height: 10vh;
@@ -39,6 +42,7 @@ body {
   left: calc(var(--x) * 1vh);
   top: calc(var(--y) * 1vh);
   border-radius: 50%;
+  /* this is centering on the screen */
   transform: translate(-50%, -50%);
   width: 2.5vh;
   height: 2.5vh;
@@ -50,6 +54,7 @@ body {
   font-size: 7vh;
   color: var(--foreground-color);
 }
+/* style the scores themslevs all the direct children of score */
 .score > * {
   flex-grow: 1;
   flex-basis: 0;
@@ -57,6 +62,7 @@ body {
   margin: 1vh 0;
   opacity: 0.5;
 }
+/*  the first child of scre */
 .score > :first-child {
   text-align: right;
   border-right: 0.5vh solid var(--foreground-color);

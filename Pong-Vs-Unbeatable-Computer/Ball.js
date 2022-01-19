@@ -1,3 +1,6 @@
+// initially the velocity is .025, if this is set diffrently game may be too fast or slow
+const INITIAL_VELOCITY = 0.025;
+
 export default class Ball {
   constructor(ballElem) {
     this.ballElem = ballElem;
@@ -43,14 +46,18 @@ export default class Ball {
       this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
     }
     // this console log is an object
-    console.log(this.direction);
+    // console.log(this.direction);
+    this.velocity = INITIAL_VELOCITY;
   }
 
   update(delta) {
     // update the x and y position of the ball - in % away from top left corner
     // update the velocity and direction of movement
-    this.x = 5;
-    this.y = 15;
+    // take the direction we are going in and multiply it by the velocity and move the x postition that much. Multiply by the delta is important. If we have long delays between frame animations we want to move the ball in a larger increment, if a short delay move in a smaller increment
+    // https://www.youtube.com/watch?v=PeY6lXPrPaA
+    this.x += this.direction.x * this.velocity * delta;
+    // do same for y
+    this.y += this.direction.y * this.velocity * delta;
   }
 }
 

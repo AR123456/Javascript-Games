@@ -7,16 +7,12 @@ export default class Ball {
     this.reset();
   }
 
-  // helper functions to set x and y
-  //getter
   get x() {
     // x is defined in CSS as a CSS variable
     // turn css into a javascript usable upnber
     return parseFloat(getComputedStyle(this.ballElem).getPropertyValue("--x"));
   }
-  // setter
   set x(value) {
-    //
     this.ballElem.style.setProperty("--x", value);
   }
 
@@ -26,16 +22,15 @@ export default class Ball {
   set y(value) {
     this.ballElem.style.setProperty("--y", value);
   }
-  // reset function will allow us to set x,y velocity and direction  when ball is created in the constructor
+  // function to find the position of the ball
+  rect() {
+    return this.ballElem.getBoundingClientRect();
+  }
+  // reset function to set x,y velocity and direction when ball is created in constructor
   reset() {
     this.x = 50;
     this.y = 50;
-    // the length is always one in this calculation unit vector
-    // https://www.youtube.com/watch?v=PeY6lXPrPaA
-    // unit vector movment in direction of a
-    // vector allows for direction and speed to differ and not increase oneanother
     this.direction = { x: 0 };
-    // the while loop is looking at x or horizontal movement if not very far do what is in the while loop which will introduce move movement in x and y directtions
     while (
       Math.abs(this.direction.x <= 0.2) ||
       Math.abs(this.direction.x >= 0.9)
@@ -45,7 +40,7 @@ export default class Ball {
       // unit vector for the directions
       this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
     }
-    // this console log is an object
+    // this console log is an x y object
     // console.log(this.direction);
     this.velocity = INITIAL_VELOCITY;
   }
@@ -58,6 +53,15 @@ export default class Ball {
     this.x += this.direction.x * this.velocity * delta;
     // do same for y
     this.y += this.direction.y * this.velocity * delta;
+    const rect = this.rect();
+    // check the balls positon (rect) and if it is outside of the upper or lowwer bounds of the window ...
+    if (rect.bottom >= window.innerHeight || rect.top <= 0) {
+      // flip the y direction(by multiplying by -1) - this is the bounce off the top or bottom
+      this.direction.y *= -1;
+    }
+    if (rect.right >= window.innerWidth || rect.left <= 0) {
+      this.direction.x *= -1;
+    }
   }
 }
 

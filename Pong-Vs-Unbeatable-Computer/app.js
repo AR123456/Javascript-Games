@@ -15,11 +15,18 @@ function update(time) {
     // console.log(delta);
     // pass in the delta so that game operations are based off of it.
     ball.update(delta);
+    // the player paddle dosent need an update function , just using mouse move for that
+    // update function for the computer paddle comping from Paddle.js
+    computerPaddle.update(delta);
   }
 
   lastTime = time;
 
   window.requestAnimationFrame(update);
 }
-
+// use the mouse to set the player paddle postion using the y postion
+document.addEventListener("mousemove", (e) => {
+  // in the CSS this is set as 50% and here in JS it is a pixle value so divide by innerHeight of window * 100 to create a percentage
+  playerPaddle.position = (e.y / window.innerHeight) * 100;
+});
 window.requestAnimationFrame(update);

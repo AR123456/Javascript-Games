@@ -3,8 +3,15 @@ export default class Paddle {
   constructor(paddleElem) {
     this.paddleElem = paddleElem;
   }
-}
 
-// psudo code - detect the position of the moving and if any part of the paddle makes contact with the ball bounce it back in the opposite direction
-// x will alway be the same for the player vs computer so really just need to know the y for the bounce
-// track when the ball makes contact with the player vs computer paddle side of the wall and if it does that increment the socre for opposite player
+  //setting postion of player paddle with getter and setter
+  get position() {
+    // just like with the ball except --position is the CSS var for the paddle (from the top)
+    return parseFloat(
+      getComputedStyle(this.paddleElem).getPropertyValue("--position")
+    );
+  }
+  set position(value) {
+    this.paddleElem.style.setProperty("--position", value);
+  }
+}

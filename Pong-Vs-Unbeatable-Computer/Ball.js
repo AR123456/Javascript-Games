@@ -1,5 +1,6 @@
 // initially the velocity is .025, if this is set diffrently game may be too fast or slow
 const INITIAL_VELOCITY = 0.025;
+const VELOCITY_INCREASE = 0.000001;
 
 export default class Ball {
   constructor(ballElem) {
@@ -53,6 +54,8 @@ export default class Ball {
     this.x += this.direction.x * this.velocity * delta;
     // do same for y
     this.y += this.direction.y * this.velocity * delta;
+    // increase the velocity incrementally so speed of game increases, don't forget to scale do delta
+    this.velocity += VELOCITY_INCREASE * delta;
     const rect = this.rect();
     // check the balls positon (rect) and if it is outside of the upper or lowwer bounds of the window ...
     if (rect.bottom >= window.innerHeight || rect.top <= 0) {

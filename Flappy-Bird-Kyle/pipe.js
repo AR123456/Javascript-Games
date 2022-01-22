@@ -14,6 +14,9 @@ export function updatePipes() {
 export function getPassedPipesCount() {
   //
 }
+export function getPipeRects() {
+  //
+}
 function createPipe() {
   //
 }

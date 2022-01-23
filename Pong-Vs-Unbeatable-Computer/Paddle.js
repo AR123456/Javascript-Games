@@ -15,7 +15,9 @@ export default class Paddle {
   set position(value) {
     this.paddleElem.style.setProperty("--position", value);
   }
-
+  rect() {
+    return this.paddleElem.getBoundingClientRect();
+  }
   reset() {
     this.position = 50;
   }

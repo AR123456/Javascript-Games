@@ -1,4 +1,5 @@
 // Update Loop - updating computer AI and our moves will take inthe ball and paddle classes
+
 import Ball from "./Ball.js";
 import Paddle from "./Paddle.js";
 // use and interact with ball.js
@@ -9,25 +10,25 @@ let lastTime;
 
 function update(time) {
   if (lastTime != null) {
-    // do all the important code we have a delta sinnce lastTime is not null so good to go
     const delta = time - lastTime;
-    // Update code stuff here
-    // console.log(delta);
-    // pass in the delta so that game operations are based off of it.
     ball.update(delta);
-    // the player paddle dosent need an update function , just using mouse move for that
-    // update function for the computer paddle comping from Paddle.js
-    // need to pass in delta for scaleing to game and ball.y so paddle knows where the ball is
     computerPaddle.update(delta, ball.y);
+    if (isLose()) {
+      console.log("lose");
+    }
   }
 
   lastTime = time;
-
   window.requestAnimationFrame(update);
 }
-// use the mouse to set the player paddle postion using the y postion
+// function to check to see if ball is off screen
+function isLose() {
+  // is ball out of bounce
+  const rect = ball.rect();
+  return rect.right >= window.innerWidth || rect.left <= 0;
+}
+
 document.addEventListener("mousemove", (e) => {
-  // in the CSS this is set as 50% and here in JS it is a pixle value so divide by innerHeight of window * 100 to create a percentage
   playerPaddle.position = (e.y / window.innerHeight) * 100;
 });
 window.requestAnimationFrame(update);

@@ -17,7 +17,8 @@ function update(time) {
     ball.update(delta);
     // the player paddle dosent need an update function , just using mouse move for that
     // update function for the computer paddle comping from Paddle.js
-    computerPaddle.update(delta);
+    // need to pass in delta for scaleing to game and ball.y so paddle knows where the ball is
+    computerPaddle.update(delta, ball.y);
   }
 
   lastTime = time;

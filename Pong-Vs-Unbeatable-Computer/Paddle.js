@@ -1,3 +1,5 @@
+// computers max speed
+const SPEED = 0.02;
 // Paddle constructor
 export default class Paddle {
   constructor(paddleElem) {
@@ -13,5 +15,13 @@ export default class Paddle {
   }
   set position(value) {
     this.paddleElem.style.setProperty("--position", value);
+  }
+
+  update(delta, ballHeight) {
+    //paddle needs to follow where ball is on screen need to limit the computer to a max speed or it would always win.
+    // incremtht position by speee*delta
+    // up down determined by the postion of the ball relative to paddle and go that way
+    this.position += SPEED * delta * (ballHeight - this.position);
+    //
   }
 }

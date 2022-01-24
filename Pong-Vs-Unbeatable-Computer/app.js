@@ -2,7 +2,6 @@
 
 import Ball from "./Ball.js";
 import Paddle from "./Paddle.js";
-// use and interact with ball.js
 const ball = new Ball(document.getElementById("ball"));
 const playerPaddle = new Paddle(document.getElementById("player-paddle"));
 const computerPaddle = new Paddle(document.getElementById("computer-paddle"));
@@ -15,7 +14,6 @@ function update(time) {
     const delta = time - lastTime;
     ball.update(delta, [playerPaddle.rect(), computerPaddle.rect()]);
     computerPaddle.update(delta, ball.y);
-    // changing the hue
     const hue = parseFloat(
       getComputedStyle(document.documentElement).getPropertyValue("--hue")
     );
@@ -28,21 +26,19 @@ function update(time) {
   lastTime = time;
   window.requestAnimationFrame(update);
 }
-// function to check to see if ball is off screen
+
 function isLose() {
-  // is ball out of bounce
   const rect = ball.rect();
   return rect.right >= window.innerWidth || rect.left <= 0;
 }
 function handleLose() {
-  // increment score
   const rect = ball.rect();
   if (rect.right >= window.innerWidth) {
     playerScoreElem.textContent = parseInt(playerScoreElem.textContent) + 1;
   } else {
     computerScoreElem.textContent = parseInt(computerScoreElem.textContent) + 1;
   }
-  // reset game
+
   ball.reset();
   computerPaddle.reset();
 }

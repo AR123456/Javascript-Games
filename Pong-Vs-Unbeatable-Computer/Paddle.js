@@ -1,6 +1,6 @@
-// computers max speed
+// computers max speed - at this speed computer always wins
 const SPEED = 0.02;
-// Paddle constructor
+
 export default class Paddle {
   constructor(paddleElem) {
     this.paddleElem = paddleElem;

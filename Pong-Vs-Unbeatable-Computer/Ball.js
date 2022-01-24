@@ -48,9 +48,8 @@ export default class Ball {
     if (rect.bottom >= window.innerHeight || rect.top <= 0) {
       this.direction.y *= -1;
     }
-    // loop the paddle rectangles and if any return true return true for entire thing.
+
     if (paddleRects.some((r) => isCollision(r, rect))) {
-      //  if there is a collission swap direction
       this.direction.x *= -1;
     }
   }
@@ -60,7 +59,6 @@ function randomNumberBetween(min, max) {
   return Math.random() * (max - min) + min;
 }
 function isCollision(rect1, rect2) {
-  // detect collision so check all the sides of rect1
   return (
     rect1.left <= rect2.right &&
     rect1.right >= rect2.left &&

@@ -33,7 +33,9 @@ function isCollision() {
 }
 function handleStart() {
   title.classList.add("hide");
-  // start the game loop up, pas in the update function
+  // setupBird gets the bird ready for the start of game
+  setupBird();
+  // start the game loop up, pass in the update function
   window.requestAnimationFrame(updateLoop);
 }
 function handleLose() {

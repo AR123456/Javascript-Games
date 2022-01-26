@@ -7,6 +7,9 @@ export function setupBird() {
   //this is the start function setting bird place on screen at game start
   // put the bird in the middle of the screen
   setTop(window.innerHeight / 2);
+  // add an event listener on keydown but need to remove the prior event first. to avoid componunding event listeners
+  document.removeEventListener("keydown", handleJump);
+  document.addEventListener("keydown", handleJump);
 }
 export function updateBird(delta) {
   // bird falls by default, pass in the speed and use delta to account for frame changes

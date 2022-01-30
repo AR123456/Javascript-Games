@@ -15,18 +15,22 @@ function updateLoop(time) {
   if (lastTime == null) {
     lastTime = time;
     window.requestAnimationFrame(updateLoop);
-
     return;
   }
-  // time between the animation frames tracked with delta
   const delta = time - lastTime;
   updateBird(delta);
+  // if check lose is true stop game (return)
+  if (checkLose()) return handleLose();
   lastTime = time;
 
   window.requestAnimationFrame(updateLoop);
 }
 function checkLose() {
-  //
+  const birdRect = getBirdRect();
+  // did the bird  go out the top or bottowm or collide with somehhing
+  const outsideWorld = birdRect.top < 0 || birdRect.bottom > window.innerHeight;
+  // outside world in a boolean
+  return outsideWorld;
 }
 function isCollision() {
   //
@@ -40,4 +44,9 @@ function handleStart() {
 }
 function handleLose() {
   //
+  title.classList.remove("hide");
+  subtitle.classList.remove("hide");
+  subtitle.textContext = "0 Pipes ";
+  // restart the game with next keypress
+  document.addEventListener("keypress", handleStart, { once: true });
 }

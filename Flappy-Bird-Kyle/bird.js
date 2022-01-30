@@ -28,7 +28,9 @@ export function updateBird(delta) {
   console.log(getTop());
 }
 export function getBirdRect() {
-  //
+  //return the position of bird on the screen
+  // top left bottom rignt
+  return birdElem.getBoundingClientRect();
 }
 function setTop(top) {
   // take in the top values to set the bird top in the css

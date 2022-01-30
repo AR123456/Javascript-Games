@@ -1,6 +1,8 @@
 const birdElem = document.querySelector("[data-bird]");
 const BIRD_SPEED = 0.5;
+// 125 mili seconds
 const JUMP_DURATION = 125;
+//set to largest number possible
 let timeSinceLastJump = Number.POSITIVE_INFINITY;
 
 export function setupBird() {
@@ -13,8 +15,16 @@ export function setupBird() {
 }
 export function updateBird(delta) {
   // bird falls by default, pass in the speed and use delta to account for frame changes
+  if (timeSinceLastJump < JUMP_DURATION) {
+    // make bird go up intead of down
+    setTop(getTop() - BIRD_SPEED * delta);
+  } else {
+    // move the bird down
+    setTop(getTop() + BIRD_SPEED * delta);
+  }
 
-  setTop(getTop() + BIRD_SPEED * delta);
+  timeSinceLastJump += delta;
+
   console.log(getTop());
 }
 export function getBirdRect() {
@@ -30,5 +40,7 @@ function getTop() {
   return parseFloat(getComputedStyle(birdElem).getPropertyValue("--bird-top"));
 }
 function handleJump(e) {
-  //
+  // check to see if the code is the space bar
+  if (e.code !== "Space") return;
+  timeSinceLastJump = 0;
 }

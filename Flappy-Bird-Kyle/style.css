@@ -27,6 +27,7 @@ body {
 .bird {
   --bird-top: -1000;
   --bird-size: 60px;
+
   position: absolute;
   background-color: hsl(50, 75%, 50%);
   width: var(--bird-size);
@@ -37,9 +38,16 @@ body {
   border-radius: 50%;
 }
 .pipe {
+  --pipe-width: 120;
+  --pipe-left: 100;
+  /* the larger this number the smaller the pipe */
+  --hole-top: 500;
+  /* controles the gap between the pipes larger number bigger the gap  */
+  --hole-height: 120;
   position: absolute;
   top: 0;
   bottom: 0;
+  /* calc from JS  */
   width: calc(var(--pipe-width) * 1px);
   left: calc(var(--pipe-left) * 1px);
 }

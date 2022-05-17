@@ -22,3 +22,12 @@ let score = 0;
 // or add multipliers to move at paralax speed
 // https://www.w3schools.com/howto/howto_css_parallax.asp
 let gameSpeed = 2;
+function animate() {
+  // clear canvas between animation frames
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // player
+  ctx.fillRect(10, 10, 50, 50);
+  // recursion for animage to call iteself and thus loop
+  requestAnimationFrame(animate);
+}
+animate();

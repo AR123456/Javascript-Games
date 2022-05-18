@@ -1,4 +1,5 @@
 // create and handle the player
+
 // class is the blueprint to create many similare objects
 class Bird {
   // constuctor is required and holds the blueprint info
@@ -15,6 +16,21 @@ class Bird {
   // custom method give to the class
   // calculate position and speed of player with each annimation frame
   update() {
-    //https://www.youtube.com/watch?v=lGJ9i6CYKyQ
+    /// velcity y increase, the longer if falls the faster it falls
+    this.vy += this.weight;
+    this.y += this.vy;
+  }
+  // safeguard so player dosent leave screen
+  draw() {
+    ctx.fillStyle = "red";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+  // every time we flap wings give player a push up
+  flap() {
+    this.vy -= 2;
   }
 }
+// create instance of the class a
+// new keyword will call constrcutor and create object accrording to what is in the class constructor
+// this object has full access to the methods created inside of the constructor
+const bird = new Bird();

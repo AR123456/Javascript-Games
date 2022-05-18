@@ -27,7 +27,10 @@ function animate() {
   // clear canvas between animation frames
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // player
-  ctx.fillRect(10, canvas.height - 90, 50, 50);
+  // ctx.fillRect(10, canvas.height - 90, 50, 50);
+  // now use the bird constructor for bird.js
+  bird.update();
+  bird.draw();
   // recursion for animage to call iteself and thus loop
   requestAnimationFrame(animate);
 }

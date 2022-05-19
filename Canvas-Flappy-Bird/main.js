@@ -18,6 +18,8 @@ function animate() {
   handleParticles();
   requestAnimationFrame(animate);
   angle += 0.12;
+  // to change particle colors
+  hue++;
 }
 animate();
 

@@ -15,7 +15,9 @@ class Particle {
     // the speed that the particles float up (like smoke ) vertical rand number between  0.5 and - 0.5
     this.speedY = Math.random() * 1 - 0.5;
     // using red for now
-    this.color = "red";
+    // this.color = "red";
+    // now using a conocatonated hsla string with hue coming in from main.js
+    this.color = "hsla(" + hue + ", 100%, 50%, 0.8)";
   }
   // will calculate positon for each particle for each frame of annimation
   update() {

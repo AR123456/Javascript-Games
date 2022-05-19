@@ -33,6 +33,9 @@ function animate() {
   bird.draw();
   // recursion for animage to call iteself and thus loop
   requestAnimationFrame(animate);
+  // using this in bird.js to make te bird go up and down slightly
+  // incrementing more or less changes the speed of the wobble
+  angle += 0.12;
 }
 animate();
 

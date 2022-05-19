@@ -16,9 +16,13 @@ class Bird {
   // custom method give to the class
   // calculate position and speed of player with each annimation frame
   update() {
-    // if to keep on canvas 3 putsspace between bottom and bird
-    if (this.y > canvas.height - this.height * 3) {
-      this.y = canvas.height - this.height * 3;
+    // this will have the bird move up and down sligtly
+    // cycling between -1 and + 1 over and over - trigonometry
+    let curve = Math.sin(angle) * 20;
+
+    // if to keep on canvas and puts space between bottom and bird
+    if (this.y > canvas.height - this.height * 3 + curve) {
+      this.y = canvas.height - this.height * 3 + curve;
       this.vy = 0;
     } else {
       /// velcity y increase, the longer if falls the faster it falls
@@ -33,8 +37,8 @@ class Bird {
       // set velocity to 0 so player dosent stick to the top
       this.vy = 0;
     }
-    // if spacebar pressed is true call flap method
-    if (spacePressed) this.flap();
+    // if spacebar pressed is true call flap method also add some wobble at the top
+    if (spacePressed && this.y > this.height * 3) this.flap();
   }
   // safeguard so player dosent leave screen
   draw() {

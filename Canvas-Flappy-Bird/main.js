@@ -12,14 +12,19 @@ let gamespeed = 2;
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // call handle to create pipes
+  handleObstacles();
   bird.update();
   bird.draw();
   // adding handlePartices from particles.js
   handleParticles();
+
   requestAnimationFrame(animate);
   angle += 0.12;
   // to change particle colors
   hue++;
+  // increment the frame each animation cycle used in obstacles js
+  frame++;
 }
 animate();
 

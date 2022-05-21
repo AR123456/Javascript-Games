@@ -5,13 +5,13 @@ class Particle {
   constructor() {
     this.x = bird.x;
     this.y = bird.y;
-    this.size = Math.floor(Math.random() * 7 + 3);
-    this.speedY = Math.random() * 1 - 0.5;
-    this.color = "hsla(" + hue + ", 100%, 50%, 0.8)";
+    this.size = Math.random() * 10 + 0;
+    this.spaceY = Math.random() * 1 - 0.5;
+    this.color = "hsla(" + hue + ",100%, 50%, 0.8)";
   }
   update() {
     this.x -= gamespeed;
-    this.y += this.speedY;
+    this.y += this.spaceY;
   }
   draw() {
     ctx.fillStyle = this.color;

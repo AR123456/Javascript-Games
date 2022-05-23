@@ -22,6 +22,8 @@ class Bird {
       this.vy = 0;
     }
     if (spacePressed && this.y > this.height * 3) this.flap();
+    // or should this be
+    // if (spacePressed) this.flap();
   }
   draw() {
     ctx.fillStyle = "red";

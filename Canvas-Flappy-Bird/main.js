@@ -67,3 +67,25 @@ function handleCollisions() {
     }
   }
 }
+// adding backgound image
+const background = new Image();
+background.src = "BG.png";
+// drawing 2 images that scroll left as game moves right
+// as soon as one background slides off the right it is then ready to start sliding from the left side
+const BG = {
+  // js object with propertyies
+  // position on horizantal x  for first image
+  x1: 0,
+  // position on horazontal x for second image ( hides behind r edge of canvas )
+  x2: canvas.width,
+  // this is top edge so y will always be 0
+  y: 0,
+  // getting width and height from the canvas
+  width: canvas.width,
+  height: canvas.height,
+};
+//
+function handleBackground() {
+  //
+  if (BG.x1 <= -BG.width) BG.x1 = BG.width;
+}

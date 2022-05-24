@@ -41,11 +41,11 @@ function handleBackground() {
   // canvas draws rectacles from the top left corner and goes to right bottom coordinate defined by the w and h of the rectangle element
   // so if setting x to be equal to right edege of canvas by saying x is equal to canvas width the background rectangle
   // is drawn from that point to the right, there for is competle hidden behind the right canvas
-  if (BG.x1 <= -BG.width) BG.x1 = BG.width;
+  if (BG.x1 <= -BG.width + gamespeed) BG.x1 = BG.width;
   // else move background one to the left along the x axis by the amount of pixels defined in the game speed variable
   else BG.x1 -= gamespeed;
   // if else to handle the second image
-  if (BG.x2 <= -BG.width) BG.x2 = BG.width;
+  if (BG.x2 <= -BG.width + gamespeed) BG.x2 = BG.width;
   else BG.x2 -= gamespeed;
 
   // draw the image using shorthand here - this is x1

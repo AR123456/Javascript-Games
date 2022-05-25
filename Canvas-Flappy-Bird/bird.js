@@ -16,6 +16,8 @@ class Bird {
     this.width = this.originaWidth / 20;
     this.height = this.originaHeight / 20;
     this.weight = 1;
+    // use to change frames on sprite sheet
+    this.frameX = 0;
   }
   update() {
     let curve = Math.sin(angle) * 20;
@@ -43,7 +45,7 @@ class Bird {
     // syntax   ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
     ctx.drawImage(
       dragonSprite,
-      0,
+      this.frameX * this.originalWidth,
       0,
       this.originalWidth,
       this.originalHeight,
@@ -55,6 +57,9 @@ class Bird {
   }
   flap() {
     this.vy -= 2;
+    // apearance of flapping wings from sprite sheet
+    if (this.frameX >= 3) this.frameX = 0;
+    else if (frame % 2 === 0) this.frameX++;
   }
 }
 

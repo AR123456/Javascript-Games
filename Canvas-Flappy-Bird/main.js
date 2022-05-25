@@ -61,6 +61,8 @@ window.addEventListener("keydown", function (e) {
 });
 window.addEventListener("keyup", function (e) {
   if (e.code === "Space") spacePressed = false;
+  // fixing issure with wing flapping freeezing
+  bird.frameX = 0;
 });
 
 const bang = new Image();

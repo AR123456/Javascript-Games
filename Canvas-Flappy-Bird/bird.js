@@ -8,13 +8,13 @@ class Bird {
     this.y = 200;
     this.vy = 0;
     // one frame of the spritesheet
-    this.originaWidth = 941;
-    this.originaHeight = 680;
+    this.originalWidth = 941;
+    this.originalHeight = 680;
     // this.width = 20;
     // this.height = 20;
     // adjust height and width to match that of the dragon.png the sprite sheet
-    this.width = this.originaWidth / 20;
-    this.height = this.originaHeight / 20;
+    this.width = this.originalWidth / 20;
+    this.height = this.originalHeight / 20;
     this.weight = 1;
     // use to change frames on sprite sheet
     this.frameX = 0;

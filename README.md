@@ -17,3 +17,11 @@ Some classic games in JS
 ### Mine Sweep in 2 ways
 
 ### Pong
+
+## Space invaders
+
+## whac a mole
+
+## Rock Paper Scissors
+
+### Memory Game

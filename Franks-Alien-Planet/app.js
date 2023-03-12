@@ -7,9 +7,17 @@ window.addEventListener("load", function () {
   const ctx = canvas.getContext("2d");
   canvas.width = 500;
   canvas.height = 500;
-  // specified user inputs
-  class InputHandler {}
-  // olayer lazers
+  // specified user inputs - keyboard actions
+  class InputHandler {
+    constructor(game) {
+      this.game = game;
+      //apply event listener
+      window.addEventListener("keydown", function (e) {
+        console.log(e.key);
+      });
+    }
+  }
+  // player lazers
   class Projectile {}
   // falling scresn nuts and bolts
   class Particle {}
@@ -50,6 +58,8 @@ window.addEventListener("load", function () {
       this.width = width;
       this.height = height;
       this.player = new Player(this);
+      // instantiate the input handler
+      this.input = new InputHandler(this);
     }
     update() {
       // this is the Player()'s update

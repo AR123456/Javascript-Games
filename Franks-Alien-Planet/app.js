@@ -51,5 +51,15 @@ window.addEventListener("load", function () {
       this.height = height;
       this.player = new Player(this);
     }
+    update() {
+      // this is the Player()'s update
+      this.player.update();
+    }
+    draw(context) {
+      // this is the PLayer()'s draw method
+      this.player.draw(context);
+    }
   }
+  // call the Game class constructor
+  const game = new Game(canvas.width, canvas.height);
 });

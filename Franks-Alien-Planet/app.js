@@ -18,14 +18,21 @@ window.addEventListener("load", function () {
     // player needs game dimensions
     constructor(game) {
       this.game = game;
+      // w and h of single sprite on sheet
       this.width = 120;
-      this.height = 150;
-      this.x=20;
-      this.y=100;
+      this.height = 190;
+      this.x = 20;
+      this.y = 100;
+      this.speedY = 0;
     }
-    update(){
+    update() {
+      // move player around
+      this.y += this.speedY;
     }
-    draw(){}
+    draw(context) {
+      // player graphics
+      context.fillRect(this.x, this.y, this.width, this.height);
+    }
   }
   // enemy types
   class Enemy {}
@@ -37,5 +44,12 @@ window.addEventListener("load", function () {
   // score timer and other info
   class UI {}
   // main game class where all logic comes together
-  class Game {}
+  class Game {
+    // brain of project
+    constructor(width, height) {
+      this.width = width;
+      this.height = height;
+      this.player = new Player(this);
+    }
+  }
 });

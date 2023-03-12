@@ -7,4 +7,23 @@ window.addEventListener("load", function () {
   const ctx = canvas.getContext("2d");
   canvas.width = 1500;
   canvas.height = 500;
+  // specified user inputs
+  class InputHandler {}
+  // olayer lazers
+  class Projectile {}
+  // falling scresn nuts and bolts
+  class Particle {}
+  // main character sprite sheet animation
+  class Player {}
+  // enemy tyoes
+  class Enemy {}
+  // inividual background layers
+  class Layer {}
+  // pull layer objects together to animate the game world
+
+  class Background {}
+  // score timer and other info
+  class UI {}
+  // main game class where all logic comes together
+  class Game {}
 });

@@ -62,4 +62,14 @@ window.addEventListener("load", function () {
   }
   // call the Game class constructor
   const game = new Game(canvas.width, canvas.height);
+  // animation loop to re draw game every 60 miliseconds
+  function animate() {
+    // clear the prior animation then draw this loop
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    game.update();
+    game.draw(ctx);
+    // call next animation frame - pass in itself to make loop endless
+    requestAnimationFrame(animate);
+  }
+  animate();
 });

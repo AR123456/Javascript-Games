@@ -11,10 +11,16 @@ window.addEventListener("load", function () {
   class InputHandler {
     constructor(game) {
       this.game = game;
-      //apply event listener
-      window.addEventListener("keydown", function (e) {
-        console.log(e.key);
+      //apply event listener - using es6 to bind to context so JS remembers what this.game.keys is
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowUp") {
+          this.game.keys.push(e.key);
+        }
+
+        console.log(this.game.keys);
       });
+      // event listener to remove on keyup
+      window.addEventListener();
     }
   }
   // player lazers
@@ -60,6 +66,8 @@ window.addEventListener("load", function () {
       this.player = new Player(this);
       // instantiate the input handler
       this.input = new InputHandler(this);
+      // array to keep track of key downs
+      this.keys = [];
     }
     update() {
       // this is the Player()'s update

@@ -14,7 +14,10 @@ window.addEventListener("load", function () {
       //apply event listener - using es6 to bind to context so JS remembers what this.game.keys is
       window.addEventListener("keydown", (e) => {
         // add on key up but only if it is not already there
-        if (e.key === "ArrowUp" && this.game.keys.indexOf(e.key) === -1) {
+        if (
+          (e.key === "ArrowUp" || e.key === "ArrowDown") &&
+          this.game.keys.indexOf(e.key) === -1
+        ) {
           this.game.keys.push(e.key);
         }
 
@@ -74,7 +77,7 @@ window.addEventListener("load", function () {
       this.player = new Player(this);
       // instantiate the input handler
       this.input = new InputHandler(this);
-      // array to keep track of key downs
+      // array to keep track of key presses- it is available to whole game
       this.keys = [];
     }
     update() {

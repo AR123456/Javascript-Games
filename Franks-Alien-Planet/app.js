@@ -13,14 +13,22 @@ window.addEventListener("load", function () {
       this.game = game;
       //apply event listener - using es6 to bind to context so JS remembers what this.game.keys is
       window.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowUp") {
+        // add on key up but only if it is not already there
+        if (e.key === "ArrowUp" && this.game.keys.indexOf(e.key) === -1) {
           this.game.keys.push(e.key);
         }
 
         console.log(this.game.keys);
       });
       // event listener to remove on keyup
-      window.addEventListener();
+      window.addEventListener("keyup", (e) => {
+        // if the array contains the key being released -slice it out
+        if (this.game.keys.indexOf(e.key) > -1) {
+          // splice takes in the index of the key we want to remove , and the delete count
+          this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
+        }
+        console.log(this.game.keys);
+      });
     }
   }
   // player lazers

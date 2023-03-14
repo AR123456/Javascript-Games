@@ -35,7 +35,19 @@ window.addEventListener("load", function () {
     }
   }
   // player lazers
-  class Projectile {}
+  class Projectile {
+    // constructor will need game object and starting x,y coordinates
+    constructor(game, x, y) {
+      // convert the arguments passed into class properties
+      this.game = game;
+      this.x = x;
+      this.y = y;
+      this.width = 10;
+      this.height = 3;
+      // 3 px per frame
+      this.speed = 3;
+    }
+  }
   // falling scresn nuts and bolts
   class Particle {}
   // main character sprite sheet animation

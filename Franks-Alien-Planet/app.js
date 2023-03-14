@@ -48,16 +48,17 @@ window.addEventListener("load", function () {
       this.height = 190;
       this.x = 20;
       this.y = 100;
+      // current speed
       this.speedY = 0;
+      // max speed
+      this.maxSpeed = 2;
     }
     update() {
       // player can check keypresses passed to Player from Game
       // move player upd and down
-      if (this.game.keys.includes("ArrowUp")) {
-        this.speedY = -1;
-      } else if (this.game.keys.includes("ArrowDown")) {
-        this.speedY = 1;
-      } else this.speedY = 0;
+      if (this.game.keys.includes("ArrowUp")) this.speedY = -1;
+      else if (this.game.keys.includes("ArrowDown")) this.speedY = 1;
+      else this.speedY = 0;
       this.y += this.speedY;
     }
     draw(context) {

@@ -46,6 +46,12 @@ window.addEventListener("load", function () {
       this.height = 3;
       // 3 px per frame
       this.speed = 3;
+      this.markedForDeletion = false;
+    }
+    update() {
+      this.x += this.speed;
+      // if the projectile moves out of game area horizontally remove it
+      if (this.x > this.game.width * 0.8) this.markedForDeletion = true;
     }
   }
   // falling scresn nuts and bolts

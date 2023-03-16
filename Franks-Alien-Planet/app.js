@@ -53,6 +53,10 @@ window.addEventListener("load", function () {
       // if the projectile moves out of game area horizontally remove it
       if (this.x > this.game.width * 0.8) this.markedForDeletion = true;
     }
+    draw(context) {
+      context.fillStyle = "yellow";
+      fillRect(this.x, this.y, this.width, this.height);
+    }
   }
   // falling scresn nuts and bolts
   class Particle {}
@@ -82,6 +86,7 @@ window.addEventListener("load", function () {
     }
     draw(context) {
       // player graphics
+      context.fillStyle = "green";
       context.fillRect(this.x, this.y, this.width, this.height);
     }
   }

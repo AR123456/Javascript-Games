@@ -74,6 +74,8 @@ window.addEventListener("load", function () {
       this.speedY = 0;
       // max speed
       this.maxSpeed = 3;
+      // hold active projectile objects
+      this.projectiles = [];
     }
     update() {
       // player can check keypresses passed to Player from Game
@@ -88,6 +90,11 @@ window.addEventListener("load", function () {
       // player graphics
       context.fillStyle = "green";
       context.fillRect(this.x, this.y, this.width, this.height);
+    }
+    // custom methods on Player class for attack modes
+    shootTop() {
+      // shoot projectiles from mouth of seahorse - pass in players position
+      this.projectiles.push(new Projectile(this.game, this.x, this.y));
     }
   }
   // enemy types

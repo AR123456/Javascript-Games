@@ -19,8 +19,9 @@ window.addEventListener("load", function () {
           this.game.keys.indexOf(e.key) === -1
         ) {
           this.game.keys.push(e.key);
+        } else if (e.key === " ") {
+          this.game.player.shootTop();
         }
-
         console.log(this.game.keys);
       });
       // event listener to remove on keyup
@@ -85,6 +86,11 @@ window.addEventListener("load", function () {
         this.speedY = this.maxSpeed;
       else this.speedY = 0;
       this.y += this.speedY;
+      // handle projectiles
+      this.projectiles.forEach((projectile) => {
+        projectile.update();
+      });
+      // use filter method to remove projectiles from array
     }
     draw(context) {
       // player graphics

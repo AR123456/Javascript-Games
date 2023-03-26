@@ -22,7 +22,6 @@ window.addEventListener("load", function () {
         } else if (e.key === " ") {
           this.game.player.shootTop();
         }
-        console.log(this.game.keys);
       });
       // event listener to remove on keyup
       window.addEventListener("keyup", (e) => {
@@ -31,7 +30,6 @@ window.addEventListener("load", function () {
           // splice takes in the index of the key we want to remove , and the delete count
           this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
         }
-        console.log(this.game.keys);
       });
     }
   }
@@ -56,7 +54,7 @@ window.addEventListener("load", function () {
     }
     draw(context) {
       context.fillStyle = "yellow";
-      fillRect(this.x, this.y, this.width, this.height);
+      context.fillRect(this.x, this.y, this.width, this.height);
     }
   }
   // falling scresn nuts and bolts
@@ -90,17 +88,33 @@ window.addEventListener("load", function () {
       this.projectiles.forEach((projectile) => {
         projectile.update();
       });
-      // use filter method to remove projectiles from array
+      // use filter method to remove projectiles from array - filter out not marked for deletion
+      this.projectiles = this.projectiles.filter(
+        (projectile) => !projectile.markedForDeletion
+      );
     }
     draw(context) {
       // player graphics
       context.fillStyle = "green";
       context.fillRect(this.x, this.y, this.width, this.height);
+      // handle projectiles
+      this.projectiles.forEach((projectile) => {
+        projectile.draw(context);
+      });
     }
     // custom methods on Player class for attack modes
     shootTop() {
-      // shoot projectiles from mouth of seahorse - pass in players position
-      this.projectiles.push(new Projectile(this.game, this.x, this.y));
+      // put some logic in place to dwindle shooting power that can be slowly replenished
+      if (this.game.ammo > 0) {
+        // shoot projectiles from mouth of seahorse - pass in players position
+        this.projectiles.push(
+          //  adding to x and y contoles where projectiles start in relation to player
+          new Projectile(this.game, this.x + 80, this.y + 30)
+        );
+        this.game.ammo--;
+
+        console.log(this.projectiles);
+      }
     }
   }
   // enemy types
@@ -123,6 +137,7 @@ window.addEventListener("load", function () {
       this.input = new InputHandler(this);
       // array to keep track of key presses- it is available to whole game
       this.keys = [];
+      this.ammo = 20;
     }
     update() {
       // this is the Player()'s update

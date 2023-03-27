@@ -22,6 +22,7 @@ window.addEventListener("load", function () {
         } else if (e.key === " ") {
           this.game.player.shootTop();
         }
+        console.log(this.game.keys);
       });
       // event listener to remove on keyup
       window.addEventListener("keyup", (e) => {
@@ -30,6 +31,7 @@ window.addEventListener("load", function () {
           // splice takes in the index of the key we want to remove , and the delete count
           this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
         }
+        console.log(this.game.keys);
       });
     }
   }
@@ -104,17 +106,9 @@ window.addEventListener("load", function () {
     }
     // custom methods on Player class for attack modes
     shootTop() {
-      // put some logic in place to dwindle shooting power that can be slowly replenished
-      if (this.game.ammo > 0) {
-        // shoot projectiles from mouth of seahorse - pass in players position
-        this.projectiles.push(
-          //  adding to x and y contoles where projectiles start in relation to player
-          new Projectile(this.game, this.x + 80, this.y + 30)
-        );
-        this.game.ammo--;
-
-        console.log(this.projectiles);
-      }
+      // shoot projectiles from mouth of seahorse - pass in players position
+      this.projectiles.push(new Projectile(this.game, this.x, this.y));
+      console.log(this.projectiles);
     }
   }
   // enemy types
@@ -137,7 +131,6 @@ window.addEventListener("load", function () {
       this.input = new InputHandler(this);
       // array to keep track of key presses- it is available to whole game
       this.keys = [];
-      this.ammo = 20;
     }
     update() {
       // this is the Player()'s update

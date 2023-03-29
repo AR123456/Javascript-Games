@@ -107,10 +107,7 @@ window.addEventListener("load", function () {
       // put some logic in place to dwindle shooting power that can be slowly replenished
       if (this.game.ammo > 0) {
         // shoot projectiles from mouth of seahorse - pass in players position
-        this.projectiles.push(
-          //  adding to x and y contoles where projectiles start in relation to player
-          new Projectile(this.game, this.x + 80, this.y + 30)
-        );
+        this.projectiles.push(new Projectile(this.game, this.x, this.y));
         this.game.ammo--;
 
         console.log(this.projectiles);

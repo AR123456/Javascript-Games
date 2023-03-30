@@ -150,8 +150,13 @@ window.addEventListener("load", function () {
   }
   // call the Game class constructor
   const game = new Game(canvas.width, canvas.height);
+
+  // store values of time stamp from previous animation loop
+  let lastTime = 0;
   // animation loop to re draw game every 60 miliseconds
   function animate() {
+    ////// delta time ///////
+    const deltaTime = timeStamp - lastTime;
     // clear the prior animation then draw this loop
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     game.update();

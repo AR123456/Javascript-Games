@@ -112,8 +112,6 @@ window.addEventListener("load", function () {
           new Projectile(this.game, this.x + 80, this.y + 30)
         );
         this.game.ammo--;
-
-        console.log(this.projectiles);
       }
     }
   }
@@ -154,15 +152,21 @@ window.addEventListener("load", function () {
   // store values of time stamp from previous animation loop
   let lastTime = 0;
   // animation loop to re draw game every 60 miliseconds
-  function animate() {
+  // pass timeStamp to animate for deltaTime
+  function animate(timeStamp) {
     ////// delta time ///////
     const deltaTime = timeStamp - lastTime;
+    // console.log(deltaTime);
+    // re assign timeStamp to lastTime so it can be used to calculate deltaTime in next loop
+    lastTime = timeStamp;
     // clear the prior animation then draw this loop
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     game.update();
     game.draw(ctx);
     // call next animation frame - pass in itself to make loop endless
+    // requestAnimationFrane can  pass time stamp in an arg to the function it calls
     requestAnimationFrame(animate);
   }
-  animate();
+  // passing 0 as the first timestamp
+  animate(0);
 });

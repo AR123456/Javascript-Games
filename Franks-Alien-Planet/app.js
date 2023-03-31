@@ -129,13 +129,13 @@ window.addEventListener("load", function () {
       this.game = game;
       this.fontSize = 25;
       this.fontFamily = "Helvetica";
-      this.color = "white";
+      this.color = "yellow";
     }
     draw(context) {
       // ammo
       this.fillStyle = this.color;
       for (let i = 0; i < this.game.ammo; i++) {
-        context.fillRect(20, 50, 3, 20);
+        context.fillRect(20 + 5 * i, 50, 3, 20);
       }
     }
   }
@@ -148,6 +148,8 @@ window.addEventListener("load", function () {
       this.player = new Player(this);
       // instantiate the input handler
       this.input = new InputHandler(this);
+      // user interface - "this" is game
+      this.ui = new UI(this);
       // array to keep track of key presses- it is available to whole game
       this.keys = [];
       this.ammo = 20;
@@ -173,6 +175,7 @@ window.addEventListener("load", function () {
     draw(context) {
       // this is the PLayer()'s draw method
       this.player.draw(context);
+      this.ui.draw(context);
     }
   }
   // call the Game class constructor

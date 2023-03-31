@@ -136,10 +136,24 @@ window.addEventListener("load", function () {
       // array to keep track of key presses- it is available to whole game
       this.keys = [];
       this.ammo = 20;
+      // limit how much ammo can accumulate
+      this.maxAmmo = 50;
+      this.ammoTimer = 0;
+      // replenish ammo every 1/2 second
+      this.ammoInterval = 500;
     }
-    update() {
+
+    update(deltaTime) {
       // this is the Player()'s update
       this.player.update();
+      // trigger replenish ammo
+      if (this.ammoTimer > this.ammoInterval) {
+        if (this.ammo < this.maxAmmo) this.ammo++;
+        // after adding to ammo set timer back to 0
+        this.ammoTimer = 0;
+      } else {
+        this.ammoTimer += deltaTime;
+      }
     }
     draw(context) {
       // this is the PLayer()'s draw method
@@ -154,15 +168,16 @@ window.addEventListener("load", function () {
   // animation loop to re draw game every 60 miliseconds
   // pass timeStamp to animate for deltaTime
   function animate(timeStamp) {
-    ////// delta time ///////
     const deltaTime = timeStamp - lastTime;
     // console.log(deltaTime);
     // re assign timeStamp to lastTime so it can be used to calculate deltaTime in next loop
     lastTime = timeStamp;
     // clear the prior animation then draw this loop
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    game.update();
+    // passing deltaTime to game to run periotic stuff
+    game.update(deltaTime);
     game.draw(ctx);
+
     // call next animation frame - pass in itself to make loop endless
     // requestAnimationFrane can  pass time stamp in an arg to the function it calls
     requestAnimationFrame(animate);

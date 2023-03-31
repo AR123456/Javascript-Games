@@ -123,7 +123,22 @@ window.addEventListener("load", function () {
 
   class Background {}
   // score timer and other info
-  class UI {}
+  class UI {
+    // show user how much ammo they have
+    constructor(game) {
+      this.game = game;
+      this.fontSize = 25;
+      this.fontFamily = "Helvetica";
+      this.color = "white";
+    }
+    draw(context) {
+      // ammo
+      this.fillStyle = this.color;
+      for (let i = 0; i < this.game.ammo; i++) {
+        context.fillRect(20, 50, 3, 20);
+      }
+    }
+  }
   // main game class where all logic comes together
   class Game {
     // brain of project

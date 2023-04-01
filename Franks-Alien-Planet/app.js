@@ -95,7 +95,7 @@ window.addEventListener("load", function () {
     }
     draw(context) {
       // player graphics
-      context.fillStyle = "black";
+      context.fillStyle = "green";
       context.fillRect(this.x, this.y, this.width, this.height);
       // handle projectiles
       this.projectiles.forEach((projectile) => {
@@ -182,8 +182,6 @@ window.addEventListener("load", function () {
       this.ui = new UI(this);
       // array to keep track of key presses- it is available to whole game
       this.keys = [];
-      // all active enimies
-      this.enemies = [];
       this.ammo = 20;
       // limit how much ammo can accumulate
       this.maxAmmo = 50;
@@ -203,20 +201,11 @@ window.addEventListener("load", function () {
       } else {
         this.ammoTimer += deltaTime;
       }
-      this.enemies.forEach((enemy) => {
-        // call update methond for every enemy in array
-        enemy.update();
-      });
-      this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
     }
     draw(context) {
       // this is the PLayer()'s draw method
       this.player.draw(context);
       this.ui.draw(context);
-      this.enemies.forEach((enemy) => {
-        // call draw on each enemy
-        enemy.draw(context);
-      });
     }
   }
   // call the Game class constructor

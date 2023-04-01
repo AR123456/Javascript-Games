@@ -116,7 +116,27 @@ window.addEventListener("load", function () {
     }
   }
   // enemy types
-  class Enemy {}
+  // some Enemys will offer powerups
+  class Enemy {
+    constructor(game) {
+      // will have sub classes of enemeys but all enemies will need this stuff
+      this.game = game;
+      // horizontal entry point
+      this.x = this.game.width;
+      // ransomized horizontal speed
+      this.speedX = Math.random() * 1.5 - 0.5;
+      this.markedForDeletion = false;
+    }
+    update() {
+      // move enemies from right to left
+      this.x += this.speedX;
+      // if enemy gets to left edge of screen remove it
+      if (this.x + this.width < 0) this.markedForDeletion = true;
+    }
+    draw(context) {
+      context.fillStyle = "red";
+    }
+  }
   // inividual background layers
   class Layer {}
   // pull layer objects together to animate the game world

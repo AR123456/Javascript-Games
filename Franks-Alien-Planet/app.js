@@ -119,7 +119,7 @@ window.addEventListener("load", function () {
   // some Enemys will offer powerups
   class Enemy {
     constructor(game) {
-      // will have sub classes of enemeys but all enemies will need this stuff
+      // will have sub classes of enemies but all enemies will need this stuff
       this.game = game;
       // horizontal entry point
       this.x = this.game.width;
@@ -135,6 +135,16 @@ window.addEventListener("load", function () {
     }
     draw(context) {
       context.fillStyle = "red";
+      context.fillRect(this.x, this.y, this.width, this.height);
+    }
+  }
+  class Angler1 extends Enemy {
+    constructor(game) {
+      // get all the stuff from Enemy first
+      super(game);
+      this.width = 228;
+      this.height = 169;
+      this.y = Math.random() * (this.game.height * 0.9 - this.height);
     }
   }
   // inividual background layers

@@ -124,7 +124,8 @@ window.addEventListener("load", function () {
       // horizontal entry point
       this.x = this.game.width;
       // ransomized horizontal speed
-      this.speedX = Math.random() * 1.5 - 0.5;
+      this.speedX = Math.random() * 1.5 - 1.5;
+      console.log(this.speedX);
       this.markedForDeletion = false;
     }
     update() {

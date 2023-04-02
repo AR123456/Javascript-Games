@@ -209,6 +209,10 @@ window.addEventListener("load", function () {
       this.enemies.forEach((enemy) => {
         // call update method for every enemy in array
         enemy.update();
+        // check for collison with player
+        if (this.checkCollision(this.player, enemy)) {
+          enemy.markedForDeletion = true;
+        }
       });
       this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
       // add enemies to UI
@@ -234,7 +238,16 @@ window.addEventListener("load", function () {
     addEnemy() {
       // note that "this" is game
       this.enemies.push(new Angler1(this));
-      console.log(this.enemies);
+    }
+    // collsion detection method -takes 2 objects
+    checkCollision(rect1, rect2) {
+      // return true if they collide
+      return (
+        rect1.x < rect2.x + rect2.width &&
+        rect1.x + rect1.width > rect2.x &&
+        rect1.y < rect2.y + rect2.height &&
+        rect1.height + rect1.y > rect2.y
+      );
     }
   }
   // call the Game class constructor

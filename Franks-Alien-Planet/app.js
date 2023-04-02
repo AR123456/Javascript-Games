@@ -142,8 +142,8 @@ window.addEventListener("load", function () {
     constructor(game) {
       // get all the stuff from Enemy first
       super(game);
-      this.width = 228;
-      this.height = 169;
+      this.width = 228 * 0.2;
+      this.height = 169 * 0.2;
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
     }
   }
@@ -184,12 +184,15 @@ window.addEventListener("load", function () {
       this.keys = [];
       // all active enimies
       this.enemies = [];
+      this.enemyTimer = 0;
+      this.enemyInterval = 1000;
       this.ammo = 20;
       // limit how much ammo can accumulate
       this.maxAmmo = 50;
       this.ammoTimer = 0;
       // replenish ammo every 1/2 second
       this.ammoInterval = 500;
+      this.gameOver = false;
     }
 
     update(deltaTime) {
@@ -204,10 +207,19 @@ window.addEventListener("load", function () {
         this.ammoTimer += deltaTime;
       }
       this.enemies.forEach((enemy) => {
-        // call update methond for every enemy in array
+        // call update method for every enemy in array
         enemy.update();
       });
       this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
+      // add enemies to UI
+      if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
+        // call add enemy method
+        this.addEnemy();
+        // reset to 0 for next time
+        this.enemyTimer = 0;
+      } else {
+        this.enemyTimer += deltaTime;
+      }
     }
     draw(context) {
       // this is the PLayer()'s draw method
@@ -217,6 +229,11 @@ window.addEventListener("load", function () {
         // call draw on each enemy
         enemy.draw(context);
       });
+    }
+    // add enemy method here of game clas
+    addEnemy() {
+      // note that "this" is game
+      this.enemies.push(new Angler1(this));
     }
   }
   // call the Game class constructor

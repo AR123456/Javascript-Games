@@ -234,6 +234,7 @@ window.addEventListener("load", function () {
     addEnemy() {
       // note that "this" is game
       this.enemies.push(new Angler1(this));
+      console.log(this.enemies);
     }
   }
   // call the Game class constructor

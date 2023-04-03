@@ -127,6 +127,8 @@ window.addEventListener("load", function () {
       this.speedX = Math.random() * 1.5 - 1.5;
 
       this.markedForDeletion = false;
+      this.lives = 5;
+      this.score = this.lives;
     }
     update() {
       // move enemies from right to left
@@ -137,6 +139,9 @@ window.addEventListener("load", function () {
     draw(context) {
       context.fillStyle = "red";
       context.fillRect(this.x, this.y, this.width, this.height);
+      context.fillStyle = "black";
+      context.font = "20px Helvetica";
+      context.fillText(this.lives, this.x, this.y);
     }
   }
   class Angler1 extends Enemy {
@@ -217,6 +222,15 @@ window.addEventListener("load", function () {
         // check for collision with projectiles
         this.player.projectiles.forEach((projectile) => {
           /// check for collison
+          if (this.checkCollision(projectile, enemy)) {
+            enemy.lives--;
+            projectile.markedForDeletion = true;
+            if (enemy.lives <= 0) {
+              enemy.markedForDeletion = true;
+              // different scores for different enemies
+              this.score += enemy.score;
+            }
+          }
         });
       });
       this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);

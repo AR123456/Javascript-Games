@@ -123,9 +123,9 @@ window.addEventListener("load", function () {
       this.game = game;
       // horizontal entry point
       this.x = this.game.width;
-      // ransomized horizontal speed
+      // ransomized horizontal speed was 1.5- 0.5
       this.speedX = Math.random() * 1.5 - 1.5;
-      console.log(this.speedX);
+
       this.markedForDeletion = false;
     }
     update() {
@@ -214,6 +214,10 @@ window.addEventListener("load", function () {
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
         }
+        // check for collision with projectiles
+        this.player.projectiles.forEach((projectile) => {
+          /// check for collison
+        });
       });
       this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
       // add enemies to UI

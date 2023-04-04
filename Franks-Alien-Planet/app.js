@@ -181,8 +181,6 @@ window.addEventListener("load", function () {
       for (let i = 0; i < this.game.ammo; i++) {
         context.fillRect(20 + 5 * i, 50, 3, 20);
       }
-      // timer
-      context.fillText("Timer: " + this.game.gameTime, 20, 100);
       // game over message
       if (this.game.gameOver) {
         context.textAlign = "center";
@@ -238,16 +236,9 @@ window.addEventListener("load", function () {
       this.gameOver = false;
       this.score = 0;
       this.winningScore = 10;
-      // put time limit on game
-      this.gameTime = 0;
-      this.timeLimit = 5000;
     }
 
     update(deltaTime) {
-      // how many milisec have passed since game began
-      if (!this.gameOver) this.gameTime += deltaTime;
-      // if game gets to the time limit it is over
-      if (this.gameTime > this.timeLimit) this.gameOver = true;
       // this is the Player()'s update
       this.player.update();
       // trigger replenish ammo

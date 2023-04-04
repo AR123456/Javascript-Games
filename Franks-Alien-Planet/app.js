@@ -181,6 +181,10 @@ window.addEventListener("load", function () {
       for (let i = 0; i < this.game.ammo; i++) {
         context.fillRect(20 + 5 * i, 50, 3, 20);
       }
+      // timer
+      // just show seconds
+      const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
+      context.fillText("Timer: " + formattedTime, 20, 100);
       // game over message
       if (this.game.gameOver) {
         context.textAlign = "center";
@@ -236,9 +240,16 @@ window.addEventListener("load", function () {
       this.gameOver = false;
       this.score = 0;
       this.winningScore = 10;
+      // put time limit on game
+      this.gameTime = 0;
+      this.timeLimit = 5000;
     }
 
     update(deltaTime) {
+      // how many milisec have passed since game began
+      if (!this.gameOver) this.gameTime += deltaTime;
+      // if game gets to the time limit it is over
+      if (this.gameTime > this.timeLimit) this.gameOver = true;
       // this is the Player()'s update
       this.player.update();
       // trigger replenish ammo
@@ -265,7 +276,7 @@ window.addEventListener("load", function () {
             if (enemy.lives <= 0) {
               enemy.markedForDeletion = true;
               // different scores for different enemies
-              this.score += enemy.score;
+              if (!this.gameOver) this.score += enemy.score;
               if (this.score > this.winningScore) this.gameOver = true;
             }
           }

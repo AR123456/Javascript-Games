@@ -126,9 +126,37 @@ window.addEventListener("load", function () {
     }
   }
   // inividual background layers
-  class Layer {}
+  class Layer {
+    constructor(game, image, speedModifier) {
+      this.game = game;
+      this.image = image;
+      this.speedModifier = speedModifier;
+      this.width = 1768;
+      this.height = 500;
+      this.x = 0;
+      this.y = 0;
+    }
+    update() {
+      // move background layers right to left as game scrolls- when it moves off canvas set back to 0
+      if (this.x <= -this.width) this.x = 0;
+      // vairable speeds for different layers
+      else this.x -= this.game.speed * this.speedModifier;
+    }
+    draw(context) {
+      context.drawImage(this.image, this.x, this.y);
+    }
+  }
   // pull layer objects together to animate the game world
-  class Background {}
+  class Background {
+    constructor(game) {
+      this.game = game;
+      this.image1 = document.getElementById("layer1");
+      this.layer1 = new Layer(this.game, this.image1, 1);
+      // create new instance of layer class
+    }
+    // move all layer objects
+    update() {}
+  }
   // score timer and other info
   class UI {
     constructor(game) {
@@ -202,6 +230,7 @@ window.addEventListener("load", function () {
       // put time limit on game
       this.gameTime = 0;
       this.timeLimit = 5000;
+      this.speed = 1;
     }
 
     update(deltaTime) {

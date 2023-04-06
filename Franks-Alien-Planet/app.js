@@ -126,9 +126,46 @@ window.addEventListener("load", function () {
     }
   }
   // inividual background layers
-  class Layer {}
+  class Layer {
+    constructor(game, image, speedModifier) {
+      this.game = game;
+      this.image = image;
+      this.speedModifier = speedModifier;
+      this.width = 1768;
+      this.height = 500;
+      this.x = 0;
+      this.y = 0;
+    }
+    update() {
+      // move background layers right to left as game scrolls- when it moves off canvas set back to 0
+      if (this.x <= -this.width) this.x = 0;
+      // vairable speeds for different layers
+      else this.x -= this.game.speed * this.speedModifier;
+    }
+    draw(context) {
+      context.drawImage(this.image, this.x, this.y);
+    }
+  }
   // pull layer objects together to animate the game world
-  class Background {}
+  class Background {
+    constructor(game) {
+      this.game = game;
+      this.image1 = document.getElementById("layer1");
+      // create new instance of layer class
+      this.layer1 = new Layer(this.game, this.image1, 1);
+      // hold all layers in this array
+      this.layers = [this.layer1];
+    }
+    // move all layer objects
+    update() {
+      // loop the layers
+      this.layers.forEach((layer) => layer.update());
+    }
+    // draw layer objects
+    draw(context) {
+      this.layers.forEach((layer) => layer.draw(context));
+    }
+  }
   // score timer and other info
   class UI {
     constructor(game) {
@@ -184,6 +221,8 @@ window.addEventListener("load", function () {
     constructor(width, height) {
       this.width = width;
       this.height = height;
+      // instantiate Background class so the layers appear
+      this.background = new Background(this);
       this.player = new Player(this);
       this.input = new InputHandler(this);
       this.ui = new UI(this);
@@ -202,12 +241,14 @@ window.addEventListener("load", function () {
       // put time limit on game
       this.gameTime = 0;
       this.timeLimit = 5000;
+      this.speed = 1;
     }
 
     update(deltaTime) {
       // how many milisec have passed since game began
       if (!this.gameOver) this.gameTime += deltaTime;
       if (this.gameTime > this.timeLimit) this.gameOver = true;
+      this.background.update();
       this.player.update();
       if (this.ammoTimer > this.ammoInterval) {
         if (this.ammo < this.maxAmmo) this.ammo++;
@@ -241,6 +282,7 @@ window.addEventListener("load", function () {
       }
     }
     draw(context) {
+      this.background.draw(context);
       this.player.draw(context);
       this.ui.draw(context);
       this.enemies.forEach((enemy) => {

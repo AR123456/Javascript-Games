@@ -58,9 +58,6 @@ window.addEventListener("load", function () {
       this.height = 190;
       this.x = 20;
       this.y = 100;
-      // helper vars for drawing image from sprite
-      this.frameX = 0; // cycle sprite sheet horizontaly
-      this.frameY = 0; // row of sprite sheet 0 or 1
       this.speedY = 0;
       this.maxSpeed = 3;
       this.projectiles = [];
@@ -83,15 +80,15 @@ window.addEventListener("load", function () {
       context.fillStyle = "black";
       context.fillRect(this.x, this.y, this.width, this.height);
       context.drawImage(
-        this.image, // the player
-        this.frameX * this.width, //source x  - column
-        this.frameY * this.height, //source y -row
-        this.width, //width of single player of area to crop out of source image
-        this.height, // height 0f single player of area to crop out of source image
-        this.x, // destination where to draw the image-players current position
-        this.y, // destination where to draw the image-players current position
-        this.width, // destination width of single player
-        this.height // destination height of single player
+        this.image,
+        sx,
+        sy,
+        sw,
+        sh,
+        this.x,
+        this.y,
+        this.width,
+        this.height
       );
       this.projectiles.forEach((projectile) => {
         projectile.draw(context);

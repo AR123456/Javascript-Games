@@ -140,10 +140,13 @@ window.addEventListener("load", function () {
       // move background layers right to left as game scrolls- when it moves off canvas set back to 0
       if (this.x <= -this.width) this.x = 0;
       // vairable speeds for different layers
-      else this.x -= this.game.speed * this.speedModifier;
+      this.x -= this.game.speed * this.speedModifier;
     }
     draw(context) {
       context.drawImage(this.image, this.x, this.y);
+      // draw second identical image slightly to the right so scroll off screen is seamless
+      // start second image where first image ends so add to x
+      context.drawImage(this.image, this.x + this.width, this.y);
     }
   }
   // pull layer objects together to animate the game world
@@ -155,12 +158,13 @@ window.addEventListener("load", function () {
       this.image3 = document.getElementById("layer3");
       this.image4 = document.getElementById("layer4");
       // create new instance of layer class - for each layer
-      this.layer1 = new Layer(this.game, this.image1, 1);
-      this.layer2 = new Layer(this.game, this.image2, 1);
+      this.layer1 = new Layer(this.game, this.image1, 0.2);
+      this.layer2 = new Layer(this.game, this.image2, 0.4);
+      // this layer should scroll at same speed as game object
       this.layer3 = new Layer(this.game, this.image3, 1);
-      this.layer4 = new Layer(this.game, this.image4, 1);
-      // hold all layers in this array
-      this.layers = [this.layer1, this.layer2, this.layer3, this.layer4];
+      this.layer4 = new Layer(this.game, this.image4, 1.5);
+      // hold  background layers in this array
+      this.layers = [this.layer1, this.layer2, this.layer3];
     }
     // move all layer objects
     update() {
@@ -255,6 +259,8 @@ window.addEventListener("load", function () {
       if (!this.gameOver) this.gameTime += deltaTime;
       if (this.gameTime > this.timeLimit) this.gameOver = true;
       this.background.update();
+      // because layer4 needs to go in front of the player calling its update here
+      this.background.layer4.update();
       this.player.update();
       if (this.ammoTimer > this.ammoInterval) {
         if (this.ammo < this.maxAmmo) this.ammo++;
@@ -294,6 +300,8 @@ window.addEventListener("load", function () {
       this.enemies.forEach((enemy) => {
         enemy.draw(context);
       });
+      // now after the other stuff drawn on screen add layer4 so it is closest to user
+      this.background.layer4.draw(context);
     }
     addEnemy() {
       this.enemies.push(new Angler1(this));

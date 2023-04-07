@@ -72,12 +72,18 @@ window.addEventListener("load", function () {
         this.speedY = this.maxSpeed;
       else this.speedY = 0;
       this.y += this.speedY;
+      // handle projectiles
       this.projectiles.forEach((projectile) => {
         projectile.update();
       });
       this.projectiles = this.projectiles.filter(
         (projectile) => !projectile.markedForDeletion
       );
+      // sprite animation
+      if (this.frameX < this.maxFrame) {
+        this.frameX++;
+      } else {
+      }
     }
     draw(context) {
       context.fillStyle = "black";

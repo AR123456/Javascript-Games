@@ -62,7 +62,6 @@ window.addEventListener("load", function () {
       this.frameX = 0; // cycle sprite sheet horizontaly
       this.frameY = 0; // row of sprite sheet 0 or 1
       this.speedY = 0;
-      this.maxFrame = 37;
       this.maxSpeed = 3;
       this.projectiles = [];
       this.image = document.getElementById("player");
@@ -84,7 +83,6 @@ window.addEventListener("load", function () {
       if (this.frameX < this.maxFrame) {
         this.frameX++;
       } else {
-        this.frameX = 0;
       }
     }
     draw(context) {
@@ -271,7 +269,7 @@ window.addEventListener("load", function () {
       this.winningScore = 10;
       // put time limit on game
       this.gameTime = 0;
-      this.timeLimit = 50000;
+      this.timeLimit = 5000;
       this.speed = 1;
     }
 

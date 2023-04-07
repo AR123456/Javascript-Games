@@ -16,6 +16,9 @@ window.addEventListener("load", function () {
           this.game.keys.push(e.key);
         } else if (e.key === " ") {
           this.game.player.shootTop();
+        } else if (e.key === "d") {
+          // toggle debug mode
+          this.game.debug = !this.game.debug;
         }
       });
       window.addEventListener("keyup", (e) => {
@@ -60,7 +63,7 @@ window.addEventListener("load", function () {
       this.y = 100;
       // helper vars for drawing image from sprite
       this.frameX = 0; // cycle sprite sheet horizontaly
-      this.frameY = 0; // row of sprite sheet 0 or 1
+      this.frameY = 0; // row of sprite sheet 0 or 1 1 will be for power up state
       this.speedY = 0;
       this.maxFrame = 37;
       this.maxSpeed = 3;
@@ -88,8 +91,9 @@ window.addEventListener("load", function () {
       }
     }
     draw(context) {
-      context.fillStyle = "black";
-      context.fillRect(this.x, this.y, this.width, this.height);
+      // context.fillStyle = "black";
+      if (this.game.debug)
+        context.strokeRect(this.x, this.y, this.width, this.height);
       context.drawImage(
         this.image, // the player
         this.frameX * this.width, //source x  - column
@@ -273,6 +277,7 @@ window.addEventListener("load", function () {
       this.gameTime = 0;
       this.timeLimit = 50000;
       this.speed = 1;
+      this.debug = true;
     }
 
     update(deltaTime) {

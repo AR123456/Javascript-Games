@@ -2,7 +2,7 @@ window.addEventListener("load", function () {
   // load page then set up canvas
   const canvas = this.document.getElementById("canvas1");
   const ctx = canvas.getContext("2d");
-  canvas.width = 500;
+  canvas.width = 700;
   canvas.height = 500;
   // keyboard actions
   class InputHandler {
@@ -126,14 +126,16 @@ window.addEventListener("load", function () {
       this.x = this.game.width;
       this.speedX = Math.random() * 1.5 - 1.5;
       this.markedForDeletion = false;
-      this.lives = 5;
-      this.score = this.lives;
+      //  moving this to each child class so they can be different
+      // this.lives = 5;
+      // this.score = this.lives;
       this.frameX = 0;
       this.frameY = 0;
       this.maxFrame = 37;
     }
     update() {
-      this.x += this.speedX;
+      // account for game speed so speed matches scrolling game world and can be changed dynamically
+      this.x += this.speedX - this.game.speed;
       if (this.x + this.width < 0) this.markedForDeletion = true;
       // sprite animation - move along sprite sheet horizonatlly
       if (this.frameX < this.maxFrame) {
@@ -160,6 +162,7 @@ window.addEventListener("load", function () {
       context.fillText(this.lives, this.x, this.y);
     }
   }
+  // first enemy
   class Angler1 extends Enemy {
     constructor(game) {
       // get all the stuff from Enemy first
@@ -170,6 +173,23 @@ window.addEventListener("load", function () {
       this.image = document.getElementById("angler1");
       // randomize looping the 3 animations
       this.frameY = Math.floor(Math.random() * 3);
+      this.lives = 2;
+      this.score = this.lives;
+    }
+  }
+  // second enemy
+  class Angler2 extends Enemy {
+    constructor(game) {
+      // get all the stuff from Enemy first
+      super(game);
+      this.width = 213;
+      this.height = 165;
+      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.image = document.getElementById("angler2");
+      // randomize looping the 3 animations
+      this.frameY = Math.floor(Math.random() * 2);
+      this.lives = 3;
+      this.score = this.lives;
     }
   }
   // inividual background layers
@@ -352,6 +372,10 @@ window.addEventListener("load", function () {
       this.background.layer4.draw(context);
     }
     addEnemy() {
+      // randomize adding enemies types 0 -1
+      const randomize = Math.random();
+      if (randomize < 0.5) this.enemies.push(new Angler1(this));
+      else this.enemies.push(new Angler2(this));
       this.enemies.push(new Angler1(this));
     }
     checkCollision(rect1, rect2) {

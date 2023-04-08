@@ -135,13 +135,27 @@ window.addEventListener("load", function () {
     update() {
       this.x += this.speedX;
       if (this.x + this.width < 0) this.markedForDeletion = true;
+      // sprite animation - move along sprite sheet horizonatlly
+      if (this.frameX < this.maxFrame) {
+        this.frameX++;
+      } else this.frameX = 0;
     }
     draw(context) {
       // context.fillStyle = "red";
       if (this.game.debug)
         context.strokeRect(this.x, this.y, this.width, this.height);
       // context.fillStyle = "black";
-      context.drawImage(this.image, this.x, this.y, this.width, this.height);
+      context.drawImage(
+        this.image,
+        this.frameX * this.width, // souce x cycle horizontaly  row
+        this.frameY * this.height, // source y
+        this.width, // source width
+        this.height, // source hight
+        this.x,
+        this.y,
+        this.width,
+        this.height
+      );
       context.font = "20px Helvetica";
       context.fillText(this.lives, this.x, this.y);
     }

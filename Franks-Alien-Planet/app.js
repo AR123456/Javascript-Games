@@ -128,15 +128,20 @@ window.addEventListener("load", function () {
       this.markedForDeletion = false;
       this.lives = 5;
       this.score = this.lives;
+      this.frameX = 0;
+      this.frameY = 0;
+      this.maxFrame = 37;
     }
     update() {
       this.x += this.speedX;
       if (this.x + this.width < 0) this.markedForDeletion = true;
     }
     draw(context) {
-      context.fillStyle = "red";
-      context.fillRect(this.x, this.y, this.width, this.height);
-      context.fillStyle = "black";
+      // context.fillStyle = "red";
+      if (this.game.debug)
+        context.strokeRect(this.x, this.y, this.width, this.height);
+      // context.fillStyle = "black";
+      context.drawImage(this.image, this.x, this.y, this.width, this.height);
       context.font = "20px Helvetica";
       context.fillText(this.lives, this.x, this.y);
     }
@@ -148,6 +153,9 @@ window.addEventListener("load", function () {
       this.width = 228 * 0.2;
       this.height = 169 * 0.2;
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.image = document.getElementById("angler1");
+      // randomize looping the 3 animations
+      this.frameY = Math.floor(Math.random() * 3);
     }
   }
   // inividual background layers

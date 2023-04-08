@@ -150,8 +150,8 @@ window.addEventListener("load", function () {
     constructor(game) {
       // get all the stuff from Enemy first
       super(game);
-      this.width = 228 * 0.2;
-      this.height = 169 * 0.2;
+      this.width = 228;
+      this.height = 169;
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
       this.image = document.getElementById("angler1");
       // randomize looping the 3 animations

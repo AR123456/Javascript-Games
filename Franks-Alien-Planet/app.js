@@ -74,7 +74,7 @@ window.addEventListener("load", function () {
       this.powerUpTimer = 0;
       this.powerUpLimit = 10000;
     }
-    update() {
+    update(deltaTime) {
       if (this.game.keys.includes("ArrowUp")) this.speedY = -this.maxSpeed;
       else if (this.game.keys.includes("ArrowDown"))
         this.speedY = this.maxSpeed;
@@ -94,10 +94,20 @@ window.addEventListener("load", function () {
         this.frameX = 0;
       }
       // power up
-      if (this.game.powerUp && this.game.powerUpLimit < 10000) {
-        // give player more power
-        this.game.maxAmmo = 500;
-        this.powerUpTimer += this.deltaTime;
+      if (this.powerUp) {
+        // timer is up so remove powerup
+        if (this.powerUpTimer > this.powerUpLimit) {
+          this.powerUpTimer = 0;
+          this.powerUp = false;
+          // put player back in default animation
+          this.frameY = 0;
+        } else {
+          this.powerUpTimer += deltaTime;
+          // move to power up row animation on sprite sheet
+          this.frameY = 1;
+          // add more ammo on top on default refresh rate
+          this.game.ammo += 0.1;
+        }
       }
     }
     draw(context) {
@@ -355,7 +365,8 @@ window.addEventListener("load", function () {
       this.background.update();
       // because layer4 needs to go in front of the player calling its update here
       this.background.layer4.update();
-      this.player.update();
+      // player needs delta time for power ups
+      this.player.update(deltaTime);
       if (this.ammoTimer > this.ammoInterval) {
         if (this.ammo < this.maxAmmo) this.ammo++;
         this.ammoTimer = 0;

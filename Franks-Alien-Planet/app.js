@@ -137,6 +137,15 @@ window.addEventListener("load", function () {
         );
         this.game.ammo--;
       }
+      if (this.powerUp) this.shootBottom();
+    }
+    // tail lazers
+    shootBottom() {
+      if (this.game.ammo > 0) {
+        this.projectiles.push(
+          new Projectile(this.game, this.x + 80, this.y + 175)
+        );
+      }
     }
     // powerup
     enterPowerUp() {

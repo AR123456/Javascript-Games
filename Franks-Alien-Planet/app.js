@@ -69,6 +69,10 @@ window.addEventListener("load", function () {
       this.maxSpeed = 3;
       this.projectiles = [];
       this.image = document.getElementById("player");
+      // handle power ups
+      this.powerUp = false;
+      this.powerUpTimer = 0;
+      this.powerUpLimit = 10000;
     }
     update() {
       if (this.game.keys.includes("ArrowUp")) this.speedY = -this.maxSpeed;
@@ -88,6 +92,12 @@ window.addEventListener("load", function () {
         this.frameX++;
       } else {
         this.frameX = 0;
+      }
+      // power up
+      if (this.game.powerUp && this.game.powerUpLimit < 10000) {
+        // give player more power
+        this.game.maxAmmo = 500;
+        this.powerUpTimer += this.deltaTime;
       }
     }
     draw(context) {

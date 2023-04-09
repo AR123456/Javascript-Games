@@ -138,6 +138,16 @@ window.addEventListener("load", function () {
         this.game.ammo--;
       }
     }
+    // powerup
+    enterPowerUp() {
+      // could use state design pattern but since not many states just doing this way
+      // if multiple collisions reset timer to 0 for the most recent one
+      this.powerUpTimer = 0;
+      // set powerUp property on player object to true
+      this.powerUp = true;
+      // recharge ammo to max value
+      this.game.ammo = this.game.maxAmmo;
+    }
   }
   // enemy types
   class Enemy {
@@ -377,6 +387,10 @@ window.addEventListener("load", function () {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
+          // check is type lucky ? if call enterPowerUp from player class
+          if ((enemy.type = "lucky")) this.player.enterPowerUp();
+          // penalty for hitting enemys that are not lucky
+          else this.score--;
         }
         this.player.projectiles.forEach((projectile) => {
           if (this.checkCollision(projectile, enemy)) {

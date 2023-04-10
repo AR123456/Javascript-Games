@@ -201,8 +201,10 @@ window.addEventListener("load", function () {
         this.width,
         this.height
       );
-      context.font = "20px Helvetica";
-      context.fillText(this.lives, this.x, this.y);
+      if (this.game.debug) {
+        context.font = "20px Helvetica";
+        context.fillText(this.lives, this.x, this.y);
+      }
     }
   }
   // first enemy
@@ -307,12 +309,14 @@ window.addEventListener("load", function () {
     constructor(game) {
       this.game = game;
       this.fontSize = 25;
-      this.fontFamily = "Helvetica";
+      // TODO this is not coming accross as Bangers
+      // this.fontFamily = "Helvetica";
+      this.fontFamily = "Bangers";
       this.color = "white";
     }
     draw(context) {
       context.save();
-      this.fillStyle = this.color;
+      context.fillStyle = this.color;
       context.shadowOffsetX = 2;
       context.shadowOffsetY = 2;
       context.shadowColor = "black";
@@ -335,6 +339,7 @@ window.addEventListener("load", function () {
           message1 = "You lost";
           message2 = "Try again next time";
         }
+        // TODO why not effect to changing the font size here?
         context.font = "50px" + this.fontFamily;
         context.fillText(
           message1,

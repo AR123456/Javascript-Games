@@ -83,6 +83,10 @@ window.addEventListener("load", function () {
         this.speedY = this.maxSpeed;
       else this.speedY = 0;
       this.y += this.speedY;
+      // vertical boundaries - dont allow player off top or bottom edge of screen by more than 1/2 its size
+      if (this.y > this.game.height - this.height * 0.5)
+        this.y = this.game.height - this.height * 0.5;
+      else if (this.y < -this.height * 0.5) this.y = -this.height * 0.5;
       // handle projectiles
       this.projectiles.forEach((projectile) => {
         projectile.update();

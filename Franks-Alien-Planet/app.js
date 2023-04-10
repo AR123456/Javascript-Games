@@ -4,6 +4,7 @@ window.addEventListener("load", function () {
   const ctx = canvas.getContext("2d");
   canvas.width = 700;
   canvas.height = 500;
+
   // keyboard actions
   class InputHandler {
     constructor(game) {
@@ -314,10 +315,10 @@ window.addEventListener("load", function () {
       context.shadowOffsetY = 2;
       context.shadowColor = "black";
       context.font = this.fontSize = "px " + this.fontFamily;
+      // score
       context.fillText("Score: " + this.game.score, 20, 40);
-      for (let i = 0; i < this.game.ammo; i++) {
-        context.fillRect(20 + 5 * i, 50, 3, 20);
-      }
+      // ammo
+
       // just show seconds
       const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
       context.fillText("Timer: " + formattedTime, 20, 100);
@@ -344,6 +345,11 @@ window.addEventListener("load", function () {
           this.game.width * 0.5,
           this.game.height * 0.5 + 40
         );
+      }
+      // if in power up change power bar color
+      if (this.game.player.powerUp) context.fillStyle = "red"; // or #ffffbd
+      for (let i = 0; i < this.game.ammo; i++) {
+        context.fillRect(20 + 5 * i, 50, 3, 20);
       }
       context.restore();
     }

@@ -114,6 +114,10 @@ window.addEventListener("load", function () {
       // context.fillStyle = "black";
       if (this.game.debug)
         context.strokeRect(this.x, this.y, this.width, this.height);
+      // draw projectiles first so that the come out behind the player
+      this.projectiles.forEach((projectile) => {
+        projectile.draw(context);
+      });
       context.drawImage(
         this.image, // the player
         this.frameX * this.width, //source x  - column
@@ -125,9 +129,6 @@ window.addEventListener("load", function () {
         this.width, // destination width of single player
         this.height // destination height of single player
       );
-      this.projectiles.forEach((projectile) => {
-        projectile.draw(context);
-      });
     }
 
     shootTop() {

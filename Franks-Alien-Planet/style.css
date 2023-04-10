@@ -21,6 +21,7 @@
 #player,
 #angler1,
 #angler2,
-#lucky {
+#lucky,
+#projectile {
   display: none;
 }

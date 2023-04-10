@@ -201,8 +201,10 @@ window.addEventListener("load", function () {
         this.width,
         this.height
       );
-      context.font = "20px Helvetica";
-      context.fillText(this.lives, this.x, this.y);
+      if (this.game.debug) {
+        context.font = "20px Helvetica";
+        context.fillText(this.lives, this.x, this.y);
+      }
     }
   }
   // first enemy
@@ -337,6 +339,7 @@ window.addEventListener("load", function () {
           message1 = "You lost";
           message2 = "Try again next time";
         }
+        // TODO why not effect to changing the font size here?
         context.font = "50px" + this.fontFamily;
         context.fillText(
           message1,

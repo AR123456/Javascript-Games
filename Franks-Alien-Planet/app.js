@@ -60,6 +60,26 @@ window.addEventListener("load", function () {
       this.x = x;
       this.y = y;
       this.image = document.getElementById("gears");
+      // get random gear from grid
+      this.frameX = Math.floor(Math.random() * 3);
+      this.frameY = Math.floor(Math.random() * 3);
+      // each frame is 50x50
+      this.spriteSize = 50;
+      // vary the size of gears
+      this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1);
+      this.size = this.spriteSize * this.sizeModifier;
+      // vary how gear fall horizonally - right or left
+      this.speedX = Math.random() * 6 - 3;
+      // vertical movement
+      // go up a bit, randomly before down
+      this.speedY = Math.random() * -15;
+      // gravity for falling gears
+      this.gravity = 0.5;
+      this.markedForDeletion = false;
+      // rotate the gears as they fall
+      this.angle = 0;
+      // va velocity of angle - speed of rotation in radiants per animation frame
+      this.va = Math.random() * 0.2 - 0.1;
     }
   }
   // main character

@@ -81,6 +81,18 @@ window.addEventListener("load", function () {
       // va velocity of angle - speed of rotation in radiants per animation frame
       this.va = Math.random() * 0.2 - 0.1;
     }
+    update() {
+      // increase rotation angle
+      this.angle += this.va;
+      // apply gravity for arch and spped decent as time passes
+      this.speedY += this.gravity;
+      this.x -= this.speedX;
+      // apply speed effected by gravity
+      this.y += this.speedY;
+      // revove the gears if they fall off bottom of screen or game scrolls vertically past their position
+      if (this.y > this.game.height + this.size || this.x < 0 - this.size)
+        this.markedForDeletion = true;
+    }
   }
   // main character
   class Player {

@@ -53,8 +53,15 @@ window.addEventListener("load", function () {
       context.drawImage(this.image, this.x, this.y);
     }
   }
-
-  class Particle {}
+  // paticles are broken bits flying off enemies when they are hit
+  class Particle {
+    constructor(game, x, y) {
+      this.game = game;
+      this.x = x;
+      this.y = y;
+      this.image = document.getElementById("gears");
+    }
+  }
   // main character
   class Player {
     // player needs game dimensions

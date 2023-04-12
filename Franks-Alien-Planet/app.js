@@ -420,6 +420,8 @@ window.addEventListener("load", function () {
       this.ui = new UI(this);
       this.keys = [];
       this.enemies = [];
+      // holder for particles
+      this.particles = [];
       this.enemyTimer = 0;
       this.enemyInterval = 1000;
       this.ammo = 20;
@@ -452,13 +454,19 @@ window.addEventListener("load", function () {
       } else {
         this.ammoTimer += deltaTime;
       }
+      // call the update method on particles
+      this.particles.forEach((particle) => particle.update());
+      // filter array- filter out marked for deletion
+      this.particles = this.particles.filter(
+        (particle) => !particle.markedForDeletion
+      );
       this.enemies.forEach((enemy) => {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
           // check is type lucky ? if call enterPowerUp from player class
           if ((enemy.type = "lucky")) this.player.enterPowerUp();
-          // penalty for hitting enemys that are not lucky
+          // penalty for hitting enemies that are not lucky
           else this.score--;
         }
         this.player.projectiles.forEach((projectile) => {
@@ -485,6 +493,8 @@ window.addEventListener("load", function () {
       this.background.draw(context);
       this.player.draw(context);
       this.ui.draw(context);
+      // draw particles
+      this.particles.forEach((particle) => particle.draw(context));
       this.enemies.forEach((enemy) => {
         enemy.draw(context);
       });

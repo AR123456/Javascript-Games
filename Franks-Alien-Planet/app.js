@@ -60,20 +60,17 @@ window.addEventListener("load", function () {
       this.x = x;
       this.y = y;
       this.image = document.getElementById("gears");
-      this.frameX = Math.floor(Math.random() * 3);
-      this.frameY = Math.floor(Math.random() * 3);
-      this.spriteSize = 50;
-      this.sizeModifier = (Math.random() * 5 + 0.5).toFixed(1);
-      this.size = this.spriteSize * this.sizeModifier;
-      this.speedX = Math.random() * 6 - 3;
-      this.speedY = Math.random() * -15;
-
-      this.gravity = 0.5;
-      this.markedForDeletion = false;
-      // rotation angle for each partical
-      this.angle = 0;
-      // radiants per animation frame
-      this.va = Math.random() * 0.2 - 0.1;
+      this.frameX = Math.floor(Math.random() * 3); // pick row of random gear
+      this.frameY = Math.floor(Math.random() * 3); // pic column of random gear
+      this.spriteSize = 50; //this sprit sheet has square sprites
+      this.sizeModifier = (Math.random() * 5 + 0.5).toFixed(1); // differ size of gears
+      this.size = this.spriteSize * this.sizeModifier; // every particle gets different size
+      this.speedX = Math.random() * 6 - 3; // random horizontal movement
+      this.speedY = Math.random() * -15; // random vertical movements
+      this.gravity = 0.5; // use this tu pull down with curve
+      this.markedForDeletion = false; //
+      this.angle = 0; // rotation angle for each partical
+      this.va = Math.random() * 0.2 - 0.1; // va is velocity of angle in radiants per animation frame
     }
   }
   // main character

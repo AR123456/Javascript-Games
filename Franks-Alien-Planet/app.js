@@ -60,51 +60,6 @@ window.addEventListener("load", function () {
       this.x = x;
       this.y = y;
       this.image = document.getElementById("gears");
-      // get random gear from grid
-      this.frameX = Math.floor(Math.random() * 3);
-      this.frameY = Math.floor(Math.random() * 3);
-      // each frame is 50x50
-      this.spriteSize = 50;
-      // vary the size of gears
-      this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1);
-      this.size = this.spriteSize * this.sizeModifier;
-      // vary how gear fall horizonally - right or left
-      this.speedX = Math.random() * 6 - 3;
-      // vertical movement
-      // go up a bit, randomly before down
-      this.speedY = Math.random() * -15;
-      // gravity for falling gears
-      this.gravity = 0.5;
-      this.markedForDeletion = false;
-      // rotate the gears as they fall
-      this.angle = 0;
-      // va velocity of angle - speed of rotation in radiants per animation frame
-      this.va = Math.random() * 0.2 - 0.1;
-    }
-    update() {
-      // increase rotation angle
-      this.angle += this.va;
-      // apply gravity for arch and spped decent as time passes
-      this.speedY += this.gravity;
-      this.x -= this.speedX;
-      // apply speed effected by gravity
-      this.y += this.speedY;
-      // revove the gears if they fall off bottom of screen or game scrolls vertically past their position
-      if (this.y > this.game.height + this.size || this.x < 0 - this.size)
-        this.markedForDeletion = true;
-    }
-    draw(context) {
-      context.drawImage(
-        this.image,
-        this.frameX * this.spriteSize, // source x
-        this.frameY * this.spriteSize, // source y
-        this.spriteSize, // source width
-        this.spriteSize, // source hight
-        this.x,
-        this.y,
-        this.size,
-        this.size
-      );
     }
   }
   // main character
@@ -430,7 +385,6 @@ window.addEventListener("load", function () {
       this.ui = new UI(this);
       this.keys = [];
       this.enemies = [];
-      this.particle = [];
       this.enemyTimer = 0;
       this.enemyInterval = 1000;
       this.ammo = 20;
@@ -463,29 +417,10 @@ window.addEventListener("load", function () {
       } else {
         this.ammoTimer += deltaTime;
       }
-      // adding particles
-      this.particles.forEach((particle) => particle.update());
-      // filter out paticles marked for delition video 1:49
-      this.particles = this.particles.filter(
-        (particle) => !this.particle.markedForDeletion
-      );
       this.enemies.forEach((enemy) => {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
-
-          // adding gear particles
-          for (let i = 0; i < 10; i++) {
-            // pass main game object aka this as well as position of the enemy we just collied with
-            // using 1/2 so they are  not expolding out of the top
-            this.particles.push(
-              new Particle(
-                this,
-                enemy.x + enemy.width * 0.5,
-                enemy.y + enemy.height * 0.5
-              )
-            );
-          }
           // check is type lucky ? if call enterPowerUp from player class
           if ((enemy.type = "lucky")) this.player.enterPowerUp();
           // penalty for hitting enemys that are not lucky
@@ -497,16 +432,6 @@ window.addEventListener("load", function () {
             projectile.markedForDeletion = true;
             if (enemy.lives <= 0) {
               enemy.markedForDeletion = true;
-              // adding gear particles
-              // pass main game object aka this as well as position of the enemy we just collied with
-              // using 1/2 so they are  not expolding out of the top
-              this.particles.push(
-                new Particle(
-                  this,
-                  enemy.x + enemy.width * 0.5,
-                  enemy.y + enemy.height * 0.5
-                )
-              );
               if (!this.gameOver) this.score += enemy.score;
               if (this.score > this.winningScore) this.gameOver = true;
             }
@@ -525,8 +450,6 @@ window.addEventListener("load", function () {
       this.background.draw(context);
       this.player.draw(context);
       this.ui.draw(context);
-      // adding particles
-      this.particles.forEach((particle) => particle.draw(context));
       this.enemies.forEach((enemy) => {
         enemy.draw(context);
       });

@@ -77,8 +77,13 @@ window.addEventListener("load", function () {
       this.speedY += this.gravity; // increase by gravity for curve
       this.x -= this.speedX; // move horizonatlly
       this.y += this.speedY; // apply the speed y affected by gravity to vertical of each partical
-      // if particle falls off screen vertically - y coordinate  is
+      // if particle falls off screen vertically so y coordinate is more that game height
+      // plus size of particle .. or game has scrolled past particle
+      if (this.y > this.game.height + this.size || this.x < 0 - this.size) {
+        this.markedForDeletion = true;
+      }
     }
+    draw(context) {}
   }
   // main character
   class Player {

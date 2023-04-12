@@ -60,6 +60,20 @@ window.addEventListener("load", function () {
       this.x = x;
       this.y = y;
       this.image = document.getElementById("gears");
+      this.frameX = Math.floor(Math.random() * 3);
+      this.frameY = Math.floor(Math.random() * 3);
+      this.spriteSize = 50;
+      this.sizeModifier = (Math.random() * 5 + 0.5).toFixed(1);
+      this.size = this.spriteSize * this.sizeModifier;
+      this.speedX = Math.random() * 6 - 3;
+      this.speedY = Math.random() * -15;
+
+      this.gravity = 0.5;
+      this.markedForDeletion = false;
+      // rotation angle for each partical
+      this.angle = 0;
+      // radiants per animation frame
+      this.va = Math.random() * 0.2 - 0.1;
     }
   }
   // main character

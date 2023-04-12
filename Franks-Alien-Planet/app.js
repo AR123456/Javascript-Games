@@ -72,6 +72,13 @@ window.addEventListener("load", function () {
       this.angle = 0; // rotation angle for each partical
       this.va = Math.random() * 0.2 - 0.1; // va is velocity of angle in radiants per animation frame
     }
+    update() {
+      this.angle += this.va; // increase rotation angle
+      this.speedY += this.gravity; // increase by gravity for curve
+      this.x -= this.speedX; // move horizonatlly
+      this.y += this.speedY; // apply the speed y affected by gravity to vertical of each partical
+      // if particle falls off screen vertically - y coordinate  is
+    }
   }
   // main character
   class Player {

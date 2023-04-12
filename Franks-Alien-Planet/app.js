@@ -464,6 +464,18 @@ window.addEventListener("load", function () {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
+          // adding for loop to draw flying gears
+          for (let i = 0; i < 10; i++) {
+            // in here "this" is the game object
+            this.particles.push(
+              new Particle(
+                this,
+                enemy.x + enemy.width * 0.5,
+                enemy.y + enemy.height * 0.5
+              )
+            );
+          }
+          //
           // check is type lucky ? if call enterPowerUp from player class
           if ((enemy.type = "lucky")) this.player.enterPowerUp();
           // penalty for hitting enemies that are not lucky
@@ -475,6 +487,15 @@ window.addEventListener("load", function () {
             projectile.markedForDeletion = true;
             if (enemy.lives <= 0) {
               enemy.markedForDeletion = true;
+              // adding one exploding gear if projectile hits
+              this.particles.push(
+                new Particle(
+                  this,
+                  enemy.x + enemy.width * 0.5,
+                  enemy.y + enemy.height * 0.5
+                )
+              );
+              //
               if (!this.gameOver) this.score += enemy.score;
               if (this.score > this.winningScore) this.gameOver = true;
             }

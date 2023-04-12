@@ -83,7 +83,19 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
       }
     }
-    draw(context) {}
+    draw(context) {
+      context.drawImage(
+        this.image, // what image
+        this.frameX * this.spriteSize, // sx crop individual sprite location
+        this.frameY * this.spriteSize, //sy crop individual sprite location
+        this.spriteSize, //sw crop individual sprite width
+        this.spriteSize, //sh crop individual sprite height
+        this.x, // where to draw
+        this.y, // where to draw
+        this.size, // how big scaled according to size Modifier in constructor
+        this.size // how big
+      );
+    }
   }
   // main character
   class Player {

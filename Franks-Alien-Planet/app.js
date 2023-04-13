@@ -71,16 +71,28 @@ window.addEventListener("load", function () {
       this.markedForDeletion = false; //
       this.angle = 0; // rotation angle for each partical
       this.va = Math.random() * 0.2 - 0.1; // va is velocity of angle in radiants per animation frame
+      // making the particles bounce
+      this.bounced = 0;
+      this.bottomBounceBoundary = Math.random() * 100 + 60; // number of pixels off bottom from which particles will bounce
     }
     update() {
       this.angle += this.va; // increase rotation angle
       this.speedY += this.gravity; // increase by gravity for curve
-      this.x -= this.speedX; // move horizonatlly
-      this.y += this.speedY; // apply the speed y affected by gravity to vertical of each partical
+      this.x -= this.speedX; // move horizontally
+      this.y += this.speedY; // apply the speed y affected by gravity to vertical of each particle
       // if particle falls off screen vertically so y coordinate is more that game height
       // plus size of particle .. or game has scrolled past particle
       if (this.y > this.game.height + this.size || this.x < 0 - this.size) {
         this.markedForDeletion = true;
+      }
+      // change the vertical direction of the particle -set speed y to opposite
+      if (
+        this.y > this.game.height - this.bottomBounceBoundary &&
+        !this.bounced < 2
+      ) {
+        this.bounced++;
+        // set vertical direction to its opposite
+        this.speedY *= -0.5;
       }
     }
     draw(context) {
@@ -494,8 +506,19 @@ window.addEventListener("load", function () {
               )
             );
             if (enemy.lives <= 0) {
-              enemy.markedForDeletion = true;
+              // adding for loop to draw flying gears when enemy is distroyed by projectile
+              for (let i = 0; i < 10; i++) {
+                // in here "this" is the game object
+                this.particles.push(
+                  new Particle(
+                    this,
+                    enemy.x + enemy.width * 0.5,
+                    enemy.y + enemy.height * 0.5
+                  )
+                );
+              }
 
+              enemy.markedForDeletion = true;
               if (!this.gameOver) this.score += enemy.score;
               if (this.score > this.winningScore) this.gameOver = true;
             }

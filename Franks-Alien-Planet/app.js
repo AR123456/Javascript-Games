@@ -73,7 +73,7 @@ window.addEventListener("load", function () {
       this.va = Math.random() * 0.2 - 0.1; // va is velocity of angle in radiants per animation frame
       // making the particles bounce
       this.bounced = 0;
-      this.bottomBounceBoundary = Math.random() * 100 + 60; // number of pixels off bottom from which particles will bounce
+      this.bottomBounceBoundary = Math.random() * 80 + 60; // number of pixels off bottom from which particles will bounce
     }
     update() {
       this.angle += this.va; // increase rotation angle
@@ -223,7 +223,8 @@ window.addEventListener("load", function () {
       // set powerUp property on player object to true
       this.powerUp = true;
       // recharge ammo to max value
-      this.game.ammo = this.game.maxAmmo;
+      if (this.game.ammo < this.game.maxAmmo)
+        this.game.ammo = this.game.maxAmmo;
     }
   }
   // enemy types
@@ -454,7 +455,7 @@ window.addEventListener("load", function () {
       this.gameTime = 0;
       this.timeLimit = 50000;
       this.speed = 1;
-      this.debug = true;
+      this.debug = false;
     }
 
     update(deltaTime) {
@@ -494,7 +495,7 @@ window.addEventListener("load", function () {
             );
           }
           // check is type lucky ? if call enterPowerUp from player class
-          if ((enemy.type = "lucky")) this.player.enterPowerUp();
+          if (enemy.type === "lucky") this.player.enterPowerUp();
           // penalty for hitting enemies that are not lucky
           else this.score--;
         }
@@ -540,8 +541,8 @@ window.addEventListener("load", function () {
     }
     draw(context) {
       this.background.draw(context);
-      this.player.draw(context);
       this.ui.draw(context);
+      this.player.draw(context);
       // draw particles
       this.particles.forEach((particle) => particle.draw(context));
       this.enemies.forEach((enemy) => {

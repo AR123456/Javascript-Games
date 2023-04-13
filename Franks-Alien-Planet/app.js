@@ -96,17 +96,23 @@ window.addEventListener("load", function () {
       }
     }
     draw(context) {
+      context.save();
+      // translate over the object being rotated- to xy postion of the particle
+      context.translate(this.x, this.y);
+      // this.rotate() takes in radiants
+      context.rotate(this.angle);
       context.drawImage(
         this.image, // what image
         this.frameX * this.spriteSize, // sx crop individual sprite location
         this.frameY * this.spriteSize, //sy crop individual sprite location
         this.spriteSize, //sw crop individual sprite width
         this.spriteSize, //sh crop individual sprite height
-        this.x, // where to draw
-        this.y, // where to draw
+        this.size * -0.5, // where to draw
+        this.size * -0.5, // where to draw
         this.size, // how big scaled according to size Modifier in constructor
         this.size // how big
       );
+      context.restore();
     }
   }
   // main character
@@ -487,7 +493,6 @@ window.addEventListener("load", function () {
               )
             );
           }
-
           // check is type lucky ? if call enterPowerUp from player class
           if ((enemy.type = "lucky")) this.player.enterPowerUp();
           // penalty for hitting enemies that are not lucky
@@ -506,7 +511,7 @@ window.addEventListener("load", function () {
               )
             );
             if (enemy.lives <= 0) {
-              // adding for loop to draw flying gears when enemy is distroyed by projectile
+              // adding for loop to draw flying gears when enemy is destroyed by projectile
               for (let i = 0; i < 10; i++) {
                 // in here "this" is the game object
                 this.particles.push(

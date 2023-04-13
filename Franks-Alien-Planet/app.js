@@ -318,6 +318,24 @@ window.addEventListener("load", function () {
       this.type = "lucky";
     }
   }
+  // Big wale like enemy that breaks into 5 smaller enemies when destroyed
+  class HiveWhale extends Enemy {
+    constructor(game) {
+      // get all the stuff from Enemy first
+      super(game);
+      this.width = 400;
+      this.height = 227;
+      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.image = document.getElementById("hivewhale");
+      // randomize looping the 3 animations
+      this.frameY = Math.floor(Math.random() * 2);
+      this.lives = 3;
+      this.score = 15;
+      this.type = "lucky";
+    }
+  }
+  //
+
   // inividual background layers
   class Layer {
     constructor(game, image, speedModifier) {

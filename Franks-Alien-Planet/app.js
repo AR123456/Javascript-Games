@@ -294,7 +294,7 @@ window.addEventListener("load", function () {
       super(game);
       this.width = 213;
       this.height = 165;
-      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("angler2");
       // randomize looping the 3 animations
       this.frameY = Math.floor(Math.random() * 2);
@@ -309,7 +309,7 @@ window.addEventListener("load", function () {
       super(game);
       this.width = 99;
       this.height = 95;
-      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("lucky");
       // randomize looping the 3 animations
       this.frameY = Math.floor(Math.random() * 2);
@@ -325,13 +325,15 @@ window.addEventListener("load", function () {
       super(game);
       this.width = 400;
       this.height = 227;
-      this.y = Math.random() * (this.game.height * 0.9 - this.height);
+      this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("hivewhale");
       // randomize looping the 3 animations
-      this.frameY = Math.floor(Math.random() * 2);
-      this.lives = 3;
-      this.score = 15;
-      this.type = "lucky";
+      this.frameY = 0;
+      this.lives = 15;
+      this.score = this.lives;
+      this.type = "hive";
+      // this is a slow moving enemy so overwriteing default speed
+      this.speedX = Math.random() * -1.2 - 0.2;
     }
   }
   //
@@ -574,6 +576,7 @@ window.addEventListener("load", function () {
       const randomize = Math.random();
       if (randomize < 0.3) this.enemies.push(new Angler1(this));
       if (randomize < 0.6) this.enemies.push(new Angler2(this));
+      if (randomize < 0.8) this.enemies.push(new HiveWhale(this));
       else this.enemies.push(new LuckyFish(this));
     }
     checkCollision(rect1, rect2) {

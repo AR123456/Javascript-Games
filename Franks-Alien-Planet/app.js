@@ -78,7 +78,7 @@ window.addEventListener("load", function () {
     update() {
       this.angle += this.va; // increase rotation angle
       this.speedY += this.gravity; // increase by gravity for curve
-      this.x -= this.speedX; // move horizontally
+      this.x -= this.speedX + this.game.speed; // move horizontally
       this.y += this.speedY; // apply the speed y affected by gravity to vertical of each particle
       // if particle falls off screen vertically so y coordinate is more that game height
       // plus size of particle .. or game has scrolled past particle

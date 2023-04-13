@@ -63,7 +63,7 @@ window.addEventListener("load", function () {
       this.frameX = Math.floor(Math.random() * 3); // pick row of random gear
       this.frameY = Math.floor(Math.random() * 3); // pic column of random gear
       this.spriteSize = 50; //this sprit sheet has square sprites
-      this.sizeModifier = (Math.random() * 5 + 0.5).toFixed(1); // differ size of gears
+      this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1); // differ size of gears
       this.size = this.spriteSize * this.sizeModifier; // every particle gets different size
       this.speedX = Math.random() * 6 - 3; // random horizontal movement
       this.speedY = Math.random() * -15; // random vertical movements
@@ -475,7 +475,7 @@ window.addEventListener("load", function () {
               )
             );
           }
-          //
+
           // check is type lucky ? if call enterPowerUp from player class
           if ((enemy.type = "lucky")) this.player.enterPowerUp();
           // penalty for hitting enemies that are not lucky
@@ -485,17 +485,17 @@ window.addEventListener("load", function () {
           if (this.checkCollision(projectile, enemy)) {
             enemy.lives--;
             projectile.markedForDeletion = true;
+            // adding one exploding gear if projectile hits
+            this.particles.push(
+              new Particle(
+                this,
+                enemy.x + enemy.width * 0.5,
+                enemy.y + enemy.height * 0.5
+              )
+            );
             if (enemy.lives <= 0) {
               enemy.markedForDeletion = true;
-              // adding one exploding gear if projectile hits
-              this.particles.push(
-                new Particle(
-                  this,
-                  enemy.x + enemy.width * 0.5,
-                  enemy.y + enemy.height * 0.5
-                )
-              );
-              //
+
               if (!this.gameOver) this.score += enemy.score;
               if (this.score > this.winningScore) this.gameOver = true;
             }

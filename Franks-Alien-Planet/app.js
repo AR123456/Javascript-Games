@@ -336,6 +336,26 @@ window.addEventListener("load", function () {
       this.speedX = Math.random() * -1.2 - 0.2;
     }
   }
+  // drone enemy types
+  class Drone extends Enemy {
+    // x,y is the position of the hivewhale
+    constructor(game, x, y) {
+      // get all the stuff from Enemy first
+      super(game);
+      this.width = 115;
+      this.height = 95;
+      this.x = x;
+      this.y = y;
+      this.image = document.getElementById("drone");
+      // randomize looping the 3 animations
+      this.frameY = 0;
+      this.lives = 15;
+      this.score = this.lives;
+      this.type = "drone";
+      // this is a slow moving enemy so overwriteing default speed
+      this.speedX = Math.random() * -1.2 - 0.2;
+    }
+  }
   //
 
   // inividual background layers

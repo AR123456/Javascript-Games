@@ -565,8 +565,14 @@ window.addEventListener("load", function () {
               enemy.markedForDeletion = true;
               // check to see if the enemy that we just destroyed is a whale, if so spaun drones
               if (enemy.type === "hive") {
-                for (let i = 0; i < 6; i++) {
-                  this.enemies.push(new Drone(this, enemy.x, enemy.y));
+                for (let i = 0; i < 5; i++) {
+                  this.enemies.push(
+                    new Drone(
+                      this,
+                      enemy.x + Math.random() * enemy.width,
+                      enemy.y + Math.random() * enemy.height * 0.5
+                    )
+                  );
                 }
               }
               if (!this.gameOver) this.score += enemy.score;

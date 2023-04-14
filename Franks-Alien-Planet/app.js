@@ -406,6 +406,20 @@ window.addEventListener("load", function () {
       this.layers.forEach((layer) => layer.draw(context));
     }
   }
+  // explosions
+  class Explosion {
+    constructor(game, x, y) {
+      this.game = game;
+      this.x = x;
+      this.y = y;
+      this.frameX = 0;
+      this.spriteHeight = 200;
+      this.timer = 0;
+    }
+    update() {}
+    draw() {}
+  }
+
   // score timer and other info
   class UI {
     constructor(game) {

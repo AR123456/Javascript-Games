@@ -410,15 +410,32 @@ window.addEventListener("load", function () {
   class Explosion {
     constructor(game, x, y) {
       this.game = game;
-      this.x = x;
-      this.y = y;
       this.frameX = 0;
       this.spriteHeight = 200;
+      this.fps = 15;
       this.timer = 0;
+      this.interval = 1000 / this.fps;
+      this.markedForDeletion = false;
+      this.maxFrame = 8;
     }
-    update() {}
-    draw() {}
+    update(deltaTime) {
+      this.frameX++;
+    }
+    draw(context) {
+      context.drawImage(this.image, this.x, this.y);
+    }
   }
+  class SmokeExplosion extends Explosion {
+    constructor(game, x, y) {
+      this.image = document.getElementById("smokeExplosion");
+      this.spriteWidth = 200;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.x = x - this.width * 0.5;
+      this.y = y - this.height * 0.5;
+    }
+  }
+  class FireExplosion extends Explosion {}
 
   // score timer and other info
   class UI {
@@ -488,10 +505,11 @@ window.addEventListener("load", function () {
       this.player = new Player(this);
       this.input = new InputHandler(this);
       this.ui = new UI(this);
+      // holders
       this.keys = [];
       this.enemies = [];
-      // holder for particles
       this.particles = [];
+      this.explosions = [];
       this.enemyTimer = 0;
       this.enemyInterval = 1000;
       this.ammo = 20;
@@ -530,12 +548,23 @@ window.addEventListener("load", function () {
       this.particles = this.particles.filter(
         (particle) => !particle.markedForDeletion
       );
+      // call update for explosion
+      this.explosions.forEach((explosion) => explosion.update());
+      // filter array- filter out marked for deletion
+      this.explosions = this.explosions.filter(
+        (explosion) => !explosion.markedForDeletion
+      );
+
+      //
+
       this.enemies.forEach((enemy) => {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
           // adding for loop to draw flying gears
-          for (let i = 0; i < enemy.score; i++) {
+          // for (let i = 0; i < enemy.score; i++) {
+          //TOOD just 2 gears to reduce clutter
+          for (let i = 0; i < 2; i++) {
             // in here "this" is the game object
             this.particles.push(
               new Particle(
@@ -600,6 +629,7 @@ window.addEventListener("load", function () {
       }
     }
     draw(context) {
+      // the order of the draw methods matters
       this.background.draw(context);
       this.ui.draw(context);
       this.player.draw(context);
@@ -608,6 +638,11 @@ window.addEventListener("load", function () {
       this.enemies.forEach((enemy) => {
         enemy.draw(context);
       });
+      // draw explosions
+      this.explosions.forEach((explosion) => {
+        explosion.draw(context);
+      });
+      //
       // now after the other stuff drawn on screen add layer4 so it is closest to user
       this.background.layer4.draw(context);
     }
@@ -619,6 +654,8 @@ window.addEventListener("load", function () {
       if (randomize < 0.8) this.enemies.push(new HiveWhale(this));
       else this.enemies.push(new LuckyFish(this));
     }
+    // method to add explosions
+    addExplosion() {}
     checkCollision(rect1, rect2) {
       return (
         rect1.x < rect2.x + rect2.width &&

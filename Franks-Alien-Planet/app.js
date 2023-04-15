@@ -413,13 +413,15 @@ window.addEventListener("load", function () {
       this.game = game;
       this.frameX = 0;
       this.spriteHeight = 200;
-      this.fps = 15;
+      this.fps = 30;
       this.timer = 0;
       this.interval = 1000 / this.fps;
       this.markedForDeletion = false;
       this.maxFrame = 8;
     }
     update(deltaTime) {
+      // account for horizonal speed of explosions
+      this.x -= this.game.speed;
       // timer to slow the explosion down
       if (this.timer > this.interval) {
         this.frameX++;
@@ -456,7 +458,17 @@ window.addEventListener("load", function () {
       this.y = y - this.height * 0.5;
     }
   }
-  class FireExplosion extends Explosion {}
+  class FireExplosion extends Explosion {
+    constructor(game, x, y) {
+      super(game, x, y);
+      this.image = document.getElementById("fireExplosion");
+
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.x = x - this.width * 0.5;
+      this.y = y - this.height * 0.5;
+    }
+  }
 
   // score timer and other info
   class UI {

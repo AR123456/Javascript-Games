@@ -281,6 +281,7 @@ window.addEventListener("load", function () {
       this.height = 169;
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
       this.image = document.getElementById("angler1");
+      // randomize looping the 3 animations
       this.frameY = Math.floor(Math.random() * 3);
       this.lives = 2;
       this.score = this.lives;
@@ -295,6 +296,7 @@ window.addEventListener("load", function () {
       this.height = 165;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("angler2");
+      // randomize looping the 3 animations
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 3;
       this.score = this.lives;
@@ -309,6 +311,7 @@ window.addEventListener("load", function () {
       this.height = 95;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("lucky");
+      // randomize looping the 3 animations
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 3;
       this.score = 15;
@@ -324,34 +327,13 @@ window.addEventListener("load", function () {
       this.height = 227;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("hivewhale");
+      // randomize looping the 3 animations
       this.frameY = 0;
       this.lives = 15;
       this.score = this.lives;
       this.type = "hive";
       // this is a slow moving enemy so overwriteing default speed
       this.speedX = Math.random() * -1.2 - 0.2;
-    }
-  }
-  // drone enemy types
-  class Drone extends Enemy {
-    // x,y is the position of the hivewhale
-    constructor(game, x, y) {
-      // get all the stuff from Enemy first
-      super(game);
-      this.width = 115;
-      this.height = 95;
-      // TODO commenting out x and y for now since drones are scrolling
-      // through their whole row in one box why is drawImage not seeing sx,sy,sw,sh -
-      // not cropping out image
-      // this.x = x;
-      // this.y = y;
-      this.image = document.getElementById("drone");
-      this.frameY = Math.floor(Math.random() * 2);
-      this.lives = 3;
-      this.score = this.lives;
-      this.type = "drone";
-      // this is a over wright default speed
-      this.speedX = Math.random() * -4.2 - 0.5;
     }
   }
   //
@@ -407,64 +389,6 @@ window.addEventListener("load", function () {
       this.layers.forEach((layer) => layer.draw(context));
     }
   }
-  // explosions
-  class Explosion {
-    constructor(game, x, y) {
-      this.game = game;
-      this.frameX = 0;
-      this.spriteWidth = 200;
-      this.spriteHeight = 200;
-      this.width = this.spriteWidth;
-      this.height = this.spriteHeight;
-      this.x = x - this.width * 0.5;
-      this.y = y - this.height * 0.5;
-      this.fps = 30;
-      this.timer = 0;
-      this.interval = 1000 / this.fps;
-      this.markedForDeletion = false;
-      this.maxFrame = 8;
-    }
-    update(deltaTime) {
-      // account for horizonal speed of explosions
-      this.x -= this.game.speed;
-      // timer to slow the explosion down
-      if (this.timer > this.interval) {
-        this.frameX++;
-        // reset timer for next time
-        this.timer = 0;
-      } else {
-        this.timer += deltaTime;
-      }
-
-      if (this.frameX > this.maxFrame) this.markedForDeletion = true;
-    }
-    draw(context) {
-      context.drawImage(
-        this.image,
-        this.frameX * this.spriteWidth,
-        0,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.x,
-        this.y,
-        this.width,
-        this.height
-      );
-    }
-  }
-  class SmokeExplosion extends Explosion {
-    constructor(game, x, y) {
-      super(game, x, y);
-      this.image = document.getElementById("smokeExplosion");
-    }
-  }
-  class FireExplosion extends Explosion {
-    constructor(game, x, y) {
-      super(game, x, y);
-      this.image = document.getElementById("fireExplosion");
-    }
-  }
-
   // score timer and other info
   class UI {
     constructor(game) {
@@ -533,11 +457,10 @@ window.addEventListener("load", function () {
       this.player = new Player(this);
       this.input = new InputHandler(this);
       this.ui = new UI(this);
-      // holders
       this.keys = [];
       this.enemies = [];
+      // holder for particles
       this.particles = [];
-      this.explosions = [];
       this.enemyTimer = 0;
       this.enemyInterval = 1000;
       this.ammo = 20;
@@ -576,24 +499,12 @@ window.addEventListener("load", function () {
       this.particles = this.particles.filter(
         (particle) => !particle.markedForDeletion
       );
-      // call update for explosion
-      this.explosions.forEach((explosion) => explosion.update(deltaTime));
-      // filter array- filter out marked for deletion
-      this.explosions = this.explosions.filter(
-        (explosion) => !explosion.markedForDeletion
-      );
       this.enemies.forEach((enemy) => {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
-          // add an explosion
-          this.addExplosion(enemy);
-          //
-
           // adding for loop to draw flying gears
-          // for (let i = 0; i < enemy.score; i++) {
-          //TOOD just 2 gears to reduce clutter
-          for (let i = 0; i < 2; i++) {
+          for (let i = 0; i < 10; i++) {
             // in here "this" is the game object
             this.particles.push(
               new Particle(
@@ -622,7 +533,7 @@ window.addEventListener("load", function () {
             );
             if (enemy.lives <= 0) {
               // adding for loop to draw flying gears when enemy is destroyed by projectile
-              for (let i = 0; i < enemy.score; i++) {
+              for (let i = 0; i < 10; i++) {
                 // in here "this" is the game object
                 this.particles.push(
                   new Particle(
@@ -632,20 +543,8 @@ window.addEventListener("load", function () {
                   )
                 );
               }
+
               enemy.markedForDeletion = true;
-              // add explosion
-              this.addExplosion(enemy);
-              //
-              // check to see if the enemy that we just destroyed is a whale, if so spaun drones
-              if (enemy.type === "hive") {
-                this.enemies.push(
-                  new Drone(
-                    this,
-                    enemy.x + Math.random() * enemy.width,
-                    enemy.y + Math.random() * enemy.height * 0.5
-                  )
-                );
-              }
               if (!this.gameOver) this.score += enemy.score;
               if (this.score > this.winningScore) this.gameOver = true;
             }
@@ -661,7 +560,6 @@ window.addEventListener("load", function () {
       }
     }
     draw(context) {
-      // the order of the draw methods matters
       this.background.draw(context);
       this.ui.draw(context);
       this.player.draw(context);
@@ -670,11 +568,6 @@ window.addEventListener("load", function () {
       this.enemies.forEach((enemy) => {
         enemy.draw(context);
       });
-      // draw explosions
-      this.explosions.forEach((explosion) => {
-        explosion.draw(context);
-      });
-      //
       // now after the other stuff drawn on screen add layer4 so it is closest to user
       this.background.layer4.draw(context);
     }
@@ -685,18 +578,6 @@ window.addEventListener("load", function () {
       if (randomize < 0.6) this.enemies.push(new Angler2(this));
       if (randomize < 0.8) this.enemies.push(new HiveWhale(this));
       else this.enemies.push(new LuckyFish(this));
-    }
-    // method to add explosions
-    addExplosion(enemy) {
-      const randomize = Math.random();
-      if (randomize < 1)
-        this.explosions.push(
-          new SmokeExplosion(
-            this,
-            enemy.x + enemy.width * 0.5,
-            enemy.y + enemy.height * 0.5
-          )
-        );
     }
     checkCollision(rect1, rect2) {
       return (
@@ -721,9 +602,10 @@ window.addEventListener("load", function () {
     lastTime = timeStamp;
     // clear the prior animation then draw this loop
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    game.draw(ctx);
     // passing deltaTime to game to run periotic stuff
     game.update(deltaTime);
+    game.draw(ctx);
+
     // call next animation frame - pass in itself to make loop endless
     // requestAnimationFrane can  pass time stamp in an arg to the function it calls
     requestAnimationFrame(animate);

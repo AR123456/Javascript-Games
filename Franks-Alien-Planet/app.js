@@ -281,7 +281,6 @@ window.addEventListener("load", function () {
       this.height = 169;
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
       this.image = document.getElementById("angler1");
-
       this.frameY = Math.floor(Math.random() * 3);
       this.lives = 2;
       this.score = this.lives;
@@ -296,7 +295,6 @@ window.addEventListener("load", function () {
       this.height = 165;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("angler2");
-
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 3;
       this.score = this.lives;
@@ -311,7 +309,6 @@ window.addEventListener("load", function () {
       this.height = 95;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("lucky");
-
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 3;
       this.score = 15;
@@ -327,7 +324,6 @@ window.addEventListener("load", function () {
       this.height = 227;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("hivewhale");
-
       this.frameY = 0;
       this.lives = 15;
       this.score = this.lives;
@@ -565,6 +561,7 @@ window.addEventListener("load", function () {
               enemy.markedForDeletion = true;
               // check to see if the enemy that we just destroyed is a whale, if so spaun drones
               if (enemy.type === "hive") {
+                // this.enemies.push(new Drone(this, enemy.x, enemy.y));
                 for (let i = 0; i < 5; i++) {
                   this.enemies.push(
                     new Drone(

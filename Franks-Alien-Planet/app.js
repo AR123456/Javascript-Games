@@ -340,8 +340,10 @@ window.addEventListener("load", function () {
       super(game);
       this.width = 115;
       this.height = 95;
-      this.x = x;
-      this.y = y;
+      // TODO commenting out x and y for now since drones are scrolling
+      // through their whole row in one box
+      // this.x = x;
+      // this.y = y;
       this.image = document.getElementById("drone");
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 3;
@@ -519,7 +521,7 @@ window.addEventListener("load", function () {
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
           // adding for loop to draw flying gears
-          for (let i = 0; i < 10; i++) {
+          for (let i = 0; i < enemy.score; i++) {
             // in here "this" is the game object
             this.particles.push(
               new Particle(
@@ -548,7 +550,7 @@ window.addEventListener("load", function () {
             );
             if (enemy.lives <= 0) {
               // adding for loop to draw flying gears when enemy is destroyed by projectile
-              for (let i = 0; i < 10; i++) {
+              for (let i = 0; i < enemy.score; i++) {
                 // in here "this" is the game object
                 this.particles.push(
                   new Particle(

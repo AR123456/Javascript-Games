@@ -421,7 +421,14 @@ window.addEventListener("load", function () {
     }
     update(deltaTime) {
       // timer to slow the explosion down
-      this.frameX++;
+      if (this.timer > this.interval) {
+        this.frameX++;
+        // reset timer for next time
+        this.timer = 0;
+      } else {
+        this.timer += deltaTime;
+      }
+
       if (this.frameX > this.maxFrame) this.markedForDeletion = true;
     }
     draw(context) {
@@ -563,7 +570,7 @@ window.addEventListener("load", function () {
         (particle) => !particle.markedForDeletion
       );
       // call update for explosion
-      this.explosions.forEach((explosion) => explosion.update());
+      this.explosions.forEach((explosion) => explosion.update(deltaTime));
       // filter array- filter out marked for deletion
       this.explosions = this.explosions.filter(
         (explosion) => !explosion.markedForDeletion
@@ -675,9 +682,14 @@ window.addEventListener("load", function () {
     // method to add explosions
     addExplosion(enemy) {
       const randomize = Math.random();
-      if (randomize < 1) {
-        this.explosions.push(new SmokeExplosion(this, enemy.x, enemy.y));
-      }
+      if (randomize < 1)
+        this.explosions.push(
+          new SmokeExplosion(
+            this,
+            enemy.x + enemy.width * 0.5,
+            enemy.y + enemy.height * 0.5
+          )
+        );
     }
     checkCollision(rect1, rect2) {
       return (
@@ -702,10 +714,9 @@ window.addEventListener("load", function () {
     lastTime = timeStamp;
     // clear the prior animation then draw this loop
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    game.draw(ctx);
     // passing deltaTime to game to run periotic stuff
     game.update(deltaTime);
-    game.draw(ctx);
-
     // call next animation frame - pass in itself to make loop endless
     // requestAnimationFrane can  pass time stamp in an arg to the function it calls
     requestAnimationFrame(animate);

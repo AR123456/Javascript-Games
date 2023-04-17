@@ -427,6 +427,7 @@ window.addEventListener("load", function () {
   }
   class SmokeExplosion extends Explosion {
     constructor(game, x, y) {
+      super(game, x, y);
       this.image = document.getElementById("smokeExplosion");
       this.spriteWidth = 200;
       this.width = this.spriteWidth;
@@ -554,13 +555,14 @@ window.addEventListener("load", function () {
       this.explosions = this.explosions.filter(
         (explosion) => !explosion.markedForDeletion
       );
-
-      //
-
       this.enemies.forEach((enemy) => {
         enemy.update();
         if (this.checkCollision(this.player, enemy)) {
           enemy.markedForDeletion = true;
+          // add an explosion
+          this.addExplosion(enemy);
+          //
+
           // adding for loop to draw flying gears
           // for (let i = 0; i < enemy.score; i++) {
           //TOOD just 2 gears to reduce clutter
@@ -604,6 +606,9 @@ window.addEventListener("load", function () {
                 );
               }
               enemy.markedForDeletion = true;
+              // add explosion
+              this.addExplosion(enemy);
+              //
               // check to see if the enemy that we just destroyed is a whale, if so spaun drones
               if (enemy.type === "hive") {
                 this.enemies.push(
@@ -655,7 +660,12 @@ window.addEventListener("load", function () {
       else this.enemies.push(new LuckyFish(this));
     }
     // method to add explosions
-    addExplosion() {}
+    addExplosion(enemy) {
+      const randomize = Math.random();
+      if (randomize < 1) {
+        this.explosions.push(new SmokeExplosion(this, enemy.x, enemy.y));
+      }
+    }
     checkCollision(rect1, rect2) {
       return (
         rect1.x < rect2.x + rect2.width &&

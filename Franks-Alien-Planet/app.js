@@ -341,7 +341,8 @@ window.addEventListener("load", function () {
       this.width = 115;
       this.height = 95;
       // TODO commenting out x and y for now since drones are scrolling
-      // through their whole row in one box
+      // through their whole row in one box why is drawImage not seeing sx,sy,sw,sh -
+      // not cropping out image
       // this.x = x;
       // this.y = y;
       this.image = document.getElementById("drone");
@@ -419,10 +420,22 @@ window.addEventListener("load", function () {
       this.maxFrame = 8;
     }
     update(deltaTime) {
+      // timer to slow the explosion down
       this.frameX++;
+      if (this.frameX > this.maxFrame) this.markedForDeletion = true;
     }
     draw(context) {
-      context.drawImage(this.image, this.x, this.y);
+      context.drawImage(
+        this.image,
+        this.frameX * this.spriteWidth,
+        0,
+        this.spriteWidth,
+        this.spriteHeight,
+        this.x,
+        this.y,
+        this.width,
+        this.height
+      );
     }
   }
   class SmokeExplosion extends Explosion {

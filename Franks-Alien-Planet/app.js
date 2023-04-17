@@ -414,11 +414,20 @@ window.addEventListener("load", function () {
       this.y = y;
       this.frameX = 0;
       this.spriteHeight = 200;
+      this.fps = 15;
       this.timer = 0;
+      this.interval = 1000 / this.fps;
+      this.markedForDeletion = false;
     }
-    update() {}
-    draw() {}
+    update(deltaTime) {
+      this.frameX++;
+    }
+    draw(context) {
+      context.drawImage(this.image, this.x, this.y);
+    }
   }
+  class SmokeExplosion extends Explosion {}
+  class FireExplosion extends Explosion {}
 
   // score timer and other info
   class UI {

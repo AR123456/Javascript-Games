@@ -2,7 +2,7 @@ window.addEventListener("load", function () {
   // load page then set up canvas
   const canvas = this.document.getElementById("canvas1");
   const ctx = canvas.getContext("2d");
-  canvas.width = 700;
+  canvas.width = 1000;
   canvas.height = 500;
 
   // keyboard actions
@@ -282,7 +282,7 @@ window.addEventListener("load", function () {
       this.y = Math.random() * (this.game.height * 0.9 - this.height);
       this.image = document.getElementById("angler1");
       this.frameY = Math.floor(Math.random() * 3);
-      this.lives = 2;
+      this.lives = 5;
       this.score = this.lives;
     }
   }
@@ -296,7 +296,7 @@ window.addEventListener("load", function () {
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("angler2");
       this.frameY = Math.floor(Math.random() * 2);
-      this.lives = 3;
+      this.lives = 6;
       this.score = this.lives;
     }
   }
@@ -310,7 +310,7 @@ window.addEventListener("load", function () {
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("lucky");
       this.frameY = Math.floor(Math.random() * 2);
-      this.lives = 3;
+      this.lives = 5;
       this.score = 15;
       this.type = "lucky";
     }
@@ -325,7 +325,7 @@ window.addEventListener("load", function () {
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
       this.image = document.getElementById("hivewhale");
       this.frameY = 0;
-      this.lives = 15;
+      this.lives = 20;
       this.score = this.lives;
       this.type = "hive";
       // this is a slow moving enemy so overwriteing default speed
@@ -549,7 +549,8 @@ window.addEventListener("load", function () {
       this.ammoInterval = 500;
       this.gameOver = false;
       this.score = 0;
-      this.winningScore = 10;
+      // change game difficulty here
+      this.winningScore = 40;
       // put time limit on game
       this.gameTime = 0;
       // can change game difficulty here
@@ -650,6 +651,7 @@ window.addEventListener("load", function () {
                 );
               }
               if (!this.gameOver) this.score += enemy.score;
+              // commenting out this line will changing so game keeps going till game time reached
               if (this.score > this.winningScore) this.gameOver = true;
             }
           }
@@ -686,7 +688,7 @@ window.addEventListener("load", function () {
       const randomize = Math.random();
       if (randomize < 0.3) this.enemies.push(new Angler1(this));
       if (randomize < 0.6) this.enemies.push(new Angler2(this));
-      if (randomize < 0.8) this.enemies.push(new HiveWhale(this));
+      if (randomize < 0.7) this.enemies.push(new HiveWhale(this));
       else this.enemies.push(new LuckyFish(this));
     }
     // method to add explosions

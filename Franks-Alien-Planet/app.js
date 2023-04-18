@@ -539,17 +539,20 @@ window.addEventListener("load", function () {
       this.particles = [];
       this.explosions = [];
       this.enemyTimer = 0;
+      // cam change game difficulty here
       this.enemyInterval = 1000;
+      // this.enemyInterval = 2000;
       this.ammo = 20;
       this.maxAmmo = 50;
       this.ammoTimer = 0;
-      // replenish ammo every 1/2 second
+      // replenish ammo every 1/2 second can change game difficulty here
       this.ammoInterval = 500;
       this.gameOver = false;
       this.score = 0;
       this.winningScore = 10;
       // put time limit on game
       this.gameTime = 0;
+      // can change game difficulty here
       this.timeLimit = 50000;
       this.speed = 1;
       this.debug = false;
@@ -606,7 +609,7 @@ window.addEventListener("load", function () {
           // check is type lucky ? if call enterPowerUp from player class
           if (enemy.type === "lucky") this.player.enterPowerUp();
           // penalty for hitting enemies that are not lucky
-          else this.score--;
+          else if (!this.gameOver) this.score--;
         }
         this.player.projectiles.forEach((projectile) => {
           if (this.checkCollision(projectile, enemy)) {

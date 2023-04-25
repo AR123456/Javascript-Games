@@ -5,4 +5,15 @@ window.addEventListener("load", function () {
   // set element and drawing surface of canvas to same dimensions
   canvas.width = 1280;
   canvas.height = 720;
+  //OOP make it modular
+  class Player {
+    constructor() {}
+  }
+  class Game {
+    constructor(canvas) {
+      this.canvas = canvas;
+      this.width = this.canvas.width;
+    }
+  }
+  function animate() {}
 });

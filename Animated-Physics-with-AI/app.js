@@ -10,6 +10,13 @@ window.addEventListener("load", function () {
     constructor(game) {
       this.game = game;
     }
+    // draw method
+    draw(context) {
+      // draw a circle
+      context.beginPath();
+      context.arc(400, 400, 50, 0, Math.PI * 2);
+      context.fill();
+    }
   }
   class Game {
     constructor(canvas) {
@@ -19,9 +26,13 @@ window.addEventListener("load", function () {
       // this is the Game object
       this.player = new Player(this);
     }
+    render(context) {
+      this.player.draw(context);
+    }
   }
   // create instance of game object
   const game = new Game(canvas);
-  console.log(game);
+  game.render(ctx);
+
   function animate() {}
 });

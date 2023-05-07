@@ -9,12 +9,23 @@ window.addEventListener("load", function () {
   class Player {
     constructor(game) {
       this.game = game;
+      // hit box position in game area- circular hit box in this game
+      this.collisionX = this.game.width * 0.5;
+      this.collisionY = this.game.height * 0.5;
+      // size of hit box
+      this.collisionRadius = 30;
     }
     // draw method
     draw(context) {
       // draw a circle
       context.beginPath();
-      context.arc(400, 400, 50, 0, Math.PI * 2);
+      context.arc(
+        this.collisionX,
+        this.collisionY,
+        this.collisionRadius,
+        0,
+        Math.PI * 2
+      );
       context.fill();
     }
   }

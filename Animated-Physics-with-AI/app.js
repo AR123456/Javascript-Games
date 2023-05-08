@@ -5,6 +5,10 @@ window.addEventListener("load", function () {
   // set element and drawing surface of canvas to same dimensions
   canvas.width = 1280;
   canvas.height = 720;
+  ctx.fillStyle = "white";
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "white";
+
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -26,7 +30,7 @@ window.addEventListener("load", function () {
         0,
         Math.PI * 2
       );
-      context.fill();
+      context.stroke();
     }
   }
   class Game {

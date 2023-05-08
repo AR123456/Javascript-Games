@@ -18,11 +18,11 @@ Some classic games in JS
 
 ### Pong
 
-## Space invaders
+### Space invaders
 
-## whac a mole
+### whac a mole
 
-## Rock Paper Scissors
+### Rock Paper Scissors
 
 ### Memory Game
 

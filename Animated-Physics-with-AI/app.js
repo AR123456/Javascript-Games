@@ -30,6 +30,10 @@ window.addEventListener("load", function () {
         0,
         Math.PI * 2
       );
+      context.save();
+      context.globalAlpha = 0.5;
+      context.fill();
+      context.restore();
       context.stroke();
     }
   }

@@ -26,4 +26,6 @@ Some classic games in JS
 
 ### Memory Game
 
+### Animated Physics with AI
+
 ### See the games here : https://ar123456.github.io/Javascript-Games/

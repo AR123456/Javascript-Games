@@ -44,6 +44,10 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.player = new Player(this);
+      // can add event listeners here
+      window.addEventListener("mousedown", function (e) {
+        console.log(e);
+      });
     }
     render(context) {
       this.player.draw(context);

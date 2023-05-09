@@ -44,9 +44,15 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.player = new Player(this);
+      this.mouse = {
+        x: this.width * 0.5,
+        y: this.height * 0.5,
+        pressed: false,
+      };
       // can add event listeners here
-      window.addEventListener("mousedown", function (e) {
-        console.log(e);
+      canvas.addEventListener("mousedown", function (e) {
+        // get coordinates of click to use on game object
+        console.log(e.offsetX, e.offsetY);
       });
     }
     render(context) {

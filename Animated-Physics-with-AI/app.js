@@ -85,5 +85,7 @@ window.addEventListener("load", function () {
   function animate() {
     // need to draw over and over to see so calling render from inside animation loop
     game.render(ctx);
+    requestAnimationFrame(animate);
   }
+  animate();
 });

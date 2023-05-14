@@ -49,11 +49,25 @@ window.addEventListener("load", function () {
         y: this.height * 0.5,
         pressed: false,
       };
-      // can add event listeners here- changing this to es6 so addEventListener remembers game
+      //event listeners
+      // es6 so addEventListener remembers game
       canvas.addEventListener("mousedown", (e) => {
         // get coordinates of click to use on game object event offset- so avalable to all of codebase
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
+        this.mouse.pressed = true;
+      });
+      canvas.addEventListener("mouseup", (e) => {
+        // get coordinates of click to use on game object event offset- so avalable to all of codebase
+        this.mouse.x = e.offsetX;
+        this.mouse.y = e.offsetY;
+        this.mouse.pressed = false;
+      });
+      canvas.addEventListener("mousemove", (e) => {
+        // get coordinates of click to use on game object event offset- so avalable to all of codebase
+        this.mouse.x = e.offsetX;
+        this.mouse.y = e.offsetY;
+        this.mouse.pressed = false;
       });
     }
     render(context) {

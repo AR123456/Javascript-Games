@@ -83,6 +83,7 @@ window.addEventListener("load", function () {
   const game = new Game(canvas);
 
   function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     // need to draw over and over to see so calling render from inside animation loop
     game.render(ctx);
     requestAnimationFrame(animate);

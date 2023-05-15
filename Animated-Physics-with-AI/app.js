@@ -69,6 +69,7 @@ window.addEventListener("load", function () {
       this.collisionY += this.speedY * this.speedModifier;
     }
   }
+  // blueprint for individual obstacle objects
   class Obstacle {
     constructor(game) {
       this.game = game;
@@ -76,6 +77,22 @@ window.addEventListener("load", function () {
       this.collisionX = Math.random() * this.game.width;
       this.collisionY = Math.random() * this.game.height;
       this.collisionRadius = 60;
+    }
+    draw(context) {
+      // draw a circle
+      context.beginPath();
+      context.arc(
+        this.collisionX,
+        this.collisionY,
+        this.collisionRadius,
+        0,
+        Math.PI * 2
+      );
+      context.save();
+      context.globalAlpha = 0.5;
+      context.fill();
+      context.restore();
+      context.stroke();
     }
   }
   class Game {
@@ -85,6 +102,8 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.player = new Player(this);
+      // array to hold obstacles created
+      this.obstacles = [];
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,

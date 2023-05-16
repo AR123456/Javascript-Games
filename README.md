@@ -22,7 +22,7 @@ Some classic games in JS
 
 ### whac a mole
 
-### Rock Paper Scissors
+### Classic Rock Paper Scissors
 
 ### Memory Game
 

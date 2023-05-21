@@ -36,6 +36,11 @@ window.addEventListener("load", function () {
       context.restore();
       context.stroke();
     }
+    //  update method, make player move- call this in render on game
+    update() {
+      this.collisionX = this.game.mouse.x;
+      this.collisionY = this.game.mouse.y;
+    }
   }
   class Game {
     constructor(canvas) {
@@ -67,16 +72,18 @@ window.addEventListener("load", function () {
         // get coordinates of click to use on game object event offset- so avalable to all of codebase
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
-        this.mouse.pressed = false;
       });
     }
     render(context) {
       this.player.draw(context);
+      this.player.update();
     }
   }
   // create instance of game object
   const game = new Game(canvas);
-  game.render(ctx);
 
-  function animate() {}
+  function animate() {
+    // need to draw over and over to see so calling render from inside animation loop
+    game.render(ctx);
+  }
 });

@@ -1,6 +1,6 @@
 # Javascript-Games
 
-Some classic games in JS
+Some fun games in JS
 
 ### Flappy Bird in 3 ways
 

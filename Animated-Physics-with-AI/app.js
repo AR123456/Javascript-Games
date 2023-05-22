@@ -17,7 +17,12 @@ window.addEventListener("load", function () {
       this.collisionX = this.game.width * 0.5;
       this.collisionY = this.game.height * 0.5;
       // size of hit box
-      this.collisionRadius = 30;
+      this.collisionRadius = 50;
+      this.speedX = 0;
+      this.speedY = 0;
+      // distances between mouse and player
+      this.dx = 0;
+      this.dy = 0;
     }
     // draw method
     draw(context) {
@@ -43,8 +48,14 @@ window.addEventListener("load", function () {
     }
     //  update method, make player move- call this in render on game
     update() {
-      this.collisionX = this.game.mouse.x;
-      this.collisionY = this.game.mouse.y;
+      // assign dx dy
+      this.dx = this.game.mouse.x - this.collisionX;
+      this.dy = this.game.mouse.y - this.collisionY;
+      // calculate speed of x and y
+      this.speedX = this.dx / 20;
+      this.speedY = this.dy / 20;
+      this.collisionX += this.speedX;
+      this.collisionY += this.speedY;
     }
   }
   class Game {
@@ -74,9 +85,12 @@ window.addEventListener("load", function () {
         this.mouse.pressed = false;
       });
       canvas.addEventListener("mousemove", (e) => {
-        // get coordinates of click to use on game object event offset- so avalable to all of codebase
-        this.mouse.x = e.offsetX;
-        this.mouse.y = e.offsetY;
+        // only move player when mouse is pressed
+        if (this.mouse.pressed) {
+          //move
+          this.mouse.x = e.offsetX;
+          this.mouse.y = e.offsetY;
+        }
       });
     }
     render(context) {

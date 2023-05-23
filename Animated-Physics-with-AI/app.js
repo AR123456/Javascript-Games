@@ -69,6 +69,15 @@ window.addEventListener("load", function () {
       this.collisionY += this.speedY * this.speedModifier;
     }
   }
+  class Obstacle {
+    constructor(game) {
+      this.game = game;
+      // randomize distance to center of collision area circle
+      this.collisionX = Math.random() * this.game.width;
+      this.collisionY = Math.random() * this.game.height;
+      this.collisionRadius = 60;
+    }
+  }
   class Game {
     constructor(canvas) {
       this.canvas = canvas;

@@ -56,6 +56,7 @@ window.addEventListener("load", function () {
       // calculate speed of x and y
       // Math.hypot() expects y first then x
       const distance = Math.hypot(this.dy, this.dx);
+      // only if distance is more
       if (distance > this.speedModifier) {
         this.speedX = this.dx / distance || 0;
         this.speedY = this.dy / distance || 0;

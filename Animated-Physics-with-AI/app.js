@@ -23,8 +23,6 @@ window.addEventListener("load", function () {
       // distances between mouse and player
       this.dx = 0;
       this.dy = 0;
-      // modify the speed of player
-      this.speedModifier = 5;
     }
     // draw method
     draw(context) {
@@ -56,16 +54,10 @@ window.addEventListener("load", function () {
       // calculate speed of x and y
       // Math.hypot() expects y first then x
       const distance = Math.hypot(this.dy, this.dx);
-      if (distance > this.speedModifier) {
-        this.speedX = this.dx / distance || 0;
-        this.speedY = this.dy / distance || 0;
-      } else {
-        this.speedX = 0;
-        this.speedY = 0;
-      }
-
-      this.collisionX += this.speedX * this.speedModifier;
-      this.collisionY += this.speedY * this.speedModifier;
+      this.speedX = this.dx / distance || 0;
+      this.speedY = this.dy / distance || 0;
+      this.collisionX += this.speedX;
+      this.collisionY += this.speedY;
     }
   }
   class Game {

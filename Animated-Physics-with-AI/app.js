@@ -76,7 +76,7 @@ window.addEventListener("load", function () {
       // randomize distance to center of collision area circle
       this.collisionX = Math.random() * this.game.width;
       this.collisionY = Math.random() * this.game.height;
-      this.collisionRadius = 60;
+      this.collisionRadius = 100;
     }
     draw(context) {
       // draw a circle
@@ -136,11 +136,29 @@ window.addEventListener("load", function () {
     render(context) {
       this.player.draw(context);
       this.player.update();
+      // obstacles have access to draw method
+      this.obstacles.forEach((obstacle) => obstacle.draw(context));
     }
     init() {
-      for (let i = 0; i < this.numberOfObstacles; i++) {
-        // this is the entire game object
-        this.obstacles.push(new Obstacle(this));
+      // 5 randomly created obstacles - the old way
+      // for (let i = 0; i < this.numberOfObstacles; i++) {
+      //   // this is the entire game object
+      //   this.obstacles.push(new Obstacle(this));
+      // }
+      // new way circle packing algorithm - this is a brute force algorithm
+      // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times
+      let attempts = 0;
+      while (this.obstacles.length < this.numberOfObstacles && attempts < 100) {
+        let testObstacle = new Obstacle(this);
+        // console.log(testObstacle);
+        // compare the test obstacle to other obstacles in the array to check for overlap
+        // center point radei
+        this.obstacles.forEach((obstacle) => {
+          const dx = testObstacle.collisionX - obstacle.collisionX;
+          const dy = testObstacle.collisionY - obstacle.collisionY;
+          const distance = Math.hypot(dy, dx);
+        });
+        attempts++;
       }
     }
   }

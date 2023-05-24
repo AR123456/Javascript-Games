@@ -102,6 +102,7 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.player = new Player(this);
+      this.numberOfObstacles = 5;
       // array to hold obstacles created
       this.obstacles = [];
       this.mouse = {
@@ -136,9 +137,16 @@ window.addEventListener("load", function () {
       this.player.draw(context);
       this.player.update();
     }
+    init() {
+      for (let i = 0; i < this.numberOfObstacles; i++) {
+        // this is the entire game object
+        this.obstacles.push(new Obstacle(this));
+      }
+    }
   }
   // create instance of game object
   const game = new Game(canvas);
+  console.log(game);
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

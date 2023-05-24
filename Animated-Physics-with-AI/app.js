@@ -146,6 +146,7 @@ window.addEventListener("load", function () {
   }
   // create instance of game object
   const game = new Game(canvas);
+  game.init();
   console.log(game);
 
   function animate() {

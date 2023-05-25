@@ -77,6 +77,7 @@ window.addEventListener("load", function () {
       this.collisionX = Math.random() * this.game.width;
       this.collisionY = Math.random() * this.game.height;
       this.collisionRadius = 100;
+      this.image = document.getElementById("obstacles");
     }
     draw(context) {
       // draw a circle

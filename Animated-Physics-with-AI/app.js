@@ -76,14 +76,16 @@ window.addEventListener("load", function () {
       // randomize distance to center of collision area circle
       this.collisionX = Math.random() * this.game.width;
       this.collisionY = Math.random() * this.game.height;
-      this.collisionRadius = 100;
+      this.collisionRadius = 60;
       this.image = document.getElementById("obstacles");
       this.spriteWidth = 250;
       this.spriteHeight = 250;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      this.spriteX;
-      this.spriteY;
+      // center image on top of collsion circle
+      this.spriteX = this.collisionX - this.width * 0.5;
+      // - shift so collision point is on the "ground"
+      this.spriteY = this.collisionY - this.height * 0.5 - 70;
     }
     draw(context) {
       // draw image
@@ -93,8 +95,8 @@ window.addEventListener("load", function () {
         0,
         this.spriteWidth,
         this.spriteHeight,
-        this.collisionX,
-        this.collisionY,
+        this.spriteX,
+        this.spriteY,
         this.width,
         this.height
       );
@@ -121,7 +123,7 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.player = new Player(this);
-      this.numberOfObstacles = 1;
+      this.numberOfObstacles = 10;
       // array to hold obstacles created
       this.obstacles = [];
       this.mouse = {

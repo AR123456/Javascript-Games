@@ -86,13 +86,16 @@ window.addEventListener("load", function () {
       this.spriteX = this.collisionX - this.width * 0.5;
       // - shift so collision point is on the "ground"
       this.spriteY = this.collisionY - this.height * 0.5 - 70;
+      // sprite column
+      this.frameX = Math.floor(Math.random() * 4);
+      this.frameY = Math.floor(Math.random() * 3);
     }
     draw(context) {
       // draw image
       context.drawImage(
         this.image,
-        0,
-        0,
+        this.frameX * this.spriteWidth,
+        this.frameY * this.spriteHeight,
         this.spriteWidth,
         this.spriteHeight,
         this.spriteX,
@@ -122,6 +125,7 @@ window.addEventListener("load", function () {
       this.width = this.canvas.width;
       this.height = this.canvas.height;
       // this is the Game object
+      this.topMargin = 260;
       this.player = new Player(this);
       this.numberOfObstacles = 10;
       // array to hold obstacles created
@@ -179,13 +183,26 @@ window.addEventListener("load", function () {
           const dx = testObstacle.collisionX - obstacle.collisionX;
           const dy = testObstacle.collisionY - obstacle.collisionY;
           const distance = Math.hypot(dy, dx);
+          // put some space around obstacles
+          const distanceBuffer = 150;
           const sumOfRadii =
-            testObstacle.collisionRadius + obstacle.collisionRadius;
+            testObstacle.collisionRadius +
+            obstacle.collisionRadius +
+            distanceBuffer;
           if (distance < sumOfRadii) {
             overlap = true;
           }
         });
-        if (!overlap) {
+
+        // also check that obstacle is not rendering off edge of screen
+        const margin = testObstacle.collisionRadius * 2;
+        if (
+          !overlap &&
+          testObstacle.spriteX > 0 &&
+          testObstacle.spriteX < this.width - testObstacle.width &&
+          testObstacle.collisionY > this.topMargin + margin &&
+          testObstacle.collisionY < this.height - margin
+        ) {
           this.obstacles.push(testObstacle);
         }
         attempts++;

@@ -102,7 +102,7 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.player = new Player(this);
-      this.numberOfObstacles = 5;
+      this.numberOfObstacles = 10;
       // array to hold obstacles created
       this.obstacles = [];
       this.mouse = {
@@ -148,8 +148,9 @@ window.addEventListener("load", function () {
       // new way circle packing algorithm - this is a brute force algorithm
       // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times
       let attempts = 0;
-      while (this.obstacles.length < this.numberOfObstacles && attempts < 100) {
+      while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {
         let testObstacle = new Obstacle(this);
+        let overlap = false;
         // console.log(testObstacle);
         // compare the test obstacle to other obstacles in the array to check for overlap
         // center point radei
@@ -157,7 +158,15 @@ window.addEventListener("load", function () {
           const dx = testObstacle.collisionX - obstacle.collisionX;
           const dy = testObstacle.collisionY - obstacle.collisionY;
           const distance = Math.hypot(dy, dx);
+          const sumOfRadii =
+            testObstacle.collisionRadius + obstacle.collisionRadius;
+          if (distance < sumOfRadii) {
+            overlap = true;
+          }
         });
+        if (!overlap) {
+          this.obstacles.push(testObstacle);
+        }
         attempts++;
       }
     }

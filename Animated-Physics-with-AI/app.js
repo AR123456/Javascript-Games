@@ -78,8 +78,26 @@ window.addEventListener("load", function () {
       this.collisionY = Math.random() * this.game.height;
       this.collisionRadius = 100;
       this.image = document.getElementById("obstacles");
+      this.spriteWidth = 250;
+      this.spriteHeight = 250;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.spriteX;
+      this.spriteY;
     }
     draw(context) {
+      // draw image
+      context.drawImage(
+        this.image,
+        0,
+        0,
+        this.spriteWidth,
+        this.spriteHeight,
+        this.collisionX,
+        this.collisionY,
+        this.width,
+        this.height
+      );
       // draw a circle
       context.beginPath();
       context.arc(
@@ -103,7 +121,7 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.player = new Player(this);
-      this.numberOfObstacles = 10;
+      this.numberOfObstacles = 1;
       // array to hold obstacles created
       this.obstacles = [];
       this.mouse = {

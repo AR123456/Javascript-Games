@@ -78,7 +78,9 @@ window.addEventListener("load", function () {
           // create a vector or small 1 px line -point in the direction to push player back
           const unit_x = dx / distance;
           const unit_y = dy / distance;
-          // bounce back
+          // bounce back one px
+          this.collisionX = obstacle.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = obstacle.collisionY + (sumOfRadii + 1) * unit_y;
         }
       });
     }

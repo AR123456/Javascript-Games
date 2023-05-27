@@ -68,8 +68,18 @@ window.addEventListener("load", function () {
       this.collisionY += this.speedY * this.speedModifier;
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
-        // this is player object
-        console.log(this.game.checkCollision(this, obstacle));
+        // reminder of order of values being put into array in the return of  collision check
+        // return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // assign variable names using destructuring
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, obstacle);
+
+        if (collision) {
+          // create a vector or small 1 px line -point in the direction to push player back
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          // bounce back
+        }
       });
     }
   }
@@ -163,10 +173,10 @@ window.addEventListener("load", function () {
       });
     }
     render(context) {
+      // obstacles have access to draw method - draw first so they are behind player
+      this.obstacles.forEach((obstacle) => obstacle.draw(context));
       this.player.draw(context);
       this.player.update();
-      // obstacles have access to draw method
-      this.obstacles.forEach((obstacle) => obstacle.draw(context));
     }
     // re usable collision detection method
     checkCollision(a, b) {
@@ -180,7 +190,12 @@ window.addEventListener("load", function () {
       // is the distance in the radius of the collision circle?
       const sumOfRadii = a.collisionRadius + b.collisionRadius;
       // return true if there is a collision
-      return distance < sumOfRadii;
+      // return distance < sumOfRadii;
+
+      // when there is a collision push the player back a pixle - do not allow through
+      // change this to return an array - element with values needed to know location of collision
+
+      return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
     init() {
       // 5 randomly created obstacles - the old way

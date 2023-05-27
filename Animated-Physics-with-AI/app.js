@@ -64,7 +64,6 @@ window.addEventListener("load", function () {
         this.speedX = 0;
         this.speedY = 0;
       }
-
       this.collisionX += this.speedX * this.speedModifier;
       this.collisionY += this.speedY * this.speedModifier;
     }
@@ -163,6 +162,20 @@ window.addEventListener("load", function () {
       this.player.update();
       // obstacles have access to draw method
       this.obstacles.forEach((obstacle) => obstacle.draw(context));
+    }
+    // re usable collision detection method
+    checkCollision(a, b) {
+      // reuseable if name convention kept consistent
+      // horizontal mid point
+      const dx = a.collisionX - b.collisionX;
+      // same for vertical
+      const dy = a.collisionY - b.collisionY;
+      // distance - hypotonuse
+      const distance = Math.hypot(dy, dx);
+      // is the distance in the radius of the collision circle?
+      const sumOfRadii = a.collisionRadius + b.collisionRadius;
+      // return true if there is a collision
+      return distance < sumOfRadii;
     }
     init() {
       // 5 randomly created obstacles - the old way

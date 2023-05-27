@@ -66,6 +66,13 @@ window.addEventListener("load", function () {
       }
       this.collisionX += this.speedX * this.speedModifier;
       this.collisionY += this.speedY * this.speedModifier;
+      // collisions with obstacles
+      this.game.obstacles.forEach((obstacle) => {
+        // this is player object
+        if (this.game.checkCollision(this, obstacle)) {
+          // console.log("collision");
+        }
+      });
     }
   }
   // blueprint for individual obstacle objects
@@ -158,10 +165,10 @@ window.addEventListener("load", function () {
       });
     }
     render(context) {
+      // obstacles have access to draw method - draw first so they are behind player
+      this.obstacles.forEach((obstacle) => obstacle.draw(context));
       this.player.draw(context);
       this.player.update();
-      // obstacles have access to draw method
-      this.obstacles.forEach((obstacle) => obstacle.draw(context));
     }
     // re usable collision detection method
     checkCollision(a, b) {
@@ -175,7 +182,12 @@ window.addEventListener("load", function () {
       // is the distance in the radius of the collision circle?
       const sumOfRadii = a.collisionRadius + b.collisionRadius;
       // return true if there is a collision
-      return distance < sumOfRadii;
+      // return distance < sumOfRadii;
+
+      // when there is a collision push the player back a pixle - do not allow through
+      // change this to return an array - element with values needed to know location of collision
+
+      return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
     init() {
       // 5 randomly created obstacles - the old way
@@ -225,7 +237,7 @@ window.addEventListener("load", function () {
   // create instance of game object
   const game = new Game(canvas);
   game.init();
-  console.log(game);
+  // console.log(game);
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

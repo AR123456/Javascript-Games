@@ -31,6 +31,10 @@ window.addEventListener("load", function () {
       this.height = this.spriteHeight;
       this.spriteX;
       this.spriteY;
+      // horizontal navigation
+      this.frameX = 0;
+      //vertical navigation
+      this.frameY = 0;
       this.image = document.getElementById("bull");
     }
 
@@ -38,8 +42,8 @@ window.addEventListener("load", function () {
     draw(context) {
       context.drawImage(
         this.image,
-        0,
-        0,
+        this.frameX * this.spriteWidth,
+        this.frameY * this.spriteHeight,
         // this.frameX * this.spriteWidth,
         // this.frameY * this.spriteHeight,
         this.spriteWidth,

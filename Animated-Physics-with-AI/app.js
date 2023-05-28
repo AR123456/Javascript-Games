@@ -25,11 +25,29 @@ window.addEventListener("load", function () {
       this.dy = 0;
       // modify the speed of player
       this.speedModifier = 5;
+      this.spriteWidth = 255;
+      this.spriteHeight = 255;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+
       this.image = document.getElementById("bull");
     }
 
     // draw method
     draw(context) {
+      context.drawImage(
+        this.image,
+        0,
+        0,
+        // this.frameX * this.spriteWidth,
+        // this.frameY * this.spriteHeight,
+        this.spriteWidth,
+        this.spriteHeight,
+        this.collisionX,
+        this.collisionY,
+        this.width,
+        this.height
+      );
       // draw a circle
       context.beginPath();
       context.arc(

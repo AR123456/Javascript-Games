@@ -29,7 +29,8 @@ window.addEventListener("load", function () {
       this.spriteHeight = 255;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-
+      this.spriteX;
+      this.spriteY;
       this.image = document.getElementById("bull");
     }
 
@@ -43,8 +44,8 @@ window.addEventListener("load", function () {
         // this.frameY * this.spriteHeight,
         this.spriteWidth,
         this.spriteHeight,
-        this.collisionX,
-        this.collisionY,
+        this.spriteX,
+        this.spriteY,
         this.width,
         this.height
       );
@@ -86,6 +87,9 @@ window.addEventListener("load", function () {
       }
       this.collisionX += this.speedX * this.speedModifier;
       this.collisionY += this.speedY * this.speedModifier;
+
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 100;
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
         // reminder of order of values being put into array in the return of  collision check

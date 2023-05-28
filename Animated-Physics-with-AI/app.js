@@ -25,7 +25,9 @@ window.addEventListener("load", function () {
       this.dy = 0;
       // modify the speed of player
       this.speedModifier = 5;
+      this.image = document.getElementById("bull");
     }
+
     // draw method
     draw(context) {
       // draw a circle

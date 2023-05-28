@@ -19,6 +19,7 @@
   pointer-events: none;
 }
 /* hide with css */
-#obstacles {
+#obstacles,
+#bull {
   display: none;
 }

@@ -160,7 +160,7 @@ window.addEventListener("load", function () {
         this.width,
         this.height
       );
-      // draw a circle
+      // draw collision  circle
       context.beginPath();
       context.arc(
         this.collisionX,
@@ -184,6 +184,7 @@ window.addEventListener("load", function () {
       // this is the Game object
       this.topMargin = 260;
       // adding debug mode
+      this.debug = true;
       this.player = new Player(this);
       this.numberOfObstacles = 10;
       // array to hold obstacles created
@@ -214,6 +215,10 @@ window.addEventListener("load", function () {
           this.mouse.x = e.offsetX;
           this.mouse.y = e.offsetY;
         }
+      });
+      window.addEventListener("keydown", (e) => {
+        // when d is pressed toggle debug move
+        if (e.key === "d") this.debug = !this.debug;
       });
     }
     render(context) {

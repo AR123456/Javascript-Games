@@ -24,7 +24,7 @@ window.addEventListener("load", function () {
       this.dx = 0;
       this.dy = 0;
       // modify the speed of player
-      this.speedModifier = 5;
+      this.speedModifier = 3;
       this.spriteWidth = 255;
       this.spriteHeight = 255;
       this.width = this.spriteWidth;
@@ -82,14 +82,14 @@ window.addEventListener("load", function () {
       // angle helps determine directions so player is always facing in the direction it is moving towards the mouse cursor
       const angle = Math.atan2(this.dy, this.dx); // + - pi
       // using a pie with 8 slices to know what angle represents what direction the player is facing
-      if (angle < -1.17) this.frameY = 0;
+      if (angle < -2.74 || angle > 2.74) this.frameY = 6;
+      else if (angle < -1.96) this.frameY = 7;
+      else if (angle < -1.17) this.frameY = 0;
       else if (angle < -0.39) this.frameY = 1;
       else if (angle < 0.39) this.frameY = 2;
       else if (angle < 1.17) this.frameY = 3;
       else if (angle < 1.96) this.frameY = 4;
       else if (angle < 2.74) this.frameY = 5;
-      else if (angle < -2.74 || angle > 2.74) this.frameY = 6;
-      else if (angle < 1.96) this.frameY = 7;
 
       // calculate speed of x and y
       // Math.hypot() expects y first then x

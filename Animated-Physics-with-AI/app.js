@@ -34,7 +34,7 @@ window.addEventListener("load", function () {
       // horizontal navigation
       this.frameX = 0;
       //vertical navigation
-      this.frameY = 0;
+      this.frameY = 5;
       this.image = document.getElementById("bull");
     }
 
@@ -75,9 +75,14 @@ window.addEventListener("load", function () {
     }
     //  update method, make player move- call this in render on game
     update() {
-      // assign dx dy
+      // sprite animation
+      // assign dx dy -dist from mouse cursor to player
       this.dx = this.game.mouse.x - this.collisionX;
       this.dy = this.game.mouse.y - this.collisionY;
+      // angle helps determine directions so player is always facing in the direction it is moving towards the mouse cursor
+      const angle = Math.atan2(this.dy, this.dx);
+      console.log(angle);
+
       // calculate speed of x and y
       // Math.hypot() expects y first then x
       const distance = Math.hypot(this.dy, this.dx);

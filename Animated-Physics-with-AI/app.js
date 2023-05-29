@@ -80,8 +80,9 @@ window.addEventListener("load", function () {
       this.dx = this.game.mouse.x - this.collisionX;
       this.dy = this.game.mouse.y - this.collisionY;
       // angle helps determine directions so player is always facing in the direction it is moving towards the mouse cursor
-      const angle = Math.atan2(this.dy, this.dx);
-      console.log(angle);
+      const angle = Math.atan2(this.dy, this.dx); // + - pi
+      // using a pie with 8 slices to know what angle represents what direction the player is facing
+      if (angle < 1.17) this.frameY = 0;
 
       // calculate speed of x and y
       // Math.hypot() expects y first then x

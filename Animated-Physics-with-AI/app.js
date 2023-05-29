@@ -183,6 +183,7 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       // this is the Game object
       this.topMargin = 260;
+      // adding debug mode
       this.player = new Player(this);
       this.numberOfObstacles = 10;
       // array to hold obstacles created

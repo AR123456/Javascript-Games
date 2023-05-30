@@ -111,7 +111,11 @@ window.addEventListener("load", function () {
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 100;
       // add horizontal boundaries to game area
-      if(this.collisionX < 0 + this.collisionRadius) this.collisionX = 0 + this.collisionRadius;
+      if (this.collisionX < this.collisionRadius)
+        this.collisionX = this.collisionRadius;
+      else if (this.collisionX > this.game.width - this.collisionRadius)
+        this.collisionX = this.game.width - this.collisionRadius;
+      // vertical boundaries
 
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {

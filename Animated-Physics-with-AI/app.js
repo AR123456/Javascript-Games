@@ -53,25 +53,28 @@ window.addEventListener("load", function () {
         this.width,
         this.height
       );
-      // draw a circle
-      context.beginPath();
-      context.arc(
-        this.collisionX,
-        this.collisionY,
-        this.collisionRadius,
-        0,
-        Math.PI * 2
-      );
-      context.save();
-      context.globalAlpha = 0.5;
-      context.fill();
-      context.restore();
-      context.stroke();
-      // draw line off player to show direction of movement
-      context.beginPath();
-      context.moveTo(this.collisionX, this.collisionY);
-      context.lineTo(this.game.mouse.x, this.game.mouse.y);
-      context.stroke();
+      // debug mode for player
+      if (this.game.debug) {
+        // draw a circle for player
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+        // draw line off player to show direction of movement
+        context.beginPath();
+        context.moveTo(this.collisionX, this.collisionY);
+        context.lineTo(this.game.mouse.x, this.game.mouse.y);
+        context.stroke();
+      }
     }
     //  update method, make player move- call this in render on game
     update() {
@@ -161,6 +164,8 @@ window.addEventListener("load", function () {
         this.height
       );
       if (this.game.debug) {
+        // draw collision  circle
+        context.beginPath();
         context.arc(
           this.collisionX,
           this.collisionY,
@@ -174,8 +179,6 @@ window.addEventListener("load", function () {
         context.restore();
         context.stroke();
       }
-      // draw collision  circle
-      context.beginPath();
     }
   }
   class Game {

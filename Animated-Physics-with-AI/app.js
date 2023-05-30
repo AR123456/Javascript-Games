@@ -110,6 +110,9 @@ window.addEventListener("load", function () {
 
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 100;
+      // add horizontal boundaries to game area
+      if(this.collisionX < 0 + this.collisionRadius) this.collisionX = 0 + this.collisionRadius;
+
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
         // reminder of order of values being put into array in the return of  collision check
@@ -136,7 +139,7 @@ window.addEventListener("load", function () {
       // randomize distance to center of collision area circle
       this.collisionX = Math.random() * this.game.width;
       this.collisionY = Math.random() * this.game.height;
-      this.collisionRadius = 60;
+      this.collisionRadius = 40;
       this.image = document.getElementById("obstacles");
       this.spriteWidth = 250;
       this.spriteHeight = 250;

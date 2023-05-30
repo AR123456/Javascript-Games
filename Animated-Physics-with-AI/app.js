@@ -17,7 +17,7 @@ window.addEventListener("load", function () {
       this.collisionX = this.game.width * 0.5;
       this.collisionY = this.game.height * 0.5;
       // size of hit box
-      this.collisionRadius = 50;
+      this.collisionRadius = 30;
       this.speedX = 0;
       this.speedY = 0;
       // distances between mouse and player
@@ -116,7 +116,10 @@ window.addEventListener("load", function () {
       else if (this.collisionX > this.game.width - this.collisionRadius)
         this.collisionX = this.game.width - this.collisionRadius;
       // vertical boundaries
-
+      if (this.collisionY < this.game.topMargin + this.collisionRadius)
+        this.collisionY = this.game.topMargin + this.collisionRadius;
+      else if (this.collisionY > this.game.height - this.collisionRadius)
+        this.collisionY = this.game.height - this.collisionRadius;
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
         // reminder of order of values being put into array in the return of  collision check
@@ -289,7 +292,7 @@ window.addEventListener("load", function () {
         });
 
         // also check that obstacle is not rendering off edge of screen
-        const margin = testObstacle.collisionRadius * 2;
+        const margin = testObstacle.collisionRadius * 3;
         if (
           !overlap &&
           testObstacle.spriteX > 0 &&

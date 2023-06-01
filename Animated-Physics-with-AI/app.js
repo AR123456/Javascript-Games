@@ -249,8 +249,11 @@ window.addEventListener("load", function () {
       // when interval is reached, timer will be reset back to 0
       this.interval = 1000 / this.fps;
       this.numberOfObstacles = 10;
+      this.maxEggs = 10;
       // array to hold obstacles created
       this.obstacles = [];
+      // hold eggs created
+      this.eggs = [];
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -319,6 +322,10 @@ window.addEventListener("load", function () {
 
       return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
+
+    // method to periodically add a new egg to game
+    addEgg() {}
+
     init() {
       // 5 randomly created obstacles - the old way
       // for (let i = 0; i < this.numberOfObstacles; i++) {

@@ -191,6 +191,12 @@ window.addEventListener("load", function () {
       }
     }
   }
+  // adding the Egg
+  class Egg {
+    constructor() {}
+    draw() {}
+    update() {}
+  }
   class Game {
     constructor(canvas) {
       this.canvas = canvas;

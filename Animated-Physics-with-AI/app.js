@@ -193,7 +193,13 @@ window.addEventListener("load", function () {
   }
   // adding the Egg
   class Egg {
-    constructor() {}
+    constructor(game) {
+      this.game = game;
+      this.collisionX = Math.random() * this.game.width;
+      this.collisionY = Math.random() * this.game.height;
+      this.collisionRadius = 40;
+      this.image = document.getElementById("egg");
+    }
     draw() {}
     update() {}
   }

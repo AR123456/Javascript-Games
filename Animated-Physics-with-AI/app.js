@@ -44,8 +44,6 @@ window.addEventListener("load", function () {
         this.image,
         this.frameX * this.spriteWidth,
         this.frameY * this.spriteHeight,
-        // this.frameX * this.spriteWidth,
-        // this.frameY * this.spriteHeight,
         this.spriteWidth,
         this.spriteHeight,
         this.spriteX,
@@ -207,7 +205,31 @@ window.addEventListener("load", function () {
       this.spriteX = this.collisionX + this.width * 0.5;
       this.spriteY = this.collisionY + this.height * 0.5;
     }
-    draw() {}
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+      //TODO make this a re usable helper
+      if (this.game.debug) {
+        // draw a circle for player
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+        // draw line off player to show direction of movement
+        context.beginPath();
+        context.moveTo(this.collisionX, this.collisionY);
+        context.lineTo(this.game.mouse.x, this.game.mouse.y);
+        context.stroke();
+      }
+    }
     update() {}
   }
   class Game {

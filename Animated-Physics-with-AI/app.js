@@ -26,7 +26,7 @@ window.addEventListener("load", function () {
       // modify the speed of player
       this.speedModifier = 3;
       this.spriteWidth = 255;
-      this.spriteHeight = 255;
+      this.spriteHeight = 256;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
       this.spriteX;
@@ -309,9 +309,13 @@ window.addEventListener("load", function () {
   // create instance of game object
   const game = new Game(canvas);
   game.init();
-  // console.log(game);
-
-  function animate() {
+  // ref to time stamp of previous animation loop
+  let lastTime = 0;
+  function animate(timeStamp) {
+    const deltaTime = timeStamp - lastTime;
+    // them reassign back to current timeStamp
+    lastTime = timeStamp;
+    console.log(deltaTime);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // need to draw over and over to see so calling render from inside animation loop
     game.render(ctx);

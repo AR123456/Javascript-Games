@@ -201,6 +201,12 @@ window.addEventListener("load", function () {
       // adding debug mode
       this.debug = true;
       this.player = new Player(this);
+      // helpers to get use deltaTime to set frame rate
+      this.fps = 20;
+      // starts at 0
+      this.timer = 0;
+      // when interval is reached, timer will be reset back to 0
+      this.interval = 1000 / this.fps;
       this.numberOfObstacles = 10;
       // array to hold obstacles created
       this.obstacles = [];
@@ -237,6 +243,12 @@ window.addEventListener("load", function () {
       });
     }
     render(context) {
+      // if the timer is more that the interval
+      if (this.timer > this.interval) {
+        // animate the next frame
+      }
+      // increase timer by delta time
+      this.timer += deltaTime;
       // obstacles have access to draw method - draw first so they are behind player
       this.obstacles.forEach((obstacle) => obstacle.draw(context));
       this.player.draw(context);
@@ -315,11 +327,12 @@ window.addEventListener("load", function () {
     const deltaTime = timeStamp - lastTime;
     // them reassign back to current timeStamp
     lastTime = timeStamp;
-    console.log(deltaTime);
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // need to draw over and over to see so calling render from inside animation loop
     game.render(ctx);
     requestAnimationFrame(animate);
   }
-  animate();
+  // on first loop time stamp needs to be 0
+  animate(0);
 });

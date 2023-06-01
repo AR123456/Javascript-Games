@@ -202,7 +202,7 @@ window.addEventListener("load", function () {
       this.debug = true;
       this.player = new Player(this);
       // helpers to get use deltaTime to set frame rate
-      this.fps = 20;
+      this.fps = 70;
       // starts at 0
       this.timer = 0;
       // when interval is reached, timer will be reset back to 0
@@ -242,17 +242,22 @@ window.addEventListener("load", function () {
         if (e.key === "d") this.debug = !this.debug;
       });
     }
-    render(context) {
+    render(context, deltaTime) {
       // if the timer is more that the interval
       if (this.timer > this.interval) {
         // animate the next frame
+        // clear paint
+        context.clearRect(0, 0, this.width, this.height);
+
+        // obstacles have access to draw method - draw first so they are behind player
+        this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        this.player.draw(context);
+        this.player.update();
+        // reset timer
+        this.timer = 0;
       }
       // increase timer by delta time
       this.timer += deltaTime;
-      // obstacles have access to draw method - draw first so they are behind player
-      this.obstacles.forEach((obstacle) => obstacle.draw(context));
-      this.player.draw(context);
-      this.player.update();
     }
     // re usable collision detection method
     checkCollision(a, b) {
@@ -328,9 +333,8 @@ window.addEventListener("load", function () {
     // them reassign back to current timeStamp
     lastTime = timeStamp;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     // need to draw over and over to see so calling render from inside animation loop
-    game.render(ctx);
+    game.render(ctx, deltaTime);
     requestAnimationFrame(animate);
   }
   // on first loop time stamp needs to be 0

@@ -196,8 +196,10 @@ window.addEventListener("load", function () {
       this.collisionRadius = 40;
       this.margin = this.collisionRadius * 2;
       this.collisionX =
-        this.margin + Math.random() * (this.game.width - this.margin);
-      this.collisionY = Math.random() * this.game.height;
+        this.margin + Math.random() * (this.game.width - this.margin * 2);
+      this.collisionY =
+        this.game.topMargin +
+        Math.random() * (this.game.height - this.game.topMargin - this.margin);
       this.image = document.getElementById("egg");
       this.spriteHeight = 110;
       this.spriteWidth = 135;

@@ -247,6 +247,12 @@ window.addEventListener("load", function () {
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, object);
         // if there is a collision use the variable to determine how far and in what direction to push egg
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
       });
     }
   }

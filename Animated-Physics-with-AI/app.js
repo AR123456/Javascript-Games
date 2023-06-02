@@ -195,11 +195,9 @@ window.addEventListener("load", function () {
       this.game = game;
       this.collisionRadius = 40;
       this.margin = this.collisionRadius * 2;
-
       this.collisionX =
         this.margin + Math.random() * (this.game.width - this.margin);
       this.collisionY = Math.random() * this.game.height;
-
       this.image = document.getElementById("egg");
       this.spriteHeight = 110;
       this.spriteWidth = 135;
@@ -228,10 +226,10 @@ window.addEventListener("load", function () {
         context.restore();
         context.stroke();
         // draw line off player to show direction of movement
-        context.beginPath();
-        context.moveTo(this.collisionX, this.collisionY);
-        context.lineTo(this.game.mouse.x, this.game.mouse.y);
-        context.stroke();
+        // context.beginPath();
+        // context.moveTo(this.collisionX, this.collisionY);
+        // context.lineTo(this.game.mouse.x, this.game.mouse.y);
+        // context.stroke();
       }
     }
   }

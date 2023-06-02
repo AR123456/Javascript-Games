@@ -234,6 +234,21 @@ window.addEventListener("load", function () {
         // context.stroke();
       }
     }
+    update() {
+      // eggs can be pushed around
+      // objects that eggs can interact with
+      let collisionObjects = [this.game.player, ...this.game.obstacles];
+      // for every player and indivitual objects
+      collisionObjects.forEach((object) => {
+        // run the checkCollision() function it returns  return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // let [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // pass in this which is the egg and object which is the item in the array
+        // destructure the object into these variables
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, object);
+        // if there is a collision use the variable to determine how far and in what direction to push egg
+      });
+    }
   }
   class Game {
     constructor(canvas) {
@@ -252,9 +267,9 @@ window.addEventListener("load", function () {
       // when interval is reached, timer will be reset back to 0
       this.interval = 1000 / this.fps;
       this.eggTimer = 0;
-      this.eggInterval = 100;
+      this.eggInterval = 500;
       this.numberOfObstacles = 10;
-      this.maxEggs = 50;
+      this.maxEggs = 10;
       // array to hold obstacles created
       this.obstacles = [];
       // hold eggs created

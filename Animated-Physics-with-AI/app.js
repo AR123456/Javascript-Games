@@ -185,6 +185,7 @@ window.addEventListener("load", function () {
         context.stroke();
       }
     }
+    update() {}
   }
   // adding the Egg
   class Egg {
@@ -320,16 +321,16 @@ window.addEventListener("load", function () {
         // animate the next frame
         // clear paint
         context.clearRect(0, 0, this.width, this.height);
-        this.gameObjects = [];
-        this.eggs.forEach((egg) => {
-          egg.draw(context);
-          egg.update();
+        this.gameObjects = [...this.eggs, ...this.obstacles, this.player];
+        this.objects.forEach((object) => {
+          object.draw(context);
+          object.update();
         });
 
-        this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        // this.obstacles.forEach((obstacle) => obstacle.draw(context));
 
-        this.player.draw(context);
-        this.player.update();
+        // this.player.draw(context);
+        // this.player.update();
         // reset timer
         this.timer = 0;
       }

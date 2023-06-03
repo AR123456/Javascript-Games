@@ -8,6 +8,7 @@ window.addEventListener("load", function () {
   ctx.fillStyle = "white";
   ctx.lineWidth = 3;
   ctx.strokeStyle = "white";
+
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -36,7 +37,8 @@ window.addEventListener("load", function () {
       this.frameY = 5;
       this.image = document.getElementById("bull");
     }
-    // Player draw method
+
+    // draw method
     draw(context) {
       context.drawImage(
         this.image,
@@ -78,8 +80,7 @@ window.addEventListener("load", function () {
       // assign dx dy -dist from mouse cursor to player
       this.dx = this.game.mouse.x - this.collisionX;
       this.dy = this.game.mouse.y - this.collisionY;
-      // angle helps determine directions so player is always facing
-      // in the direction it is moving towards the mouse cursor
+      // angle helps determine directions so player is always facing in the direction it is moving towards the mouse cursor
       const angle = Math.atan2(this.dy, this.dx); // + - pi
       // using a pie with 8 slices to know what angle represents what direction the player is facing
       if (angle < -2.74 || angle > 2.74) this.frameY = 6;
@@ -90,6 +91,7 @@ window.addEventListener("load", function () {
       else if (angle < 1.17) this.frameY = 3;
       else if (angle < 1.96) this.frameY = 4;
       else if (angle < 2.74) this.frameY = 5;
+
       // calculate speed of x and y
       // Math.hypot() expects y first then x
       const distance = Math.hypot(this.dy, this.dx);
@@ -103,6 +105,7 @@ window.addEventListener("load", function () {
       }
       this.collisionX += this.speedX * this.speedModifier;
       this.collisionY += this.speedY * this.speedModifier;
+
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 100;
       // add horizontal boundaries to game area
@@ -117,7 +120,7 @@ window.addEventListener("load", function () {
         this.collisionY = this.game.height - this.collisionRadius;
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
-        // order of values being put into array in the return of  collision check
+        // reminder of order of values being put into array in the return of  collision check
         // return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
         // assign variable names using destructuring
         let [collision, distance, sumOfRadii, dx, dy] =
@@ -156,7 +159,7 @@ window.addEventListener("load", function () {
       this.frameY = Math.floor(Math.random() * 3);
     }
     draw(context) {
-      // draw ofstacel image
+      // draw image
       context.drawImage(
         this.image,
         this.frameX * this.spriteWidth,
@@ -202,17 +205,15 @@ window.addEventListener("load", function () {
       this.spriteWidth = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // adjust this later for eg shape - moving this to update method but need to declare here
-      // this.spriteX = this.collisionX - this.width * 0.5;
-      // this.spriteY = this.collisionY - this.height * 0.5 - 30;
-      this.spriteX;
-      this.spriteY;
+      // adjust this later for eg shape
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 30;
     }
     draw(context) {
       context.drawImage(this.image, this.spriteX, this.spriteY);
       //TODO make this a re usable helper
       if (this.game.debug) {
-        // draw a circle for egg
+        // draw a circle for player
         context.beginPath();
         context.arc(
           this.collisionX,
@@ -226,15 +227,16 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
+        // draw line off player to show direction of movement
+        // context.beginPath();
+        // context.moveTo(this.collisionX, this.collisionY);
+        // context.lineTo(this.game.mouse.x, this.game.mouse.y);
+        // context.stroke();
       }
     }
     update() {
-      // keep the debug circle collison area with the egg- declaired in the constructor
-      // adjust this later for eg shape
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5 - 30;
       // eggs can be pushed around
-      // array of objects that eggs can interact with
+      // objects that eggs can interact with
       let collisionObjects = [this.game.player, ...this.game.obstacles];
       // for every player and indivitual objects
       collisionObjects.forEach((object) => {
@@ -245,13 +247,6 @@ window.addEventListener("load", function () {
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, object);
         // if there is a collision use the variable to determine how far and in what direction to push egg
-        // distance is hypotenuse
-        if (collision) {
-          const unit_x = dx / distance;
-          const unit_y = dy / distance;
-          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
-          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
-        }
       });
     }
   }
@@ -265,7 +260,7 @@ window.addEventListener("load", function () {
       // adding debug mode
       this.debug = true;
       this.player = new Player(this);
-      // helpers to use deltaTime to set frame rate
+      // helpers to get use deltaTime to set frame rate
       this.fps = 70;
       // starts at 0
       this.timer = 0;
@@ -317,12 +312,10 @@ window.addEventListener("load", function () {
         // animate the next frame
         // clear paint
         context.clearRect(0, 0, this.width, this.height);
+
         // obstacles have access to draw method - draw first so they are behind player
         this.obstacles.forEach((obstacle) => obstacle.draw(context));
-        this.eggs.forEach((egg) => {
-          egg.draw(context);
-          egg.update();
-        });
+        this.eggs.forEach((egg) => egg.draw(context));
         this.player.draw(context);
         this.player.update();
         // reset timer
@@ -352,16 +345,19 @@ window.addEventListener("load", function () {
       const sumOfRadii = a.collisionRadius + b.collisionRadius;
       // return true if there is a collision
       // return distance < sumOfRadii;
+
       // when there is a collision push the player back a pixle - do not allow through
       // change this to return an array - element with values needed to know location of collision
+
       return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
 
     // method to periodically add a new egg to game
     addEgg() {
-      // in game object so need this keyword
+      // we are in the game object so need this keyword
       this.eggs.push(new Egg(this));
     }
+
     init() {
       // 5 randomly created obstacles - the old way
       // for (let i = 0; i < this.numberOfObstacles; i++) {
@@ -376,7 +372,7 @@ window.addEventListener("load", function () {
         let overlap = false;
         // console.log(testObstacle);
         // compare the test obstacle to other obstacles in the array to check for overlap
-        // center point radi
+        // center point radei
         this.obstacles.forEach((obstacle) => {
           const dx = testObstacle.collisionX - obstacle.collisionX;
           const dy = testObstacle.collisionY - obstacle.collisionY;

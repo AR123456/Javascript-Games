@@ -279,6 +279,8 @@ window.addEventListener("load", function () {
       this.obstacles = [];
       // hold eggs created
       this.eggs = [];
+      // to give the illusion of depth by putting into an array then sort based on vertical coordinates
+      this.gameObjects = [];
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -312,17 +314,20 @@ window.addEventListener("load", function () {
       });
     }
     render(context, deltaTime) {
+      // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       // if the timer is more that the interval
       if (this.timer > this.interval) {
         // animate the next frame
         // clear paint
         context.clearRect(0, 0, this.width, this.height);
-        // obstacles have access to draw method - draw first so they are behind player
-        this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        this.gameObjects = [];
         this.eggs.forEach((egg) => {
           egg.draw(context);
           egg.update();
         });
+
+        this.obstacles.forEach((obstacle) => obstacle.draw(context));
+
         this.player.draw(context);
         this.player.update();
         // reset timer

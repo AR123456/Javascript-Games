@@ -205,9 +205,11 @@ window.addEventListener("load", function () {
       this.spriteWidth = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // adjust this later for eg shape
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5 - 30;
+      // adjust this later for eg shape - moving this to update method
+      // this.spriteX = this.collisionX - this.width * 0.5;
+      // this.spriteY = this.collisionY - this.height * 0.5 - 30;
+      this.spriteX;
+      this.spriteY;
     }
     draw(context) {
       context.drawImage(this.image, this.spriteX, this.spriteY);
@@ -235,6 +237,10 @@ window.addEventListener("load", function () {
       }
     }
     update() {
+      // keep the debug circle collison area with the egg
+      // adjust this later for eg shape
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 30;
       // eggs can be pushed around
       // objects that eggs can interact with
       let collisionObjects = [this.game.player, ...this.game.obstacles];
@@ -321,7 +327,10 @@ window.addEventListener("load", function () {
 
         // obstacles have access to draw method - draw first so they are behind player
         this.obstacles.forEach((obstacle) => obstacle.draw(context));
-        this.eggs.forEach((egg) => egg.draw(context));
+        this.eggs.forEach((egg) => {
+          egg.draw(context);
+          egg.update();
+        });
         this.player.draw(context);
         this.player.update();
         // reset timer

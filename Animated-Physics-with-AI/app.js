@@ -322,7 +322,7 @@ window.addEventListener("load", function () {
         // clear paint
         context.clearRect(0, 0, this.width, this.height);
         this.gameObjects = [...this.eggs, ...this.obstacles, this.player];
-        this.objects.forEach((object) => {
+        this.gameObjects.forEach((object) => {
           object.draw(context);
           object.update();
         });

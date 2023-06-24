@@ -193,17 +193,21 @@ window.addEventListener("load", function () {
   class Egg {
     constructor(game) {
       this.game = game;
-      this.collisionX = Math.random() * this.game.width;
-      this.collisionY = Math.random() * this.game.height;
       this.collisionRadius = 40;
+      this.margin = this.collisionRadius * 2;
+
+      this.collisionX =
+        this.margin + Math.random() * (this.game.width - this.margin);
+      this.collisionY = Math.random() * this.game.height;
+
       this.image = document.getElementById("egg");
       this.spriteHeight = 110;
       this.spriteWidth = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
       // adjust this later for eg shape
-      this.spriteX = this.collisionX + this.width * 0.5;
-      this.spriteY = this.collisionY + this.height * 0.5;
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 30;
     }
     draw(context) {
       context.drawImage(this.image, this.spriteX, this.spriteY);
@@ -248,9 +252,9 @@ window.addEventListener("load", function () {
       // when interval is reached, timer will be reset back to 0
       this.interval = 1000 / this.fps;
       this.eggTimer = 0;
-      this.eggInterval = 500;
+      this.eggInterval = 100;
       this.numberOfObstacles = 10;
-      this.maxEggs = 10;
+      this.maxEggs = 50;
       // array to hold obstacles created
       this.obstacles = [];
       // hold eggs created
@@ -305,7 +309,7 @@ window.addEventListener("load", function () {
       // increase timer by delta time
       this.timer += deltaTime;
       // add eggs periodically
-      if (this.eggTimer < this.eggInterval && this.eggs.length < this.maxEggs) {
+      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
         console.log(this.eggs);

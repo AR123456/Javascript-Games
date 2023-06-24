@@ -230,7 +230,6 @@ window.addEventListener("load", function () {
         context.stroke();
       }
     }
-    update() {}
   }
   class Game {
     constructor(canvas) {
@@ -297,6 +296,7 @@ window.addEventListener("load", function () {
 
         // obstacles have access to draw method - draw first so they are behind player
         this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        this.eggs.forEach((egg) => egg.draw(context));
         this.player.draw(context);
         this.player.update();
         // reset timer
@@ -305,8 +305,12 @@ window.addEventListener("load", function () {
       // increase timer by delta time
       this.timer += deltaTime;
       // add eggs periodically
-      if (this.eggTimer < this.eggInterval) {
+      if (this.eggTimer < this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
+        this.eggTimer = 0;
+        console.log(this.eggs);
+      } else {
+        this.eggTimer += deltaTime;
       }
     }
     // re usable collision detection method
@@ -330,7 +334,10 @@ window.addEventListener("load", function () {
     }
 
     // method to periodically add a new egg to game
-    addEgg() {}
+    addEgg() {
+      // we are in the game object so need this keyword
+      this.eggs.push(new Egg(this));
+    }
 
     init() {
       // 5 randomly created obstacles - the old way

@@ -248,6 +248,8 @@ window.addEventListener("load", function () {
       this.timer = 0;
       // when interval is reached, timer will be reset back to 0
       this.interval = 1000 / this.fps;
+      this.eggTimer = 0;
+      this.eggInterval = 500;
       this.numberOfObstacles = 10;
       this.maxEggs = 10;
       // array to hold obstacles created
@@ -302,6 +304,10 @@ window.addEventListener("load", function () {
       }
       // increase timer by delta time
       this.timer += deltaTime;
+      // add eggs periodically
+      if (this.eggTimer < this.eggInterval) {
+        this.addEgg();
+      }
     }
     // re usable collision detection method
     checkCollision(a, b) {

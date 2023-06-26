@@ -325,10 +325,18 @@ window.addEventListener("load", function () {
         context.clearRect(0, 0, this.width, this.height);
         // this order puts player behind eggs and obstacles
         this.gameObjects = [this.player, ...this.eggs, ...this.obstacles];
+        // sort by vertical position - do this before drawing
+        // if nothing is passed into sort method JS will turn into string and sort by unicode value
+        this.gameObjects.sort((a, b) => {
+          // sort based on the center point of collision area
+          return a.collisionY - b.collisionY;
+          // could also sort by value of bottom of sprite image which would be the value of spriteY + sprite hight
+        });
         this.gameObjects.forEach((object) => {
           object.draw(context);
           object.update();
         });
+
         this.timer = 0;
       }
       // increase timer by delta time
@@ -337,7 +345,7 @@ window.addEventListener("load", function () {
       if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
-        console.log(this.eggs);
+        // console.log(this.eggs);
       } else {
         this.eggTimer += deltaTime;
       }

@@ -294,7 +294,16 @@ window.addEventListener("load", function () {
         context.stroke();
       }
     }
-    update() {}
+    update() {
+      //move enemy to left by random speed
+      this.collisionX -= this.speedX;
+      // keep from moving off right side of screen
+      if (this.spriteX + this.width < 0) {
+        // re use object if you can vs creating new that later needs to be distroyed
+        this.collisionX = this.game.width;
+        this.collisionY = Math.random() * this.game.height;
+      }
+    }
   }
 
   class Game {
@@ -321,6 +330,8 @@ window.addEventListener("load", function () {
       this.obstacles = [];
       // hold eggs created
       this.eggs = [];
+      // enemy objects
+      this.enemies = [];
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       this.gameObjects = [];
       this.mouse = {
@@ -411,13 +422,13 @@ window.addEventListener("load", function () {
       // in game object so need this keyword
       this.eggs.push(new Egg(this));
     }
+    // game class to add enemy
+    addEnemy() {
+      //push a new enemy object into the array
+      this.enemies.push(new Enemy());
+    }
     init() {
-      // 5 randomly created obstacles - the old way
-      // for (let i = 0; i < this.numberOfObstacles; i++) {
-      //   // this is the entire game object
-      //   this.obstacles.push(new Obstacle(this));
-      // }
-      // new way circle packing algorithm - this is a brute force algorithm
+      //  circle packing algorithm - this is a brute force algorithm
       // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times
       let attempts = 0;
       while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {

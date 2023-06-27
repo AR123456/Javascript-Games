@@ -274,7 +274,26 @@ window.addEventListener("load", function () {
       this.spriteX;
       this.spriteY;
     }
-    draw() {}
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+      //TODO make this a re usable helper
+      if (this.game.debug) {
+        // draw a circle for egg
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+      }
+    }
     update() {}
   }
 

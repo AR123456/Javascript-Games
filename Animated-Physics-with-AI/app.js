@@ -373,8 +373,13 @@ window.addEventListener("load", function () {
         // animate the next frame
         // clear paint
         context.clearRect(0, 0, this.width, this.height);
-        // this order puts player behind eggs and obstacles
-        this.gameObjects = [this.player, ...this.eggs, ...this.obstacles];
+        // expand into game oject this order puts player behind eggs and obstacles
+        this.gameObjects = [
+          this.player,
+          ...this.eggs,
+          ...this.obstacles,
+          ...this.enemies,
+        ];
         // sort by vertical position - do this before drawing
         // if nothing is passed into sort method JS will turn into string and sort by unicode value
         this.gameObjects.sort((a, b) => {
@@ -431,7 +436,6 @@ window.addEventListener("load", function () {
       // create enemies
       for (let i = 0; i < 3; i++) {
         this.addEnemy();
-        console.log(this.enemies);
       }
       //  circle packing algorithm - this is a brute force algorithm
       // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times

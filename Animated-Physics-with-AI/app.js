@@ -309,7 +309,9 @@ window.addEventListener("load", function () {
         // re use object if you can vs creating new that later needs to be distroyed
         this.collisionX =
           this.game.width + this.width + Math.random() * this.game.width * 0.5;
-        this.collisionY = Math.random() * this.game.height;
+        this.collisionY =
+          this.game.topMargin +
+          Math.random() * (this.game.height - this.game.topMargin);
       }
     }
   }

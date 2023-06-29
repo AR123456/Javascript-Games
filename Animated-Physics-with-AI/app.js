@@ -261,6 +261,25 @@ window.addEventListener("load", function () {
       });
     }
   }
+  // eggs hatch into Larva that play protects by pushing to safe area
+  class Larva {
+    constructor(game, x, y) {
+      // larva appear at same position as the egg they hatched from
+      this.game = game;
+      this.collisionX = x;
+      this.collisionY = y;
+      this.collisionRadius = 30;
+      this.image = document.getElementById("larva");
+      this.spriteWidth = 150;
+      this.spriteHeight = 150;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.spriteX;
+      this.spriteY;
+    }
+    draw() {}
+    update() {}
+  }
   class Enemy {
     constructor(game) {
       this.game = game;

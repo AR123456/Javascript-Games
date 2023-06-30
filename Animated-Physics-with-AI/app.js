@@ -270,9 +270,12 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
         // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
         this.game.removeGameObjects();
+        console.log(this.hatchTimer);
         console.log(this.game.eggs);
       } else {
         this.hatchTimer += deltaTime;
+
+        // console.log(this.game.eggs);
       }
     }
   }
@@ -470,7 +473,7 @@ window.addEventListener("load", function () {
         });
         this.gameObjects.forEach((object) => {
           object.draw(context);
-          object.update();
+          object.update(deltaTime);
         });
 
         this.timer = 0;

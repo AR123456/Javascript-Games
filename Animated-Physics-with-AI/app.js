@@ -121,11 +121,9 @@ window.addEventListener("load", function () {
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
         // order of values being put into array in the return of  collision check
-        // return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
         // assign variable names using destructuring
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, obstacle);
-
         if (collision) {
           // create a vector or small 1 px line -point in the direction to push player back
           const unit_x = dx / distance;
@@ -150,7 +148,7 @@ window.addEventListener("load", function () {
       this.spriteHeight = 250;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // center image on top of collsion circle
+      // center image on top of collision circle
       this.spriteX = this.collisionX - this.width * 0.5;
       // - shift so collision point is on the "ground"
       this.spriteY = this.collisionY - this.height * 0.5 - 70;
@@ -159,7 +157,7 @@ window.addEventListener("load", function () {
       this.frameY = Math.floor(Math.random() * 3);
     }
     draw(context) {
-      // draw ofstacel image
+      // draw obstacle image
       context.drawImage(
         this.image,
         this.frameX * this.spriteWidth,
@@ -208,9 +206,6 @@ window.addEventListener("load", function () {
       this.spriteWidth = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // adjust this later for eg shape - moving this to update method but need to declare here
-      // this.spriteX = this.collisionX - this.width * 0.5;
-      // this.spriteY = this.collisionY - this.height * 0.5 - 30;
       this.spriteX;
       this.spriteY;
       // egg hatching logic
@@ -246,7 +241,7 @@ window.addEventListener("load", function () {
       }
     }
     update(deltaTime) {
-      // keep the debug circle collison area with the egg- declaired in the constructor
+      // keep the debug circle collision area with the egg- declaired in the constructor
       // adjust this later for eg shape
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
@@ -281,16 +276,14 @@ window.addEventListener("load", function () {
           new Larva(this.game, this.collisionX, this.collisionY)
         );
         this.markedForDeletion = true;
-        // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
+        // for efficancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
         this.game.removeGameObjects();
       } else {
         this.hatchTimer += deltaTime;
-
-        // console.log(this.game.eggs);
       }
     }
   }
-  // eggs hatch into Larva that play protects by pushing to safe area
+  // eggs hatch into Larva that player protects by pushing to safe area
   class Larva {
     constructor(game, x, y) {
       // larva appear at same position as the egg they hatched from
@@ -342,7 +335,7 @@ window.addEventListener("load", function () {
     }
     update() {
       this.collisionY -= this.speedY;
-      // changing the postion of the larva
+      // changing the position of the larva
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 50;
       // larva are safe if the reach the mushroom forest

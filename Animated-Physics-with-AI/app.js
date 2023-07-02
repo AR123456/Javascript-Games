@@ -495,6 +495,7 @@ window.addEventListener("load", function () {
       this.gameObjects = [];
       // keeping track of game score
       this.score = 0;
+      this.lostHatchlings = 0;
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -565,6 +566,12 @@ window.addEventListener("load", function () {
       } else {
         this.eggTimer += deltaTime;
       }
+      // draw status text
+      context.save();
+      context.textAlign = "left";
+      // context.fillText("Score: " + this.score, 25, 50);
+      context.fillText(`Score ${this.score}`, 25, 50);
+      context.restore();
     }
     // re usable collision detection method
     checkCollision(a, b) {

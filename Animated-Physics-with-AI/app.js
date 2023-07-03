@@ -571,6 +571,9 @@ window.addEventListener("load", function () {
       context.textAlign = "left";
       // context.fillText("Score: " + this.score, 25, 50);
       context.fillText(`Score ${this.score}`, 25, 50);
+      if (this.debug) {
+        context.fillText(`Lost ${this.lostHatchlings}`, 25, 100);
+      }
       context.restore();
     }
     // re usable collision detection method

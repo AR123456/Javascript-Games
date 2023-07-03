@@ -458,8 +458,6 @@ window.addEventListener("load", function () {
           this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
         }
       });
-
-      ///
     }
   }
 
@@ -501,16 +499,15 @@ window.addEventListener("load", function () {
         y: this.height * 0.5,
         pressed: false,
       };
-      //event listeners
-      // es6 so addEventListener remembers game
+      //event listeners es6 so addEventListener remembers game
       canvas.addEventListener("mousedown", (e) => {
-        // get coordinates of click to use on game object event offset- so avalable to all of codebase
+        // get coordinates of click to use on game object event offset- so available to all of codebase
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = true;
       });
       canvas.addEventListener("mouseup", (e) => {
-        // get coordinates of click to use on game object event offset- so avalable to all of codebase
+        // get coordinates of click to use on game object event offset- so available to all of codebase
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = false;
@@ -518,7 +515,6 @@ window.addEventListener("load", function () {
       canvas.addEventListener("mousemove", (e) => {
         // only move player when mouse is pressed
         if (this.mouse.pressed) {
-          //move
           this.mouse.x = e.offsetX;
           this.mouse.y = e.offsetY;
         }
@@ -532,8 +528,7 @@ window.addEventListener("load", function () {
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       // if the timer is more that the interval
       if (this.timer > this.interval) {
-        // animate the next frame
-        // clear paint
+        // animate the next frame clear paint
         context.clearRect(0, 0, this.width, this.height);
         // expand into game oject this order puts player behind eggs and obstacles
         this.gameObjects = [
@@ -569,7 +564,6 @@ window.addEventListener("load", function () {
       // draw status text
       context.save();
       context.textAlign = "left";
-      // context.fillText("Score: " + this.score, 25, 50);
       context.fillText(`Score ${this.score}`, 25, 50);
       if (this.debug) {
         context.fillText(`Lost ${this.lostHatchlings}`, 25, 100);
@@ -589,12 +583,11 @@ window.addEventListener("load", function () {
       const sumOfRadii = a.collisionRadius + b.collisionRadius;
       // return true if there is a collision
       // return distance < sumOfRadii;
-      // when there is a collision push the player back a pixle - do not allow through
-      // change this to return an array - element with values needed to know location of collision
+      // when there is a collision push the player back a pixel - do not allow through
+      // array - values needed to know location of collision
       return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
-
-    // method to periodically add a new egg to game
+    // periodically add a new egg to game
     addEgg() {
       // in game object so need this keyword
       this.eggs.push(new Egg(this));
@@ -623,14 +616,12 @@ window.addEventListener("load", function () {
       while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {
         let testObstacle = new Obstacle(this);
         let overlap = false;
-        // console.log(testObstacle);
-        // compare the test obstacle to other obstacles in the array to check for overlap
-        // center point radi
+        // check for overlap center point radi
         this.obstacles.forEach((obstacle) => {
           const dx = testObstacle.collisionX - obstacle.collisionX;
           const dy = testObstacle.collisionY - obstacle.collisionY;
           const distance = Math.hypot(dy, dx);
-          // put some space around obstacles
+          // space around obstacles
           const distanceBuffer = 150;
           const sumOfRadii =
             testObstacle.collisionRadius +
@@ -640,8 +631,7 @@ window.addEventListener("load", function () {
             overlap = true;
           }
         });
-
-        // also check that obstacle is not rendering off edge of screen
+        //check that obstacle is not rendering off screen
         const margin = testObstacle.collisionRadius * 3;
         if (
           !overlap &&
@@ -663,10 +653,9 @@ window.addEventListener("load", function () {
   let lastTime = 0;
   function animate(timeStamp) {
     const deltaTime = timeStamp - lastTime;
-    // them reassign back to current timeStamp
+    // reassign back to current timeStamp
     lastTime = timeStamp;
-
-    // need to draw over and over to see so calling render from inside animation loop
+    // call render from inside animation loop
     game.render(ctx, deltaTime);
     requestAnimationFrame(animate);
   }

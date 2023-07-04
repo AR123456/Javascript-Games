@@ -7,7 +7,7 @@ window.addEventListener("load", function () {
   canvas.height = 720;
   ctx.fillStyle = "white";
   ctx.lineWidth = 3;
-  ctx.strokeStyle = "white";
+  ctx.strokeStyle = "black";
   // font drawing and re drawing are resource intensive
   ctx.font = "40px Helvetica";
   ctx.textAlign = "center";
@@ -347,7 +347,7 @@ window.addEventListener("load", function () {
         // swarm of 3 fireflys
         for (let i = 0; i < 3; i++) {
           this.game.particles.push(
-            new Firefly(this.game, this.collisionX, this.collisionY, "red")
+            new Firefly(this.game, this.collisionX, this.collisionY, "yellow")
           );
         }
       }
@@ -511,7 +511,8 @@ window.addEventListener("load", function () {
       //increase angle by the angle velocity each animation frame
       this.angle += this.va;
       // x can be positive or negative so can go right or left
-      this.collisionX += this.speedX;
+      // using cos to get a wavy motion
+      this.collisionX += Math.cos(this.angle) * this.speedX;
       // float up
       this.collisionY -= this.speedY;
       // if the firefly moves past top edge of game area remove it

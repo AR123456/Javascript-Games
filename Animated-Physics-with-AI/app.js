@@ -474,6 +474,24 @@ window.addEventListener("load", function () {
       this.speedY = Math.random() * 2 + 0.5;
       // trig for floating and swirling
       this.angle = 0;
+      //how fast the angle is increasing
+      this.va = Math.random() * 0.1 + 0.01;
+      this.markedForDeletion = false;
+    }
+    // share draw method for all Fireflys and sparks
+    draw(context) {
+      context.save();
+      context.fillStyle = this.color;
+      context.beginPath();
+      context.arc(
+        this.collisionX,
+        this.collisionY,
+        this.radius,
+        0,
+        Math.PI * 2
+      );
+      //Math.PI*2 is a full circle in radiants
+      context.restore();
     }
   }
   //child or sub class

@@ -459,6 +459,7 @@ window.addEventListener("load", function () {
       });
     }
   }
+  // super or parent class
   class Particle {
     constructor(game, x, y, color) {
       // convert arguments to class properties
@@ -466,9 +467,18 @@ window.addEventListener("load", function () {
       this.collisionX = x;
       this.collisionY = y;
       this.color = color;
+      // this is resource intensive because we will be creating thousands of random particles in the game - use object pooling to get around this
+      this.radius = Math.floor(Math.random() * 10 + 5);
+      // vertical speed
+      this.speedX = Math.random() * 6 - 3;
+      this.speedY = Math.random() * 2 + 0.5;
+      // trig for floating and swirling
+      this.angle = 0;
     }
   }
+  //child or sub class
   class Firefly extends Particle {}
+  //child or sub class
   class Spark extends Particle {}
   class Game {
     constructor(canvas) {

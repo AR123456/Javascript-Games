@@ -347,7 +347,8 @@ window.addEventListener("load", function () {
         // swarm of 3 fireflys
         for (let i = 0; i < 3; i++) {
           this.game.particles.push(
-            new Firefly(this.game, this.collisionX, this.collisionY, "yellow")
+            // for testing changing Firefly to Spark
+            new Spark(this.game, this.collisionX, this.collisionY, "yellow")
           );
         }
       }
@@ -536,6 +537,12 @@ window.addEventListener("load", function () {
       // pass ever increasing angle value
       this.collisionX -= Math.cos(this.angle) * this.speedX;
       this.collisionY -= Math.sin(this.angle) * this.speedY;
+      // make particles shrink - careful radi cannot be negative number
+      if (this.radius > 0.1) this.radius -= 0.05;
+      // remove from top edge
+      if (this.radius < 0.2) {
+        this.markedForDeletion = true;
+      }
     }
   }
   class Game {

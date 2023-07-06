@@ -383,7 +383,7 @@ window.addEventListener("load", function () {
           // track hatchlings lost
           this.game.lostHatchlings++;
           // swarm of 3 sparks
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 5; i++) {
             this.game.particles.push(
               new Spark(this.game, this.collisionX, this.collisionY, "blue")
             );

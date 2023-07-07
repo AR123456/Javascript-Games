@@ -21,8 +21,6 @@
 /* hide with css */
 #obstacles,
 #bull,
-#egg,
-#toad,
-#larva {
+#egg {
   display: none;
 }

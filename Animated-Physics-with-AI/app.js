@@ -295,12 +295,16 @@ window.addEventListener("load", function () {
       }
     }
     update() {
+      // center and offset the drawn enemies
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height + 40;
       //move enemy to left by random speed
       this.collisionX -= this.speedX;
       // keep from moving off right side of screen
       if (this.spriteX + this.width < 0) {
         // re use object if you can vs creating new that later needs to be distroyed
-        this.collisionX = this.game.width;
+        this.collisionX =
+          this.game.width + this.width + Math.random() * this.game.width * 0.5;
         this.collisionY = Math.random() * this.game.height;
       }
     }

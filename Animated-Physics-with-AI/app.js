@@ -262,18 +262,18 @@ window.addEventListener("load", function () {
     constructor(game) {
       this.game = game;
       this.collisionRadius = 30;
-      // initial x position
-      this.collisionX =
-        this.game.width + this.width + Math.random() * this.game.width * 0.5;
-      this.collisionY =
-        this.game.topMargin +
-        Math.random() * (this.game.height - this.game.topMargin);
+
       this.speedX = Math.random() * 3 + 0.5;
       this.image = document.getElementById("toad");
       this.spriteWidth = 140;
       this.spriteHeight = 260;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
+      this.collisionX =
+        this.game.width + this.width + Math.random() * this.game.width * 0.5;
+      this.collisionY =
+        this.game.topMargin +
+        Math.random() * (this.game.height - this.game.topMargin);
       // position of sprite sheet image in relation to collision circle coordinate
       this.spriteX;
       this.spriteY;

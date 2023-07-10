@@ -277,7 +277,9 @@ window.addEventListener("load", function () {
       this.spriteX;
       this.spriteY;
     }
-    draw() {}
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+    }
     update() {}
   }
   class Enemy {

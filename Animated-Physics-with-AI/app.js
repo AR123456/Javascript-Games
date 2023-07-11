@@ -476,6 +476,7 @@ window.addEventListener("load", function () {
           ...this.eggs,
           ...this.obstacles,
           ...this.enemies,
+          ...this.hatchlings,
         ];
         // sort by vertical position - do this before drawing
         // if nothing is passed into sort method JS will turn into string and sort by unicode value

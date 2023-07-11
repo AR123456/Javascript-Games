@@ -368,6 +368,7 @@ window.addEventListener("load", function () {
       /////////////// collision with enemies
       this.game.enemies.forEach((enemy) => {
         if (this.game.checkCollision(this, enemy)[0]) {
+          console.log(enemy.collisionX);
           this.markedForDeletion = true;
           // filter larva out of hatchlings array
           this.game.removeGameObjects();

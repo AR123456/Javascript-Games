@@ -342,6 +342,8 @@ window.addEventListener("load", function () {
       if (this.collisionY < this.game.topMargin) {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
+        // if larva are protected and reach safety increment score
+        this.game.score++;
       }
       /////////////collision with objects
       //TODO can this be a re usable function slide around 2:09 , 2:26
@@ -372,6 +374,8 @@ window.addEventListener("load", function () {
           this.markedForDeletion = true;
           // filter larva out of hatchlings array
           this.game.removeGameObjects();
+          // track hatchlings lost
+          this.game.lostHatchlings++;
         }
       });
     }
@@ -489,6 +493,8 @@ window.addEventListener("load", function () {
       this.hatchlings = [];
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       this.gameObjects = [];
+      // keeping track of game score
+      this.score = 0;
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,

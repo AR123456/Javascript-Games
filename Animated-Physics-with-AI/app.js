@@ -241,8 +241,8 @@ window.addEventListener("load", function () {
       }
     }
     update(deltaTime) {
-      // keep the debug circle collision area with the egg- declaired in the constructor
-      // adjust this later for eg shape
+      // keep the debug circle collision area with the egg- declared in the constructor
+      // adjust this later for egg shape
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
       ///////////////collisions
@@ -276,7 +276,7 @@ window.addEventListener("load", function () {
           new Larva(this.game, this.collisionX, this.collisionY)
         );
         this.markedForDeletion = true;
-        // for efficancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
+        // for efficiency restructure the array here when something actually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
         this.game.removeGameObjects();
       } else {
         this.hatchTimer += deltaTime;
@@ -384,7 +384,6 @@ window.addEventListener("load", function () {
     constructor(game) {
       this.game = game;
       this.collisionRadius = 30;
-
       this.speedX = Math.random() * 3 + 0.5;
       this.image = document.getElementById("toad");
       this.spriteWidth = 140;
@@ -428,7 +427,7 @@ window.addEventListener("load", function () {
       this.collisionX -= this.speedX;
       // keep from moving off right side of screen
       if (this.spriteX + this.width < 0) {
-        // re use object if you can vs creating new that later needs to be distroyed
+        // re use object if you can vs creating new that later needs to be destroyed
         this.collisionX =
           this.game.width + this.width + Math.random() * this.game.width * 0.5;
         this.collisionY =
@@ -444,7 +443,7 @@ window.addEventListener("load", function () {
       //   ...this.game.eggs,
       // ];
       let collisionObjects = [this.game.player, ...this.game.obstacles];
-      // for every player and indivitual objects
+      // for every player and individual objects
       collisionObjects.forEach((object) => {
         // destructure the object into these variables
         let [collision, distance, sumOfRadii, dx, dy] =

@@ -533,8 +533,8 @@ window.addEventListener("load", function () {
     // will use the draw method and constructor from the parent (Particel) class
     update() {
       this.angle += this.va * 0.5;
-      this.collisionX -= Math.cos(this.angle) * this.speedX;
-      this.collisionY -= Math.sin(this.angle) * this.speedY;
+      this.collisionX -= Math.sin(this.angle) * this.speedX;
+      this.collisionY -= Math.cos(this.angle) * this.speedY;
       //shrink the sparks
       if (this.radius > 0.1) this.radius -= 0.05;
       if (this.radius < 0.2) {

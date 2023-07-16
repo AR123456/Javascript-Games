@@ -535,6 +535,12 @@ window.addEventListener("load", function () {
       this.angle += this.va * 0.5;
       this.collisionX -= Math.cos(this.angle) * this.speedX;
       this.collisionY -= Math.sin(this.angle) * this.speedY;
+      //shrink the sparks
+      if (this.radius > 0.1) this.radius -= 0.05;
+      if (this.radius < 0.2) {
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+      }
     }
   }
   class Game {

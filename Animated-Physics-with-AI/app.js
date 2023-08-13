@@ -7,10 +7,7 @@ window.addEventListener("load", function () {
   canvas.height = 720;
   ctx.fillStyle = "white";
   ctx.lineWidth = 3;
-  ctx.strokeStyle = "black";
-  // font drawing and re drawing are resource intensive
-  ctx.font = "40px Helvetica";
-  ctx.textAlign = "center";
+  ctx.strokeStyle = "white";
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -121,9 +118,11 @@ window.addEventListener("load", function () {
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
         // order of values being put into array in the return of  collision check
+        // return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
         // assign variable names using destructuring
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, obstacle);
+
         if (collision) {
           // create a vector or small 1 px line -point in the direction to push player back
           const unit_x = dx / distance;
@@ -148,7 +147,7 @@ window.addEventListener("load", function () {
       this.spriteHeight = 250;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // center image on top of collision circle
+      // center image on top of collsion circle
       this.spriteX = this.collisionX - this.width * 0.5;
       // - shift so collision point is on the "ground"
       this.spriteY = this.collisionY - this.height * 0.5 - 70;
@@ -157,7 +156,7 @@ window.addEventListener("load", function () {
       this.frameY = Math.floor(Math.random() * 3);
     }
     draw(context) {
-      // draw obstacle image
+      // draw ofstacel image
       context.drawImage(
         this.image,
         this.frameX * this.spriteWidth,
@@ -206,13 +205,11 @@ window.addEventListener("load", function () {
       this.spriteWidth = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
+      // adjust this later for eg shape - moving this to update method but need to declare here
+      // this.spriteX = this.collisionX - this.width * 0.5;
+      // this.spriteY = this.collisionY - this.height * 0.5 - 30;
       this.spriteX;
       this.spriteY;
-      // egg hatching logic
-      this.hatchTimer = 0;
-      this.hatchInterval = 3000;
-      //  hatched eggs so they can be removed
-      this.markedForDeletion = false;
     }
     draw(context) {
       context.drawImage(this.image, this.spriteX, this.spriteY);
@@ -232,231 +229,21 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
-        const displayTimer = (this.hatchTimer * 0.001).toFixed(0);
-        context.fillText(
-          displayTimer,
-          this.collisionX,
-          this.collisionY - this.collisionRadius * 2.5
-        );
       }
     }
-    update(deltaTime) {
-      // keep the debug circle collision area with the egg- declared in the constructor
-      // adjust this later for egg shape
+    update() {
+      // keep the debug circle collison area with the egg- declaired in the constructor
+      // adjust this later for eg shape
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
-      ///////////////collisions
-      //TODO can this be a re usable function slide around 2:09
       // eggs can be pushed around
       // array of objects that eggs can interact with
-      // adding enemies here makes them solid and impassable so enemies pass eggs around
-      let collisionObjects = [
-        this.game.player,
-        ...this.game.obstacles,
-        ...this.game.enemies,
-      ];
-      // for every player and individual objects
-      collisionObjects.forEach((object) => {
-        // destructure the object into these variables
-        let [collision, distance, sumOfRadii, dx, dy] =
-          this.game.checkCollision(this, object);
-        // if there is a collision use the variable to determine how far and in what direction to push egg
-        // distance is hypotenuse
-        if (collision) {
-          const unit_x = dx / distance;
-          const unit_y = dy / distance;
-          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
-          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
-        }
-      });
-      //////////////////////////hatching
-      if (this.hatchTimer > this.hatchInterval) {
-        // the egg has hatched so push larva to a new array
-        this.game.hatchlings.push(
-          new Larva(this.game, this.collisionX, this.collisionY)
-        );
-        this.markedForDeletion = true;
-        // for efficiency restructure the array here when something actually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
-        this.game.removeGameObjects();
-      } else {
-        this.hatchTimer += deltaTime;
-      }
-    }
-  }
-  // eggs hatch into Larva that player protects by pushing to safe area
-  class Larva {
-    constructor(game, x, y) {
-      // larva appear at same position as the egg they hatched from
-      this.game = game;
-      this.collisionX = x;
-      this.collisionY = y;
-      this.collisionRadius = 30;
-      this.image = document.getElementById("larva");
-      this.spriteWidth = 150;
-      this.spriteHeight = 150;
-      this.width = this.spriteWidth;
-      this.height = this.spriteHeight;
-      this.spriteX;
-      this.spriteY;
-      // vertical speed
-      this.speedY = 1 + Math.random();
-      // randomize drawing the 2 sprites on the sprite sheet
-      this.frameX = 0;
-      this.frameY = Math.floor(Math.random() * 2);
-    }
-    draw(context) {
-      context.drawImage(
-        this.image,
-        this.frameX * this.spriteWidth,
-        this.frameY * this.spriteHeight,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.spriteX,
-        this.spriteY,
-        this.width,
-        this.height
-      );
-      //TODO make this a re usable helper
-      if (this.game.debug) {
-        context.beginPath();
-        context.arc(
-          this.collisionX,
-          this.collisionY,
-          this.collisionRadius,
-          0,
-          Math.PI * 2
-        );
-        context.save();
-        context.globalAlpha = 0.5;
-        context.fill();
-        context.restore();
-        context.stroke();
-      }
-    }
-    update() {
-      this.collisionY -= this.speedY;
-      // changing the position of the larva
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5 - 50;
-      // larva are safe if the reach the mushroom forest
-      if (this.collisionY < this.game.topMargin) {
-        this.markedForDeletion = true;
-        this.game.removeGameObjects();
-        // if larva are protected and reach safety increment score
-        this.game.score++;
-        // swarm of 3 fireflys
-        for (let i = 0; i < 3; i++) {
-          this.game.particles.push(
-            new Firefly(this.game, this.collisionX, this.collisionY, "yellow")
-          );
-        }
-      }
-      /////////////collision with objects
-      //TODO can this be a re usable function slide around 2:09 , 2:26
-      // larva will avoid player and obstacles, player will be able to push larva around
-      let collisionObjects = [
-        this.game.player,
-        ...this.game.obstacles,
-        // ...this.game.enemies,
-      ];
-      // for every player and individual objects
-      collisionObjects.forEach((object) => {
-        // destructure the object into these variables
-        let [collision, distance, sumOfRadii, dx, dy] =
-          this.game.checkCollision(this, object);
-        // if there is a collision use the variable to determine how far and in what direction to push egg
-        // distance is hypotenuse
-        if (collision) {
-          const unit_x = dx / distance;
-          const unit_y = dy / distance;
-          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
-          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
-        }
-      });
-      /////////////// collision with enemies
-      this.game.enemies.forEach((enemy) => {
-        // [collision, distance, sumOfRadii, dx, dy] index 0 is the collision
-        if (this.game.checkCollision(this, enemy)[0]) {
-          this.markedForDeletion = true;
-          // filter larva out of hatchlings array
-          this.game.removeGameObjects();
-          // track hatchlings lost
-          this.game.lostHatchlings++;
-          // swarm of 3 sparks
-          for (let i = 0; i < 3; i++) {
-            this.game.particles.push(
-              new Spark(this.game, this.collisionX, this.collisionY, "blue")
-            );
-          }
-        }
-      });
-    }
-  }
-  class Enemy {
-    constructor(game) {
-      this.game = game;
-      this.collisionRadius = 30;
-      this.speedX = Math.random() * 3 + 0.5;
-      this.image = document.getElementById("toad");
-      this.spriteWidth = 140;
-      this.spriteHeight = 260;
-      this.width = this.spriteWidth;
-      this.height = this.spriteHeight;
-      this.collisionX =
-        this.game.width + this.width + Math.random() * this.game.width * 0.5;
-      this.collisionY =
-        this.game.topMargin +
-        Math.random() * (this.game.height - this.game.topMargin);
-      // position of sprite sheet image in relation to collision circle coordinate
-      this.spriteX;
-      this.spriteY;
-    }
-    draw(context) {
-      context.drawImage(this.image, this.spriteX, this.spriteY);
-      //TODO make this a re usable helper
-      if (this.game.debug) {
-        // draw a circle for egg
-        context.beginPath();
-        context.arc(
-          this.collisionX,
-          this.collisionY,
-          this.collisionRadius,
-          0,
-          Math.PI * 2
-        );
-        context.save();
-        context.globalAlpha = 0.5;
-        context.fill();
-        context.restore();
-        context.stroke();
-      }
-    }
-    update() {
-      // center and offset the drawn enemies
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height + 40;
-      //move enemy to left by random speed
-      this.collisionX -= this.speedX;
-      // keep from moving off right side of screen
-      if (this.spriteX + this.width < 0) {
-        // re use object if you can vs creating new that later needs to be destroyed
-        this.collisionX =
-          this.game.width + this.width + Math.random() * this.game.width * 0.5;
-        this.collisionY =
-          this.game.topMargin +
-          Math.random() * (this.game.height - this.game.topMargin);
-      }
-      //TODO can this be a re usable function slide around 2:09
-      // re using this code from the egg class to make enemies treat obstacles and player as solid impassable object and slide around them
-      // adding eggs to the collisionsObjects here makes them solid and impassable obstacles for enemies
-      // let collisionObjects = [
-      //   this.game.player,
-      //   ...this.game.obstacles,
-      //   ...this.game.eggs,
-      // ];
       let collisionObjects = [this.game.player, ...this.game.obstacles];
-      // for every player and individual objects
+      // for every player and indivitual objects
       collisionObjects.forEach((object) => {
+        // run the checkCollision() function it returns  return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // let [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // pass in this which is the egg and object which is the item in the array
         // destructure the object into these variables
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, object);
@@ -469,78 +256,6 @@ window.addEventListener("load", function () {
           this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
         }
       });
-    }
-  }
-  // super or parent class
-  class Particle {
-    constructor(game, x, y, color) {
-      // convert arguments to class properties
-      this.game = game;
-      this.collisionX = x;
-      this.collisionY = y;
-      this.color = color;
-      // this is resource intensive because we will be creating thousands of random particles in the game - use object pooling to get around this
-      this.radius = Math.floor(Math.random() * 10 + 5);
-      // vertical speed
-      this.speedX = Math.random() * 6 - 3;
-      this.speedY = Math.random() * 2 + 0.5;
-      // trig for floating and swirling
-      this.angle = 0;
-      //how fast the angle is increasing
-      this.va = Math.random() * 0.1 + 0.01;
-
-      this.markedForDeletion = false;
-    }
-    // share draw method for all Fireflys and sparks
-    draw(context) {
-      context.save();
-      context.fillStyle = this.color;
-      context.beginPath();
-      //Math.PI*2 is a full circle in radiants
-      context.arc(
-        this.collisionX,
-        this.collisionY,
-        this.radius,
-        0,
-        Math.PI * 2
-      );
-      context.fill();
-      context.stroke();
-      context.restore();
-    }
-  }
-  //child or sub class
-  class Firefly extends Particle {
-    // will use the draw method and constructor from the parent (Particel) class
-    update() {
-      // float up and sway right and left
-      //increase angle by the angle velocity each animation frame
-      this.angle += this.va;
-      // x can be positive or negative so can go right or left
-      // using cos to get a wavy motion
-      this.collisionX += Math.cos(this.angle) * this.speedX;
-      // float up
-      this.collisionY -= this.speedY;
-      // if the firefly moves past top edge of game area remove it
-      if (this.collisionY < 0 - this.radius) {
-        this.markedForDeletion = true;
-        this.game.removeGameObjects();
-      }
-    }
-  }
-  //child or sub class
-  class Spark extends Particle {
-    // will use the draw method and constructor from the parent (Particel) class
-    update() {
-      this.angle += this.va * 0.5;
-      this.collisionX -= Math.sin(this.angle) * this.speedX;
-      this.collisionY -= Math.cos(this.angle) * this.speedY;
-      //shrink the sparks
-      if (this.radius > 0.1) this.radius -= 0.05;
-      if (this.radius < 0.2) {
-        this.markedForDeletion = true;
-        this.game.removeGameObjects();
-      }
     }
   }
   class Game {
@@ -560,38 +275,30 @@ window.addEventListener("load", function () {
       // when interval is reached, timer will be reset back to 0
       this.interval = 1000 / this.fps;
       this.eggTimer = 0;
-      this.eggInterval = 1000;
+      this.eggInterval = 500;
       this.numberOfObstacles = 10;
-      this.maxEggs = 20;
+      this.maxEggs = 10;
       // array to hold obstacles created
       this.obstacles = [];
       // hold eggs created
       this.eggs = [];
-      // enemy objects
-      this.enemies = [];
-      // holder for hatchlings- when egg hatches push larva here
-      this.hatchlings = [];
-      // holder for active particles
-      this.particles = [];
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       this.gameObjects = [];
-      // keeping track of game score
-      this.score = 0;
-      this.lostHatchlings = 0;
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
         pressed: false,
       };
-      //event listeners es6 so addEventListener remembers game
+      //event listeners
+      // es6 so addEventListener remembers game
       canvas.addEventListener("mousedown", (e) => {
-        // get coordinates of click to use on game object event offset- so available to all of codebase
+        // get coordinates of click to use on game object event offset- so avalable to all of codebase
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = true;
       });
       canvas.addEventListener("mouseup", (e) => {
-        // get coordinates of click to use on game object event offset- so available to all of codebase
+        // get coordinates of click to use on game object event offset- so avalable to all of codebase
         this.mouse.x = e.offsetX;
         this.mouse.y = e.offsetY;
         this.mouse.pressed = false;
@@ -599,6 +306,7 @@ window.addEventListener("load", function () {
       canvas.addEventListener("mousemove", (e) => {
         // only move player when mouse is pressed
         if (this.mouse.pressed) {
+          //move
           this.mouse.x = e.offsetX;
           this.mouse.y = e.offsetY;
         }
@@ -612,29 +320,19 @@ window.addEventListener("load", function () {
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       // if the timer is more that the interval
       if (this.timer > this.interval) {
-        // animate the next frame clear paint
+        // animate the next frame
+        // clear paint
         context.clearRect(0, 0, this.width, this.height);
-        // expand into game oject this order puts player behind eggs and obstacles
-        this.gameObjects = [
-          this.player,
-          ...this.eggs,
-          ...this.obstacles,
-          ...this.enemies,
-          ...this.hatchlings,
-          ...this.particles,
-        ];
-        // sort by vertical position - do this before drawing
-        // if nothing is passed into sort method JS will turn into string and sort by unicode value
-        this.gameObjects.sort((a, b) => {
-          // sort based on the center point of collision area
-          return a.collisionY - b.collisionY;
-          // could also sort by value of bottom of sprite image which would be the value of spriteY + sprite hight
-        });
+        this.gameObjects = [...this.eggs, ...this.obstacles, this.player];
         this.gameObjects.forEach((object) => {
           object.draw(context);
-          object.update(deltaTime);
+          object.update();
         });
 
+        // this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        // this.player.draw(context);
+        // this.player.update();
+        // reset timer
         this.timer = 0;
       }
       // increase timer by delta time
@@ -643,17 +341,10 @@ window.addEventListener("load", function () {
       if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
+        console.log(this.eggs);
       } else {
         this.eggTimer += deltaTime;
       }
-      // draw status text
-      context.save();
-      context.textAlign = "left";
-      context.fillText(`Score ${this.score}`, 25, 50);
-      if (this.debug) {
-        context.fillText(`Lost ${this.lostHatchlings}`, 25, 100);
-      }
-      context.restore();
     }
     // re usable collision detection method
     checkCollision(a, b) {
@@ -668,48 +359,36 @@ window.addEventListener("load", function () {
       const sumOfRadii = a.collisionRadius + b.collisionRadius;
       // return true if there is a collision
       // return distance < sumOfRadii;
-      // when there is a collision push the player back a pixel - do not allow through
-      // array - values needed to know location of collision
+      // when there is a collision push the player back a pixle - do not allow through
+      // change this to return an array - element with values needed to know location of collision
       return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
-    // periodically add a new egg to game
+
+    // method to periodically add a new egg to game
     addEgg() {
       // in game object so need this keyword
       this.eggs.push(new Egg(this));
     }
-    // game class to add enemy
-    addEnemy() {
-      //push a new enemy object into the array
-      this.enemies.push(new Enemy(this));
-    }
-    // method to remove things marked for deletion
-    removeGameObjects() {
-      // return array with marked for deletion filtered out
-      this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
-      this.hatchlings = this.hatchlings.filter(
-        (object) => !object.markedForDeletion
-      );
-      this.particles = this.particles.filter(
-        (object) => !object.markedForDeletion
-      );
-    }
     init() {
-      // create enemies
-      for (let i = 0; i < 3; i++) {
-        this.addEnemy();
-      }
-      //  circle packing algorithm - this is a brute force algorithm
+      // 5 randomly created obstacles - the old way
+      // for (let i = 0; i < this.numberOfObstacles; i++) {
+      //   // this is the entire game object
+      //   this.obstacles.push(new Obstacle(this));
+      // }
+      // new way circle packing algorithm - this is a brute force algorithm
       // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times
       let attempts = 0;
       while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {
         let testObstacle = new Obstacle(this);
         let overlap = false;
-        // check for overlap center point radi
+        // console.log(testObstacle);
+        // compare the test obstacle to other obstacles in the array to check for overlap
+        // center point radi
         this.obstacles.forEach((obstacle) => {
           const dx = testObstacle.collisionX - obstacle.collisionX;
           const dy = testObstacle.collisionY - obstacle.collisionY;
           const distance = Math.hypot(dy, dx);
-          // space around obstacles
+          // put some space around obstacles
           const distanceBuffer = 150;
           const sumOfRadii =
             testObstacle.collisionRadius +
@@ -719,7 +398,8 @@ window.addEventListener("load", function () {
             overlap = true;
           }
         });
-        //check that obstacle is not rendering off screen
+
+        // also check that obstacle is not rendering off edge of screen
         const margin = testObstacle.collisionRadius * 3;
         if (
           !overlap &&
@@ -741,9 +421,10 @@ window.addEventListener("load", function () {
   let lastTime = 0;
   function animate(timeStamp) {
     const deltaTime = timeStamp - lastTime;
-    // reassign back to current timeStamp
+    // them reassign back to current timeStamp
     lastTime = timeStamp;
-    // call render from inside animation loop
+
+    // need to draw over and over to see so calling render from inside animation loop
     game.render(ctx, deltaTime);
     requestAnimationFrame(animate);
   }

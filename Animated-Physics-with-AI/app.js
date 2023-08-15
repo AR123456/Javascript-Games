@@ -329,6 +329,14 @@ window.addEventListener("load", function () {
           object.draw(context);
           object.update();
         });
+        // sort by vertical position
+        // if nothing is passed into sort method JS will turn into string and sort by unicode value
+        this.gameObjects.sort((a, b) => {
+          // sort based on the center point of collision area
+          // could also sort by value of bottom of sprite image which would be the value of spriteY + sprite hight
+          return a.collisionY - b.collisionY;
+        });
+
         this.timer = 0;
       }
       // increase timer by delta time
@@ -337,7 +345,7 @@ window.addEventListener("load", function () {
       if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
-        console.log(this.eggs);
+        // console.log(this.eggs);
       } else {
         this.eggTimer += deltaTime;
       }

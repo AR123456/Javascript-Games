@@ -258,6 +258,17 @@ window.addEventListener("load", function () {
       });
     }
   }
+  class Enemy {
+    constructor(game) {
+      this.game = game;
+      this.collisionRadius = 30;
+      this.collisionX = this.game.width;
+      this.collisionY = Math.random() * this.game.height;
+    }
+    draw() {}
+    update() {}
+  }
+
   class Game {
     constructor(canvas) {
       this.canvas = canvas;
@@ -345,7 +356,6 @@ window.addEventListener("load", function () {
       if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
-        // console.log(this.eggs);
       } else {
         this.eggTimer += deltaTime;
       }

@@ -275,9 +275,9 @@ window.addEventListener("load", function () {
       // when interval is reached, timer will be reset back to 0
       this.interval = 1000 / this.fps;
       this.eggTimer = 0;
-      this.eggInterval = 500;
+      this.eggInterval = 1000;
       this.numberOfObstacles = 10;
-      this.maxEggs = 10;
+      this.maxEggs = 20;
       // array to hold obstacles created
       this.obstacles = [];
       // hold eggs created

@@ -294,7 +294,16 @@ window.addEventListener("load", function () {
         context.stroke();
       }
     }
-    update() {}
+    update() {
+      //move enemy to left by random speed
+      this.collisionX -= this.speedX;
+      // keep from moving off right side of screen
+      if (this.spriteX + this.width < 0) {
+        // re use object if you can vs creating new that later needs to be distroyed
+        this.collisionX = this.game.width;
+        this.collisionY = Math.random() * this.game.height;
+      }
+    }
   }
 
   class Game {

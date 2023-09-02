@@ -262,8 +262,9 @@ window.addEventListener("load", function () {
     constructor(game) {
       this.game = game;
       this.collisionRadius = 30;
-      this.collisionX = this.game.width;
-      // restrict vertical positions
+      // initial x position
+      this.collisionX =
+        this.game.width + this.width + Math.random() * this.game.width * 0.5;
       this.collisionY =
         this.game.topMargin +
         Math.random() * (this.game.height - this.game.topMargin);

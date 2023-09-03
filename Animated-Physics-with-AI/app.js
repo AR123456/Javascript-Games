@@ -241,9 +241,6 @@ window.addEventListener("load", function () {
       let collisionObjects = [this.game.player, ...this.game.obstacles];
       // for every player and indivitual objects
       collisionObjects.forEach((object) => {
-        // run the checkCollision() function it returns  return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
-        // let [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
-        // pass in this which is the egg and object which is the item in the array
         // destructure the object into these variables
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, object);
@@ -313,6 +310,24 @@ window.addEventListener("load", function () {
           this.game.topMargin +
           Math.random() * (this.game.height - this.game.topMargin);
       }
+      // re using this code from the egg class to make enemies treat obsticlaes and player as solid inpassable object and slide around them
+      let collisionObjects = [this.game.player, ...this.game.obstacles];
+      // for every player and indivitual objects
+      collisionObjects.forEach((object) => {
+        // destructure the object into these variables
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, object);
+        // if there is a collision use the variable to determine how far and in what direction to push egg
+        // distance is hypotenuse
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
+
+      ///
     }
   }
 

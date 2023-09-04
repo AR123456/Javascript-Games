@@ -239,7 +239,12 @@ window.addEventListener("load", function () {
       //TODO can this be a re usable function slide around 2:09
       // eggs can be pushed around
       // array of objects that eggs can interact with
-      let collisionObjects = [this.game.player, ...this.game.obstacles];
+      // adding enemies here makes them solid and impassable so enemies pass eggs around
+      let collisionObjects = [
+        this.game.player,
+        ...this.game.obstacles,
+        ...this.game.enemies,
+      ];
       // for every player and individual objects
       collisionObjects.forEach((object) => {
         // destructure the object into these variables
@@ -312,7 +317,13 @@ window.addEventListener("load", function () {
           Math.random() * (this.game.height - this.game.topMargin);
       }
       //TODO can this be a re usable function slide around 2:09
-      // re using this code from the egg class to make enemies treat obsticlaes and player as solid inpassable object and slide around them
+      // re using this code from the egg class to make enemies treat obstacles and player as solid impassable object and slide around them
+      // adding eggs to the collisionsObjects here makes them solid and impassable obstacles for enemies
+      // let collisionObjects = [
+      //   this.game.player,
+      //   ...this.game.obstacles,
+      //   ...this.game.eggs,
+      // ];
       let collisionObjects = [this.game.player, ...this.game.obstacles];
       // for every player and indivitual objects
       collisionObjects.forEach((object) => {

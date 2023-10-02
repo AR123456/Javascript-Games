@@ -8,6 +8,8 @@ window.addEventListener("load", function () {
   ctx.fillStyle = "white";
   ctx.lineWidth = 3;
   ctx.strokeStyle = "white";
+  // font drawing and re drawing are resource intensive
+  ctx.font = "40px Helvetica";
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -234,6 +236,7 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
+        context.fillText(this.hatchTimer, this.collisionX, this.collisionY);
       }
     }
     update(deltaTime) {

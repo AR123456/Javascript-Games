@@ -276,11 +276,18 @@ window.addEventListener("load", function () {
       this.height = this.spriteHeight;
       this.spriteX;
       this.spriteY;
+      // vertical speed
+      this.speedY = 1 + Math.random();
     }
     draw(context) {
       context.drawImage(this.image, this.spriteX, this.spriteY);
     }
-    update() {}
+    update() {
+      this.collisionY -= this.speedY;
+      // changing the postion of the larva
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5;
+    }
   }
   class Enemy {
     constructor(game) {

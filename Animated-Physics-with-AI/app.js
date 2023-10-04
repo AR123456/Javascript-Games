@@ -316,6 +316,11 @@ window.addEventListener("load", function () {
       // changing the postion of the larva
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5;
+      // larva are safe if the reach the mushroom forest
+      if (this.collisionY < this.game.topMargin) {
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+      }
     }
   }
   class Enemy {
@@ -534,6 +539,9 @@ window.addEventListener("load", function () {
     removeGameObjects() {
       // return array with marked for deletion filtered out
       this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
+      this.hatchlings = this.hatchlings.filter(
+        (object) => !object.markedForDeletion
+      );
     }
     init() {
       // create enemies

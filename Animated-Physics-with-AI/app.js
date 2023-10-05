@@ -343,6 +343,36 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
       }
+      /////////////collision with objects
+      //TODO can this be a re usable function slide around 2:09 , 2:26
+      // larva will avoid player and obstacles, player will be able to push larva around
+      let collisionObjects = [
+        this.game.player,
+        ...this.game.obstacles,
+        // ...this.game.enemies,
+      ];
+      // for every player and individual objects
+      collisionObjects.forEach((object) => {
+        // destructure the object into these variables
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, object);
+        // if there is a collision use the variable to determine how far and in what direction to push egg
+        // distance is hypotenuse
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
+      /////////////// collision with enemies
+      this.game.enemies.forEach((enemy) => {
+        if (this.game.checkCollision(this, enemy)[0]) {
+          this.markedForDeletion = true;
+          // filter larva out of hatchlings array
+          this.game.removeGameObjects();
+        }
+      });
     }
   }
   class Enemy {

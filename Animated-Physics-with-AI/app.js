@@ -323,16 +323,12 @@ window.addEventListener("load", function () {
         // animate the next frame
         // clear paint
         context.clearRect(0, 0, this.width, this.height);
-        this.gameObjects = [...this.eggs, ...this.obstacles, this.player];
+        // this order puts player behind eggs and obstacles
+        this.gameObjects = [this.player, ...this.eggs, ...this.obstacles];
         this.gameObjects.forEach((object) => {
           object.draw(context);
           object.update();
         });
-
-        // this.obstacles.forEach((obstacle) => obstacle.draw(context));
-        // this.player.draw(context);
-        // this.player.update();
-        // reset timer
         this.timer = 0;
       }
       // increase timer by delta time

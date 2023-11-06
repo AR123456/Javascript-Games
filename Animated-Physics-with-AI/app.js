@@ -8,9 +8,6 @@ window.addEventListener("load", function () {
   ctx.fillStyle = "white";
   ctx.lineWidth = 3;
   ctx.strokeStyle = "white";
-  // font drawing and re drawing are resource intensive
-  ctx.font = "40px Helvetica";
-  ctx.textAlign = "center";
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -121,9 +118,11 @@ window.addEventListener("load", function () {
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
         // order of values being put into array in the return of  collision check
+        // return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
         // assign variable names using destructuring
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, obstacle);
+
         if (collision) {
           // create a vector or small 1 px line -point in the direction to push player back
           const unit_x = dx / distance;
@@ -148,7 +147,7 @@ window.addEventListener("load", function () {
       this.spriteHeight = 250;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // center image on top of collision circle
+      // center image on top of collsion circle
       this.spriteX = this.collisionX - this.width * 0.5;
       // - shift so collision point is on the "ground"
       this.spriteY = this.collisionY - this.height * 0.5 - 70;
@@ -157,7 +156,7 @@ window.addEventListener("load", function () {
       this.frameY = Math.floor(Math.random() * 3);
     }
     draw(context) {
-      // draw obstacle image
+      // draw ofstacel image
       context.drawImage(
         this.image,
         this.frameX * this.spriteWidth,
@@ -206,13 +205,11 @@ window.addEventListener("load", function () {
       this.spriteWidth = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
+      // adjust this later for eg shape - moving this to update method but need to declare here
+      // this.spriteX = this.collisionX - this.width * 0.5;
+      // this.spriteY = this.collisionY - this.height * 0.5 - 30;
       this.spriteX;
       this.spriteY;
-      // egg hatching logic
-      this.hatchTimer = 0;
-      this.hatchInterval = 3000;
-      //  hatched eggs so they can be removed
-      this.markedForDeletion = false;
     }
     draw(context) {
       context.drawImage(this.image, this.spriteX, this.spriteY);
@@ -232,216 +229,21 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
-        const displayTimer = (this.hatchTimer * 0.001).toFixed(0);
-        context.fillText(
-          displayTimer,
-          this.collisionX,
-          this.collisionY - this.collisionRadius * 2.5
-        );
       }
     }
-    update(deltaTime) {
-      // keep the debug circle collision area with the egg- declaired in the constructor
+    update() {
+      // keep the debug circle collison area with the egg- declaired in the constructor
       // adjust this later for eg shape
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
-      ///////////////collisions
-      //TODO can this be a re usable function slide around 2:09
       // eggs can be pushed around
       // array of objects that eggs can interact with
-      // adding enemies here makes them solid and impassable so enemies pass eggs around
-      let collisionObjects = [
-        this.game.player,
-        ...this.game.obstacles,
-        ...this.game.enemies,
-      ];
-      // for every player and individual objects
-      collisionObjects.forEach((object) => {
-        // destructure the object into these variables
-        let [collision, distance, sumOfRadii, dx, dy] =
-          this.game.checkCollision(this, object);
-        // if there is a collision use the variable to determine how far and in what direction to push egg
-        // distance is hypotenuse
-        if (collision) {
-          const unit_x = dx / distance;
-          const unit_y = dy / distance;
-          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
-          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
-        }
-      });
-      //////////////////////////hatching
-      if (this.hatchTimer > this.hatchInterval) {
-        // the egg has hatched so push larva to a new array
-        this.game.hatchlings.push(
-          new Larva(this.game, this.collisionX, this.collisionY)
-        );
-        this.markedForDeletion = true;
-        // for efficancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
-        this.game.removeGameObjects();
-      } else {
-        this.hatchTimer += deltaTime;
-      }
-    }
-  }
-  // eggs hatch into Larva that player protects by pushing to safe area
-  class Larva {
-    constructor(game, x, y) {
-      // larva appear at same position as the egg they hatched from
-      this.game = game;
-      this.collisionX = x;
-      this.collisionY = y;
-      this.collisionRadius = 30;
-      this.image = document.getElementById("larva");
-      this.spriteWidth = 150;
-      this.spriteHeight = 150;
-      this.width = this.spriteWidth;
-      this.height = this.spriteHeight;
-      this.spriteX;
-      this.spriteY;
-      // vertical speed
-      this.speedY = 1 + Math.random();
-      // randomize drawing the 2 sprites on the sprite sheet
-      this.frameX = 0;
-      this.frameY = Math.floor(Math.random() * 2);
-    }
-    draw(context) {
-      context.drawImage(
-        this.image,
-        this.frameX * this.spriteWidth,
-        this.frameY * this.spriteHeight,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.spriteX,
-        this.spriteY,
-        this.width,
-        this.height
-      );
-      //TODO make this a re usable helper
-      if (this.game.debug) {
-        context.beginPath();
-        context.arc(
-          this.collisionX,
-          this.collisionY,
-          this.collisionRadius,
-          0,
-          Math.PI * 2
-        );
-        context.save();
-        context.globalAlpha = 0.5;
-        context.fill();
-        context.restore();
-        context.stroke();
-      }
-    }
-    update() {
-      this.collisionY -= this.speedY;
-      // changing the position of the larva
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5 - 50;
-      // larva are safe if the reach the mushroom forest
-      if (this.collisionY < this.game.topMargin) {
-        this.markedForDeletion = true;
-        this.game.removeGameObjects();
-      }
-      /////////////collision with objects
-      //TODO can this be a re usable function slide around 2:09 , 2:26
-      // larva will avoid player and obstacles, player will be able to push larva around
-      let collisionObjects = [
-        this.game.player,
-        ...this.game.obstacles,
-        // ...this.game.enemies,
-      ];
-      // for every player and individual objects
-      collisionObjects.forEach((object) => {
-        // destructure the object into these variables
-        let [collision, distance, sumOfRadii, dx, dy] =
-          this.game.checkCollision(this, object);
-        // if there is a collision use the variable to determine how far and in what direction to push egg
-        // distance is hypotenuse
-        if (collision) {
-          const unit_x = dx / distance;
-          const unit_y = dy / distance;
-          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
-          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
-        }
-      });
-      /////////////// collision with enemies
-      this.game.enemies.forEach((enemy) => {
-        if (this.game.checkCollision(this, enemy)[0]) {
-          console.log(enemy.collisionX);
-          this.markedForDeletion = true;
-          // filter larva out of hatchlings array
-          this.game.removeGameObjects();
-        }
-      });
-    }
-  }
-  class Enemy {
-    constructor(game) {
-      this.game = game;
-      this.collisionRadius = 30;
-
-      this.speedX = Math.random() * 3 + 0.5;
-      this.image = document.getElementById("toad");
-      this.spriteWidth = 140;
-      this.spriteHeight = 260;
-      this.width = this.spriteWidth;
-      this.height = this.spriteHeight;
-      this.collisionX =
-        this.game.width + this.width + Math.random() * this.game.width * 0.5;
-      this.collisionY =
-        this.game.topMargin +
-        Math.random() * (this.game.height - this.game.topMargin);
-      // position of sprite sheet image in relation to collision circle coordinate
-      this.spriteX;
-      this.spriteY;
-    }
-    draw(context) {
-      context.drawImage(this.image, this.spriteX, this.spriteY);
-      //TODO make this a re usable helper
-      if (this.game.debug) {
-        // draw a circle for egg
-        context.beginPath();
-        context.arc(
-          this.collisionX,
-          this.collisionY,
-          this.collisionRadius,
-          0,
-          Math.PI * 2
-        );
-        context.save();
-        context.globalAlpha = 0.5;
-        context.fill();
-        context.restore();
-        context.stroke();
-      }
-    }
-    update() {
-      // center and offset the drawn enemies
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height + 40;
-      //move enemy to left by random speed
-      this.collisionX -= this.speedX;
-      // keep from moving off right side of screen
-      if (this.spriteX + this.width < 0) {
-        // re use object if you can vs creating new that later needs to be distroyed
-        this.collisionX =
-          this.game.width + this.width + Math.random() * this.game.width * 0.5;
-        this.collisionY =
-          this.game.topMargin +
-          Math.random() * (this.game.height - this.game.topMargin);
-      }
-      //TODO can this be a re usable function slide around 2:09
-      // re using this code from the egg class to make enemies treat obstacles and player as solid impassable object and slide around them
-      // adding eggs to the collisionsObjects here makes them solid and impassable obstacles for enemies
-      // let collisionObjects = [
-      //   this.game.player,
-      //   ...this.game.obstacles,
-      //   ...this.game.eggs,
-      // ];
       let collisionObjects = [this.game.player, ...this.game.obstacles];
       // for every player and indivitual objects
       collisionObjects.forEach((object) => {
+        // run the checkCollision() function it returns  return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // let [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // pass in this which is the egg and object which is the item in the array
         // destructure the object into these variables
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, object);
@@ -454,11 +256,8 @@ window.addEventListener("load", function () {
           this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
         }
       });
-
-      ///
     }
   }
-
   class Game {
     constructor(canvas) {
       this.canvas = canvas;
@@ -476,17 +275,13 @@ window.addEventListener("load", function () {
       // when interval is reached, timer will be reset back to 0
       this.interval = 1000 / this.fps;
       this.eggTimer = 0;
-      this.eggInterval = 1000;
+      this.eggInterval = 500;
       this.numberOfObstacles = 10;
-      this.maxEggs = 20;
+      this.maxEggs = 10;
       // array to hold obstacles created
       this.obstacles = [];
       // hold eggs created
       this.eggs = [];
-      // enemy objects
-      this.enemies = [];
-      // holder for hatchlings- when egg hatches push larva here
-      this.hatchlings = [];
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       this.gameObjects = [];
       this.mouse = {
@@ -528,26 +323,16 @@ window.addEventListener("load", function () {
         // animate the next frame
         // clear paint
         context.clearRect(0, 0, this.width, this.height);
-        // expand into game oject this order puts player behind eggs and obstacles
-        this.gameObjects = [
-          this.player,
-          ...this.eggs,
-          ...this.obstacles,
-          ...this.enemies,
-          ...this.hatchlings,
-        ];
-        // sort by vertical position - do this before drawing
-        // if nothing is passed into sort method JS will turn into string and sort by unicode value
-        this.gameObjects.sort((a, b) => {
-          // sort based on the center point of collision area
-          return a.collisionY - b.collisionY;
-          // could also sort by value of bottom of sprite image which would be the value of spriteY + sprite hight
-        });
+        this.gameObjects = [...this.eggs, ...this.obstacles, this.player];
         this.gameObjects.forEach((object) => {
           object.draw(context);
-          object.update(deltaTime);
+          object.update();
         });
 
+        // this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        // this.player.draw(context);
+        // this.player.update();
+        // reset timer
         this.timer = 0;
       }
       // increase timer by delta time
@@ -556,6 +341,7 @@ window.addEventListener("load", function () {
       if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
+        console.log(this.eggs);
       } else {
         this.eggTimer += deltaTime;
       }
@@ -583,25 +369,13 @@ window.addEventListener("load", function () {
       // in game object so need this keyword
       this.eggs.push(new Egg(this));
     }
-    // game class to add enemy
-    addEnemy() {
-      //push a new enemy object into the array
-      this.enemies.push(new Enemy(this));
-    }
-    // method to remove things marked for deletion
-    removeGameObjects() {
-      // return array with marked for deletion filtered out
-      this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
-      this.hatchlings = this.hatchlings.filter(
-        (object) => !object.markedForDeletion
-      );
-    }
     init() {
-      // create enemies
-      for (let i = 0; i < 3; i++) {
-        this.addEnemy();
-      }
-      //  circle packing algorithm - this is a brute force algorithm
+      // 5 randomly created obstacles - the old way
+      // for (let i = 0; i < this.numberOfObstacles; i++) {
+      //   // this is the entire game object
+      //   this.obstacles.push(new Obstacle(this));
+      // }
+      // new way circle packing algorithm - this is a brute force algorithm
       // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times
       let attempts = 0;
       while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {

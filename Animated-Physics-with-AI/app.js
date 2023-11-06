@@ -425,9 +425,14 @@ window.addEventListener("load", function () {
     // game class to add enemy
     addEnemy() {
       //push a new enemy object into the array
-      this.enemies.push(new Enemy());
+      this.enemies.push(new Enemy(this));
     }
     init() {
+      // create enemies
+      for (let i = 0; i < 3; i++) {
+        this.addEnemy();
+        console.log(this.enemies);
+      }
       //  circle packing algorithm - this is a brute force algorithm
       // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times
       let attempts = 0;

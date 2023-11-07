@@ -263,7 +263,10 @@ window.addEventListener("load", function () {
       this.game = game;
       this.collisionRadius = 30;
       this.collisionX = this.game.width;
-      this.collisionY = Math.random() * this.game.height;
+      // restrict vertical positions
+      this.collisionY =
+        this.game.topMargin +
+        Math.random() * (this.game.height - this.game.topMargin);
       this.speedX = Math.random() * 3 + 0.5;
       this.image = document.getElementById("toad");
       this.spriteWidth = 140;

@@ -236,14 +236,12 @@ window.addEventListener("load", function () {
       // adjust this later for eg shape
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
+      //TODO can this be a re usable function slide around 2:09
       // eggs can be pushed around
       // array of objects that eggs can interact with
       let collisionObjects = [this.game.player, ...this.game.obstacles];
-      // for every player and indivitual objects
+      // for every player and individual objects
       collisionObjects.forEach((object) => {
-        // run the checkCollision() function it returns  return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
-        // let [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
-        // pass in this which is the egg and object which is the item in the array
         // destructure the object into these variables
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, object);
@@ -313,6 +311,25 @@ window.addEventListener("load", function () {
           this.game.topMargin +
           Math.random() * (this.game.height - this.game.topMargin);
       }
+      //TODO can this be a re usable function slide around 2:09
+      // re using this code from the egg class to make enemies treat obsticlaes and player as solid inpassable object and slide around them
+      let collisionObjects = [this.game.player, ...this.game.obstacles];
+      // for every player and indivitual objects
+      collisionObjects.forEach((object) => {
+        // destructure the object into these variables
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, object);
+        // if there is a collision use the variable to determine how far and in what direction to push egg
+        // distance is hypotenuse
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
+
+      ///
     }
   }
 

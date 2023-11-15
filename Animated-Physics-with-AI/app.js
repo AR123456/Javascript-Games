@@ -268,8 +268,9 @@ window.addEventListener("load", function () {
       //////////////////////////hatching
       if (this.hatchTimer > this.hatchInterval) {
         this.markedForDeletion = true;
-        // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame
+        // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
         this.game.removeGameObjects();
+        console.log(this.game.eggs);
       } else {
         this.hatchTimer += deltaTime;
       }
@@ -511,6 +512,11 @@ window.addEventListener("load", function () {
     addEnemy() {
       //push a new enemy object into the array
       this.enemies.push(new Enemy(this));
+    }
+    // method to remove things marked for deletion
+    removeGameObjects() {
+      // return array with marked for deletion filtered out
+      this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
     }
     init() {
       // create enemies

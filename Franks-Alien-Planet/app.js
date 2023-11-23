@@ -1,747 +1,597 @@
+// sizing canvas with js- load art after loading
 window.addEventListener("load", function () {
-  // load page then set up canvas
-  const canvas = this.document.getElementById("canvas1");
+  const canvas = document.getElementById("canvas1");
   const ctx = canvas.getContext("2d");
-  canvas.width = 1000;
-  canvas.height = 500;
-
-  // keyboard actions
-  class InputHandler {
-    constructor(game) {
-      this.game = game;
-      window.addEventListener("keydown", (e) => {
-        if (
-          (e.key === "ArrowUp" || e.key === "ArrowDown") &&
-          this.game.keys.indexOf(e.key) === -1
-        ) {
-          this.game.keys.push(e.key);
-        } else if (e.key === " ") {
-          this.game.player.shootTop();
-        } else if (e.key === "d") {
-          // toggle debug mode
-          this.game.debug = !this.game.debug;
-        }
-      });
-      window.addEventListener("keyup", (e) => {
-        if (this.game.keys.indexOf(e.key) > -1) {
-          this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
-        }
-      });
-    }
-  }
-  // player lazers
-  class Projectile {
-    // constructor will need game object and starting x,y coordinates
-    constructor(game, x, y) {
-      // convert the arguments passed into class properties
-      this.game = game;
-      this.x = x;
-      this.y = y;
-      this.width = 10;
-      this.height = 3;
-      this.speed = 3;
-      this.markedForDeletion = false;
-      this.image = document.getElementById("projectile");
-    }
-    update() {
-      this.x += this.speed;
-      if (this.x > this.game.width * 0.8) this.markedForDeletion = true;
-    }
-    draw(context) {
-      // context.fillStyle = "yellow";
-      // context.fillRect(this.x, this.y, this.width, this.height);
-      context.drawImage(this.image, this.x, this.y);
-    }
-  }
-  // paticles are broken bits flying off enemies when they are hit
-  class Particle {
-    constructor(game, x, y) {
-      this.game = game;
-      this.x = x;
-      this.y = y;
-      this.image = document.getElementById("gears");
-      this.frameX = Math.floor(Math.random() * 3); // pick row of random gear
-      this.frameY = Math.floor(Math.random() * 3); // pic column of random gear
-      this.spriteSize = 50; //this sprit sheet has square sprites
-      this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1); // differ size of gears
-      this.size = this.spriteSize * this.sizeModifier; // every particle gets different size
-      this.speedX = Math.random() * 6 - 3; // random horizontal movement
-      this.speedY = Math.random() * -15; // random vertical movements
-      this.gravity = 0.5; // use this tu pull down with curve
-      this.markedForDeletion = false; //
-      this.angle = 0; // rotation angle for each partical
-      this.va = Math.random() * 0.2 - 0.1; // va is velocity of angle in radiants per animation frame
-      // making the particles bounce
-      this.bounced = 0;
-      this.bottomBounceBoundary = Math.random() * 80 + 60; // number of pixels off bottom from which particles will bounce
-    }
-    update() {
-      this.angle += this.va; // increase rotation angle
-      this.speedY += this.gravity; // increase by gravity for curve
-      this.x -= this.speedX + this.game.speed; // move horizontally
-      this.y += this.speedY; // apply the speed y affected by gravity to vertical of each particle
-      // if particle falls off screen vertically so y coordinate is more that game height
-      // plus size of particle .. or game has scrolled past particle
-      if (this.y > this.game.height + this.size || this.x < 0 - this.size) {
-        this.markedForDeletion = true;
-      }
-      // change the vertical direction of the particle -set speed y to opposite
-      if (
-        this.y > this.game.height - this.bottomBounceBoundary &&
-        !this.bounced < 2
-      ) {
-        this.bounced++;
-        // set vertical direction to its opposite
-        this.speedY *= -0.5;
-      }
-    }
-    draw(context) {
-      context.save();
-      // translate over the object being rotated- to xy postion of the particle
-      context.translate(this.x, this.y);
-      // this.rotate() takes in radiants
-      context.rotate(this.angle);
-      context.drawImage(
-        this.image, // what image
-        this.frameX * this.spriteSize, // sx crop individual sprite location
-        this.frameY * this.spriteSize, //sy crop individual sprite location
-        this.spriteSize, //sw crop individual sprite width
-        this.spriteSize, //sh crop individual sprite height
-        this.size * -0.5, // where to draw
-        this.size * -0.5, // where to draw
-        this.size, // how big scaled according to size Modifier in constructor
-        this.size // how big
-      );
-      context.restore();
-    }
-  }
-  // main character
+  // set element and drawing surface of canvas to same dimensions
+  canvas.width = 1280;
+  canvas.height = 720;
+  ctx.fillStyle = "white";
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "white";
+  // font drawing and re drawing are resource intensive
+  ctx.font = "40px Helvetica";
+  ctx.textAlign = "center";
+  //OOP make it modular
   class Player {
-    // player needs game dimensions
     constructor(game) {
       this.game = game;
-      this.width = 120;
-      this.height = 190;
-      this.x = 20;
-      this.y = 100;
-      // helper vars for drawing image from sprite
-      this.frameX = 0; // cycle sprite sheet horizontaly
-      this.frameY = 0; // row of sprite sheet 0 or 1 1 will be for power up state
+      // hit box position in game area- circular hit box in this game
+      this.collisionX = this.game.width * 0.5;
+      this.collisionY = this.game.height * 0.5;
+      // size of hit box
+      this.collisionRadius = 30;
+      this.speedX = 0;
       this.speedY = 0;
-      this.maxFrame = 37;
-      this.maxSpeed = 3;
-      this.projectiles = [];
-      this.image = document.getElementById("player");
-      // handle power ups
-      this.powerUp = false;
-      this.powerUpTimer = 0;
-      this.powerUpLimit = 10000;
-    }
-    update(deltaTime) {
-      if (this.game.keys.includes("ArrowUp")) this.speedY = -this.maxSpeed;
-      else if (this.game.keys.includes("ArrowDown"))
-        this.speedY = this.maxSpeed;
-      else this.speedY = 0;
-      this.y += this.speedY;
-      // vertical boundaries - dont allow player off top or bottom edge of screen by more than 1/2 its size
-      if (this.y > this.game.height - this.height * 0.5)
-        this.y = this.game.height - this.height * 0.5;
-      else if (this.y < -this.height * 0.5) this.y = -this.height * 0.5;
-      // handle projectiles
-      this.projectiles.forEach((projectile) => {
-        projectile.update();
-      });
-      this.projectiles = this.projectiles.filter(
-        (projectile) => !projectile.markedForDeletion
-      );
-      // sprite animation
-      if (this.frameX < this.maxFrame) {
-        this.frameX++;
-      } else {
-        this.frameX = 0;
-      }
-      // power up
-      if (this.powerUp) {
-        // timer is up so remove powerup
-        if (this.powerUpTimer > this.powerUpLimit) {
-          this.powerUpTimer = 0;
-          this.powerUp = false;
-          // put player back in default animation
-          this.frameY = 0;
-        } else {
-          this.powerUpTimer += deltaTime;
-          // move to power up row animation on sprite sheet
-          this.frameY = 1;
-          // add more ammo on top on default refresh rate
-          this.game.ammo += 0.1;
-        }
-      }
-    }
-    draw(context) {
-      // context.fillStyle = "black";
-      if (this.game.debug)
-        context.strokeRect(this.x, this.y, this.width, this.height);
-      // draw projectiles first so that the come out behind the player
-      this.projectiles.forEach((projectile) => {
-        projectile.draw(context);
-      });
-      context.drawImage(
-        this.image, // the player
-        this.frameX * this.width, //source x  - column
-        this.frameY * this.height, //source y -row
-        this.width, //width of single player of area to crop out of source image
-        this.height, // height 0f single player of area to crop out of source image
-        this.x, // destination where to draw the image-players current position
-        this.y, // destination where to draw the image-players current position
-        this.width, // destination width of single player
-        this.height // destination height of single player
-      );
-    }
-
-    shootTop() {
-      if (this.game.ammo > 0) {
-        this.projectiles.push(
-          new Projectile(this.game, this.x + 80, this.y + 30)
-        );
-        this.game.ammo--;
-      }
-      if (this.powerUp) this.shootBottom();
-    }
-    // tail lazers
-    shootBottom() {
-      if (this.game.ammo > 0) {
-        this.projectiles.push(
-          new Projectile(this.game, this.x + 80, this.y + 175)
-        );
-      }
-    }
-    // powerup
-    enterPowerUp() {
-      // could use state design pattern but since not many states just doing this way
-      // if multiple collisions reset timer to 0 for the most recent one
-      this.powerUpTimer = 0;
-      // set powerUp property on player object to true
-      this.powerUp = true;
-      // recharge ammo to max value
-      if (this.game.ammo < this.game.maxAmmo)
-        this.game.ammo = this.game.maxAmmo;
-    }
-  }
-  // enemy types
-  class Enemy {
-    constructor(game) {
-      this.game = game;
-      this.x = this.game.width;
-      this.speedX = Math.random() * 1.5 - 1.5;
-      this.markedForDeletion = false;
-      //  moving this to each child class so they can be different
-      // this.lives = 5;
-      // this.score = this.lives;
-      this.frameX = 0;
-      this.frameY = 0;
-      this.maxFrame = 37;
-    }
-    update() {
-      // account for game speed so speed matches scrolling game world and can be changed dynamically
-      this.x += this.speedX - this.game.speed;
-      if (this.x + this.width < 0) this.markedForDeletion = true;
-      // sprite animation - move along sprite sheet horizonatlly
-      if (this.frameX < this.maxFrame) {
-        this.frameX++;
-      } else this.frameX = 0;
-    }
-    draw(context) {
-      // context.fillStyle = "red";
-      if (this.game.debug)
-        context.strokeRect(this.x, this.y, this.width, this.height);
-      // context.fillStyle = "black";
-      context.drawImage(
-        this.image,
-        this.frameX * this.width, // souce x cycle horizontaly  row
-        this.frameY * this.height, // source y
-        this.width, // source width
-        this.height, // source hight
-        this.x,
-        this.y,
-        this.width,
-        this.height
-      );
-      if (this.game.debug) {
-        context.font = "20px Helvetica";
-        context.fillText(this.lives, this.x, this.y);
-      }
-    }
-  }
-  // first enemy
-  class Angler1 extends Enemy {
-    constructor(game) {
-      // get all the stuff from Enemy first
-      super(game);
-      this.width = 228;
-      this.height = 169;
-      this.y = Math.random() * (this.game.height * 0.9 - this.height);
-      this.image = document.getElementById("angler1");
-      this.frameY = Math.floor(Math.random() * 3);
-      this.lives = 5;
-      this.score = this.lives;
-    }
-  }
-  // second enemy
-  class Angler2 extends Enemy {
-    constructor(game) {
-      // get all the stuff from Enemy first
-      super(game);
-      this.width = 213;
-      this.height = 165;
-      this.y = Math.random() * (this.game.height * 0.95 - this.height);
-      this.image = document.getElementById("angler2");
-      this.frameY = Math.floor(Math.random() * 2);
-      this.lives = 6;
-      this.score = this.lives;
-    }
-  }
-  // third enemy
-  class LuckyFish extends Enemy {
-    constructor(game) {
-      // get all the stuff from Enemy first
-      super(game);
-      this.width = 99;
-      this.height = 95;
-      this.y = Math.random() * (this.game.height * 0.95 - this.height);
-      this.image = document.getElementById("lucky");
-      this.frameY = Math.floor(Math.random() * 2);
-      this.lives = 5;
-      this.score = 15;
-      this.type = "lucky";
-    }
-  }
-  // Big wale like enemy that breaks into 5 smaller enemies when destroyed
-  class HiveWhale extends Enemy {
-    constructor(game) {
-      // get all the stuff from Enemy first
-      super(game);
-      this.width = 400;
-      this.height = 227;
-      this.y = Math.random() * (this.game.height * 0.95 - this.height);
-      this.image = document.getElementById("hivewhale");
-      this.frameY = 0;
-      this.lives = 20;
-      this.score = this.lives;
-      this.type = "hive";
-      // this is a slow moving enemy so overwriteing default speed
-      this.speedX = Math.random() * -1.2 - 0.2;
-    }
-  }
-  // drone enemy types
-  class Drone extends Enemy {
-    // x,y is the position of the hivewhale
-    constructor(game, x, y) {
-      // get all the stuff from Enemy first
-      super(game);
-      this.width = 115;
-      this.height = 95;
-      // TODO commenting out x and y for now since drones are scrolling
-      // through their whole row in one box why is drawImage not seeing sx,sy,sw,sh -
-      // not cropping out image
-      // this.x = x;
-      // this.y = y;
-      this.image = document.getElementById("drone");
-      this.frameY = Math.floor(Math.random() * 2);
-      this.lives = 3;
-      this.score = this.lives;
-      this.type = "drone";
-      // this is a over wright default speed
-      this.speedX = Math.random() * -4.2 - 0.5;
-    }
-  }
-  //
-
-  // inividual background layers
-  class Layer {
-    constructor(game, image, speedModifier) {
-      this.game = game;
-      this.image = image;
-      this.speedModifier = speedModifier;
-      this.width = 1768;
-      this.height = 500;
-      this.x = 0;
-      this.y = 0;
-    }
-    update() {
-      // move background layers right to left as game scrolls- when it moves off canvas set back to 0
-      if (this.x <= -this.width) this.x = 0;
-      // vairable speeds for different layers
-      this.x -= this.game.speed * this.speedModifier;
-    }
-    draw(context) {
-      context.drawImage(this.image, this.x, this.y);
-      // draw second identical image slightly to the right so scroll off screen is seamless
-      // start second image where first image ends so add to x
-      context.drawImage(this.image, this.x + this.width, this.y);
-    }
-  }
-  // pull layer objects together to animate the game world
-  class Background {
-    constructor(game) {
-      this.game = game;
-      this.image1 = document.getElementById("layer1");
-      this.image2 = document.getElementById("layer2");
-      this.image3 = document.getElementById("layer3");
-      this.image4 = document.getElementById("layer4");
-      // create new instance of layer class - for each layer
-      this.layer1 = new Layer(this.game, this.image1, 0.2);
-      this.layer2 = new Layer(this.game, this.image2, 0.4);
-      // this layer should scroll at same speed as game object
-      this.layer3 = new Layer(this.game, this.image3, 1);
-      this.layer4 = new Layer(this.game, this.image4, 1.5);
-      // hold  background layers in this array
-      this.layers = [this.layer1, this.layer2, this.layer3];
-    }
-    // move all layer objects
-    update() {
-      // loop the layers
-      this.layers.forEach((layer) => layer.update());
-    }
-    // draw layer objects
-    draw(context) {
-      this.layers.forEach((layer) => layer.draw(context));
-    }
-  }
-  // explosions
-  class Explosion {
-    constructor(game, x, y) {
-      this.game = game;
-      this.frameX = 0;
-      this.spriteWidth = 200;
-      this.spriteHeight = 200;
+      // distances between mouse and player
+      this.dx = 0;
+      this.dy = 0;
+      // modify the speed of player
+      this.speedModifier = 3;
+      this.spriteWidth = 255;
+      this.spriteHeight = 256;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      this.x = x - this.width * 0.5;
-      this.y = y - this.height * 0.5;
-      this.fps = 30;
-      this.timer = 0;
-      this.interval = 1000 / this.fps;
-      this.markedForDeletion = false;
-      this.maxFrame = 8;
+      this.spriteX;
+      this.spriteY;
+      // horizontal navigation
+      this.frameX = 0;
+      //vertical navigation
+      this.frameY = 5;
+      this.image = document.getElementById("bull");
     }
-    update(deltaTime) {
-      // account for horizonal speed of explosions
-      this.x -= this.game.speed;
-      // timer to slow the explosion down
-      if (this.timer > this.interval) {
-        this.frameX++;
-        // reset timer for next time
-        this.timer = 0;
-      } else {
-        this.timer += deltaTime;
-      }
-
-      if (this.frameX > this.maxFrame) this.markedForDeletion = true;
-    }
+    // Player draw method
     draw(context) {
       context.drawImage(
         this.image,
         this.frameX * this.spriteWidth,
-        0,
+        this.frameY * this.spriteHeight,
         this.spriteWidth,
         this.spriteHeight,
-        this.x,
-        this.y,
+        this.spriteX,
+        this.spriteY,
         this.width,
         this.height
       );
+      // debug mode for player
+      if (this.game.debug) {
+        // draw a circle for player
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+        // draw line off player to show direction of movement
+        context.beginPath();
+        context.moveTo(this.collisionX, this.collisionY);
+        context.lineTo(this.game.mouse.x, this.game.mouse.y);
+        context.stroke();
+      }
     }
-  }
-  class SmokeExplosion extends Explosion {
-    constructor(game, x, y) {
-      super(game, x, y);
-      this.image = document.getElementById("smokeExplosion");
-    }
-  }
-  class FireExplosion extends Explosion {
-    constructor(game, x, y) {
-      super(game, x, y);
-      this.image = document.getElementById("fireExplosion");
-    }
-  }
+    //  update method, make player move- call this in render on game
+    update() {
+      // sprite animation
+      // assign dx dy -dist from mouse cursor to player
+      this.dx = this.game.mouse.x - this.collisionX;
+      this.dy = this.game.mouse.y - this.collisionY;
+      // angle helps determine directions so player is always facing
+      // in the direction it is moving towards the mouse cursor
+      const angle = Math.atan2(this.dy, this.dx); // + - pi
+      // using a pie with 8 slices to know what angle represents what direction the player is facing
+      if (angle < -2.74 || angle > 2.74) this.frameY = 6;
+      else if (angle < -1.96) this.frameY = 7;
+      else if (angle < -1.17) this.frameY = 0;
+      else if (angle < -0.39) this.frameY = 1;
+      else if (angle < 0.39) this.frameY = 2;
+      else if (angle < 1.17) this.frameY = 3;
+      else if (angle < 1.96) this.frameY = 4;
+      else if (angle < 2.74) this.frameY = 5;
+      // calculate speed of x and y
+      // Math.hypot() expects y first then x
+      const distance = Math.hypot(this.dy, this.dx);
+      // only if distance is more
+      if (distance > this.speedModifier) {
+        this.speedX = this.dx / distance || 0;
+        this.speedY = this.dy / distance || 0;
+      } else {
+        this.speedX = 0;
+        this.speedY = 0;
+      }
+      this.collisionX += this.speedX * this.speedModifier;
+      this.collisionY += this.speedY * this.speedModifier;
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 100;
+      // add horizontal boundaries to game area
+      if (this.collisionX < this.collisionRadius)
+        this.collisionX = this.collisionRadius;
+      else if (this.collisionX > this.game.width - this.collisionRadius)
+        this.collisionX = this.game.width - this.collisionRadius;
+      // vertical boundaries
+      if (this.collisionY < this.game.topMargin + this.collisionRadius)
+        this.collisionY = this.game.topMargin + this.collisionRadius;
+      else if (this.collisionY > this.game.height - this.collisionRadius)
+        this.collisionY = this.game.height - this.collisionRadius;
+      // collisions with obstacles
+      this.game.obstacles.forEach((obstacle) => {
+        // order of values being put into array in the return of  collision check
+        // return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+        // assign variable names using destructuring
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, obstacle);
 
-  // score timer and other info
-  class UI {
+        if (collision) {
+          // create a vector or small 1 px line -point in the direction to push player back
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          // bounce back one px
+          this.collisionX = obstacle.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = obstacle.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
+    }
+  }
+  // blueprint for individual obstacle objects
+  class Obstacle {
     constructor(game) {
       this.game = game;
-      this.fontSize = 25;
-      // TODO this is not coming accross as Bangers
-      // this.fontFamily = "Helvetica";
-      this.fontFamily = "Bangers";
-      this.color = "white";
+      // randomize distance to center of collision area circle
+      this.collisionX = Math.random() * this.game.width;
+      this.collisionY = Math.random() * this.game.height;
+      this.collisionRadius = 40;
+      this.image = document.getElementById("obstacles");
+      this.spriteWidth = 250;
+      this.spriteHeight = 250;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      // center image on top of collsion circle
+      this.spriteX = this.collisionX - this.width * 0.5;
+      // - shift so collision point is on the "ground"
+      this.spriteY = this.collisionY - this.height * 0.5 - 70;
+      // sprite column
+      this.frameX = Math.floor(Math.random() * 4);
+      this.frameY = Math.floor(Math.random() * 3);
     }
     draw(context) {
-      context.save();
-      context.fillStyle = this.color;
-      context.shadowOffsetX = 2;
-      context.shadowOffsetY = 2;
-      context.shadowColor = "black";
-      context.font = this.fontSize = "px " + this.fontFamily;
-      // score
-      context.fillText("Score: " + this.game.score, 20, 40);
-      // ammo
-
-      // just show seconds
-      const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
-      context.fillText("Timer: " + formattedTime, 20, 100);
-      if (this.game.gameOver) {
-        context.textAlign = "center";
-        let message1;
-        let message2;
-        if (this.game.score > this.game.winningScore) {
-          message1 = "You Win ! ";
-          message2 = "Well done ";
-        } else {
-          message1 = "You lost";
-          message2 = "Try again next time";
-        }
-        // TODO why not effect to changing the font size here?
-        context.font = "50px" + this.fontFamily;
-        context.fillText(
-          message1,
-          this.game.width * 0.5,
-          this.game.height * 0.5 - 40
+      // draw ofstacel image
+      context.drawImage(
+        this.image,
+        this.frameX * this.spriteWidth,
+        this.frameY * this.spriteHeight,
+        this.spriteWidth,
+        this.spriteHeight,
+        this.spriteX,
+        this.spriteY,
+        this.width,
+        this.height
+      );
+      if (this.game.debug) {
+        // draw collision  circle
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
         );
-        context.font = "25px" + this.fontFamily;
-        context.fillText(
-          message2,
-          this.game.width * 0.5,
-          this.game.height * 0.5 + 40
-        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
       }
-      // if in power up change power bar color
-      if (this.game.player.powerUp) context.fillStyle = "red"; // or #ffffbd
-      for (let i = 0; i < this.game.ammo; i++) {
-        context.fillRect(20 + 5 * i, 50, 3, 20);
-      }
-      context.restore();
+    }
+    update() {
+      // could animate sprite sheets of obstacles here
     }
   }
-  // main game class where all logic comes together
+  // adding the Egg
+  class Egg {
+    constructor(game) {
+      this.game = game;
+      this.collisionRadius = 40;
+      this.margin = this.collisionRadius * 2;
+      this.collisionX =
+        this.margin + Math.random() * (this.game.width - this.margin * 2);
+      this.collisionY =
+        this.game.topMargin +
+        Math.random() * (this.game.height - this.game.topMargin - this.margin);
+      this.image = document.getElementById("egg");
+      this.spriteHeight = 110;
+      this.spriteWidth = 135;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      // adjust this later for eg shape - moving this to update method but need to declare here
+      // this.spriteX = this.collisionX - this.width * 0.5;
+      // this.spriteY = this.collisionY - this.height * 0.5 - 30;
+      this.spriteX;
+      this.spriteY;
+      // egg hatching logic
+      this.hatchTimer = 0;
+      this.hatchInterval = 3000;
+      //  hatched eggs so they can be removed
+      this.markedForDeletion = false;
+    }
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+      //TODO make this a re usable helper
+      if (this.game.debug) {
+        // draw a circle for egg
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+        const displayTimer = (this.hatchTimer * 0.001).toFixed(0);
+        context.fillText(
+          displayTimer,
+          this.collisionX,
+          this.collisionY - this.collisionRadius * 2.5
+        );
+      }
+    }
+    update(deltaTime) {
+      // keep the debug circle collison area with the egg- declaired in the constructor
+      // adjust this later for eg shape
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 30;
+      ///////////////collisions
+      //TODO can this be a re usable function slide around 2:09
+      // eggs can be pushed around
+      // array of objects that eggs can interact with
+      // adding enemies here makes them solid and impassable so enemies pass eggs around
+      let collisionObjects = [
+        this.game.player,
+        ...this.game.obstacles,
+        ...this.game.enemies,
+      ];
+      // for every player and individual objects
+      collisionObjects.forEach((object) => {
+        // destructure the object into these variables
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, object);
+        // if there is a collision use the variable to determine how far and in what direction to push egg
+        // distance is hypotenuse
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
+      //////////////////////////hatching
+      if (this.hatchTimer > this.hatchInterval) {
+        // the egg has hatched so push larva to a new array
+        this.game.hatchlings.push(
+          new Larva(this.game, this.collisionX, this.collisionY)
+        );
+        this.markedForDeletion = true;
+        // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
+        this.game.removeGameObjects();
+      } else {
+        this.hatchTimer += deltaTime;
+
+        // console.log(this.game.eggs);
+      }
+    }
+  }
+  // eggs hatch into Larva that play protects by pushing to safe area
+  class Larva {
+    constructor(game, x, y) {
+      // larva appear at same position as the egg they hatched from
+      this.game = game;
+      this.collisionX = x;
+      this.collisionY = y;
+      this.collisionRadius = 30;
+      this.image = document.getElementById("larva");
+      this.spriteWidth = 150;
+      this.spriteHeight = 150;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.spriteX;
+      this.spriteY;
+      // vertical speed
+      this.speedY = 1 + Math.random();
+    }
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+    }
+    update() {
+      this.collisionY -= this.speedY;
+      // changing the postion of the larva
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5;
+    }
+  }
+  class Enemy {
+    constructor(game) {
+      this.game = game;
+      this.collisionRadius = 30;
+
+      this.speedX = Math.random() * 3 + 0.5;
+      this.image = document.getElementById("toad");
+      this.spriteWidth = 140;
+      this.spriteHeight = 260;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.collisionX =
+        this.game.width + this.width + Math.random() * this.game.width * 0.5;
+      this.collisionY =
+        this.game.topMargin +
+        Math.random() * (this.game.height - this.game.topMargin);
+      // position of sprite sheet image in relation to collision circle coordinate
+      this.spriteX;
+      this.spriteY;
+    }
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+      //TODO make this a re usable helper
+      if (this.game.debug) {
+        // draw a circle for egg
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+      }
+    }
+    update() {
+      // center and offset the drawn enemies
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height + 40;
+      //move enemy to left by random speed
+      this.collisionX -= this.speedX;
+      // keep from moving off right side of screen
+      if (this.spriteX + this.width < 0) {
+        // re use object if you can vs creating new that later needs to be distroyed
+        this.collisionX =
+          this.game.width + this.width + Math.random() * this.game.width * 0.5;
+        this.collisionY =
+          this.game.topMargin +
+          Math.random() * (this.game.height - this.game.topMargin);
+      }
+      //TODO can this be a re usable function slide around 2:09
+      // re using this code from the egg class to make enemies treat obstacles and player as solid impassable object and slide around them
+      // adding eggs to the collisionsObjects here makes them solid and impassable obstacles for enemies
+      // let collisionObjects = [
+      //   this.game.player,
+      //   ...this.game.obstacles,
+      //   ...this.game.eggs,
+      // ];
+      let collisionObjects = [this.game.player, ...this.game.obstacles];
+      // for every player and indivitual objects
+      collisionObjects.forEach((object) => {
+        // destructure the object into these variables
+        let [collision, distance, sumOfRadii, dx, dy] =
+          this.game.checkCollision(this, object);
+        // if there is a collision use the variable to determine how far and in what direction to push egg
+        // distance is hypotenuse
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
+
+      ///
+    }
+  }
+
   class Game {
-    // brain of project
-    constructor(width, height) {
-      this.width = width;
-      this.height = height;
-      // instantiate Background class so the layers appear
-      this.background = new Background(this);
+    constructor(canvas) {
+      this.canvas = canvas;
+      this.width = this.canvas.width;
+      this.height = this.canvas.height;
+      // this is the Game object
+      this.topMargin = 260;
+      // adding debug mode
+      this.debug = true;
       this.player = new Player(this);
-      this.input = new InputHandler(this);
-      this.ui = new UI(this);
-      // holders
-      this.keys = [];
+      // helpers to use deltaTime to set frame rate
+      this.fps = 70;
+      // starts at 0
+      this.timer = 0;
+      // when interval is reached, timer will be reset back to 0
+      this.interval = 1000 / this.fps;
+      this.eggTimer = 0;
+      this.eggInterval = 1000;
+      this.numberOfObstacles = 10;
+      this.maxEggs = 20;
+      // array to hold obstacles created
+      this.obstacles = [];
+      // hold eggs created
+      this.eggs = [];
+      // enemy objects
       this.enemies = [];
-      this.particles = [];
-      this.explosions = [];
-      this.enemyTimer = 0;
-      // cam change game difficulty here
-      this.enemyInterval = 1000;
-      // this.enemyInterval = 2000;
-      this.ammo = 20;
-      this.maxAmmo = 50;
-      this.ammoTimer = 0;
-      // replenish ammo every 1/2 second can change game difficulty here
-      this.ammoInterval = 500;
-      this.gameOver = false;
-      this.score = 0;
-      // change game difficulty here
-      this.winningScore = 40;
-      // put time limit on game
-      this.gameTime = 0;
-      // can change game difficulty here
-      this.timeLimit = 50000;
-      this.speed = 1;
-      this.debug = false;
+      // holder for hatchlings- when egg hatches push larva here
+      this.hatchlings = [];
+      // to give the illusion of depth by putting into an array then sort based on vertical coordinates
+      this.gameObjects = [];
+      this.mouse = {
+        x: this.width * 0.5,
+        y: this.height * 0.5,
+        pressed: false,
+      };
+      //event listeners
+      // es6 so addEventListener remembers game
+      canvas.addEventListener("mousedown", (e) => {
+        // get coordinates of click to use on game object event offset- so avalable to all of codebase
+        this.mouse.x = e.offsetX;
+        this.mouse.y = e.offsetY;
+        this.mouse.pressed = true;
+      });
+      canvas.addEventListener("mouseup", (e) => {
+        // get coordinates of click to use on game object event offset- so avalable to all of codebase
+        this.mouse.x = e.offsetX;
+        this.mouse.y = e.offsetY;
+        this.mouse.pressed = false;
+      });
+      canvas.addEventListener("mousemove", (e) => {
+        // only move player when mouse is pressed
+        if (this.mouse.pressed) {
+          //move
+          this.mouse.x = e.offsetX;
+          this.mouse.y = e.offsetY;
+        }
+      });
+      window.addEventListener("keydown", (e) => {
+        // when d is pressed toggle debug move
+        if (e.key === "d") this.debug = !this.debug;
+      });
+    }
+    render(context, deltaTime) {
+      // to give the illusion of depth by putting into an array then sort based on vertical coordinates
+      // if the timer is more that the interval
+      if (this.timer > this.interval) {
+        // animate the next frame
+        // clear paint
+        context.clearRect(0, 0, this.width, this.height);
+        // expand into game oject this order puts player behind eggs and obstacles
+        this.gameObjects = [
+          this.player,
+          ...this.eggs,
+          ...this.obstacles,
+          ...this.enemies,
+        ];
+        // sort by vertical position - do this before drawing
+        // if nothing is passed into sort method JS will turn into string and sort by unicode value
+        this.gameObjects.sort((a, b) => {
+          // sort based on the center point of collision area
+          return a.collisionY - b.collisionY;
+          // could also sort by value of bottom of sprite image which would be the value of spriteY + sprite hight
+        });
+        this.gameObjects.forEach((object) => {
+          object.draw(context);
+          object.update(deltaTime);
+        });
+
+        this.timer = 0;
+      }
+      // increase timer by delta time
+      this.timer += deltaTime;
+      // add eggs periodically
+      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
+        this.addEgg();
+        this.eggTimer = 0;
+      } else {
+        this.eggTimer += deltaTime;
+      }
+    }
+    // re usable collision detection method
+    checkCollision(a, b) {
+      // reuseable if name convention kept consistent
+      // horizontal mid point
+      const dx = a.collisionX - b.collisionX;
+      // same for vertical
+      const dy = a.collisionY - b.collisionY;
+      // distance - hypotonuse
+      const distance = Math.hypot(dy, dx);
+      // is the distance in the radius of the collision circle?
+      const sumOfRadii = a.collisionRadius + b.collisionRadius;
+      // return true if there is a collision
+      // return distance < sumOfRadii;
+      // when there is a collision push the player back a pixle - do not allow through
+      // change this to return an array - element with values needed to know location of collision
+      return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
 
-    update(deltaTime) {
-      // how many milisec have passed since game began
-      if (!this.gameOver) this.gameTime += deltaTime;
-      if (this.gameTime > this.timeLimit) this.gameOver = true;
-      this.background.update();
-      // because layer4 needs to go in front of the player calling its update here
-      this.background.layer4.update();
-      // player needs delta time for power ups
-      this.player.update(deltaTime);
-      if (this.ammoTimer > this.ammoInterval) {
-        if (this.ammo < this.maxAmmo) this.ammo++;
-        this.ammoTimer = 0;
-      } else {
-        this.ammoTimer += deltaTime;
+    // method to periodically add a new egg to game
+    addEgg() {
+      // in game object so need this keyword
+      this.eggs.push(new Egg(this));
+    }
+    // game class to add enemy
+    addEnemy() {
+      //push a new enemy object into the array
+      this.enemies.push(new Enemy(this));
+    }
+    // method to remove things marked for deletion
+    removeGameObjects() {
+      // return array with marked for deletion filtered out
+      this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
+    }
+    init() {
+      // create enemies
+      for (let i = 0; i < 3; i++) {
+        this.addEnemy();
       }
-      // call the update method on particles
-      this.particles.forEach((particle) => particle.update());
-      // filter array- filter out marked for deletion
-      this.particles = this.particles.filter(
-        (particle) => !particle.markedForDeletion
-      );
-      // call update for explosion
-      this.explosions.forEach((explosion) => explosion.update(deltaTime));
-      // filter array- filter out marked for deletion
-      this.explosions = this.explosions.filter(
-        (explosion) => !explosion.markedForDeletion
-      );
-      this.enemies.forEach((enemy) => {
-        enemy.update();
-        if (this.checkCollision(this.player, enemy)) {
-          enemy.markedForDeletion = true;
-          // add an explosion
-          this.addExplosion(enemy);
-          //
-
-          // adding for loop to draw flying gears
-          // for (let i = 0; i < enemy.score; i++) {
-          //TOOD just 2 gears to reduce clutter
-          for (let i = 0; i < 2; i++) {
-            // in here "this" is the game object
-            this.particles.push(
-              new Particle(
-                this,
-                enemy.x + enemy.width * 0.5,
-                enemy.y + enemy.height * 0.5
-              )
-            );
-          }
-          // check is type lucky ? if call enterPowerUp from player class
-          if (enemy.type === "lucky") this.player.enterPowerUp();
-          // penalty for hitting enemies that are not lucky
-          else if (!this.gameOver) this.score--;
-        }
-        this.player.projectiles.forEach((projectile) => {
-          if (this.checkCollision(projectile, enemy)) {
-            enemy.lives--;
-            projectile.markedForDeletion = true;
-            // adding one exploding gear if projectile hits
-            this.particles.push(
-              new Particle(
-                this,
-                enemy.x + enemy.width * 0.5,
-                enemy.y + enemy.height * 0.5
-              )
-            );
-            if (enemy.lives <= 0) {
-              // adding for loop to draw flying gears when enemy is destroyed by projectile
-              for (let i = 0; i < enemy.score; i++) {
-                // in here "this" is the game object
-                this.particles.push(
-                  new Particle(
-                    this,
-                    enemy.x + enemy.width * 0.5,
-                    enemy.y + enemy.height * 0.5
-                  )
-                );
-              }
-              enemy.markedForDeletion = true;
-              // add explosion
-              this.addExplosion(enemy);
-              //
-              // check to see if the enemy that we just destroyed is a whale, if so spaun drones
-              if (enemy.type === "hive") {
-                this.enemies.push(
-                  new Drone(
-                    this,
-                    enemy.x + Math.random() * enemy.width,
-                    enemy.y + Math.random() * enemy.height * 0.5
-                  )
-                );
-              }
-              if (!this.gameOver) this.score += enemy.score;
-              // commenting out this line will changing so game keeps going till game time reached
-              if (this.score > this.winningScore) this.gameOver = true;
-            }
+      //  circle packing algorithm - this is a brute force algorithm
+      // only add circle to array if it does not overlap - danger while loop <guard rail only try 500 times
+      let attempts = 0;
+      while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {
+        let testObstacle = new Obstacle(this);
+        let overlap = false;
+        // console.log(testObstacle);
+        // compare the test obstacle to other obstacles in the array to check for overlap
+        // center point radi
+        this.obstacles.forEach((obstacle) => {
+          const dx = testObstacle.collisionX - obstacle.collisionX;
+          const dy = testObstacle.collisionY - obstacle.collisionY;
+          const distance = Math.hypot(dy, dx);
+          // put some space around obstacles
+          const distanceBuffer = 150;
+          const sumOfRadii =
+            testObstacle.collisionRadius +
+            obstacle.collisionRadius +
+            distanceBuffer;
+          if (distance < sumOfRadii) {
+            overlap = true;
           }
         });
-      });
-      this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
-      if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
-        this.addEnemy();
-        this.enemyTimer = 0;
-      } else {
-        this.enemyTimer += deltaTime;
+
+        // also check that obstacle is not rendering off edge of screen
+        const margin = testObstacle.collisionRadius * 3;
+        if (
+          !overlap &&
+          testObstacle.spriteX > 0 &&
+          testObstacle.spriteX < this.width - testObstacle.width &&
+          testObstacle.collisionY > this.topMargin + margin &&
+          testObstacle.collisionY < this.height - margin
+        ) {
+          this.obstacles.push(testObstacle);
+        }
+        attempts++;
       }
-    }
-    draw(context) {
-      // the order of the draw methods matters
-      this.background.draw(context);
-      this.ui.draw(context);
-      this.player.draw(context);
-      // draw particles
-      this.particles.forEach((particle) => particle.draw(context));
-      this.enemies.forEach((enemy) => {
-        enemy.draw(context);
-      });
-      // draw explosions
-      this.explosions.forEach((explosion) => {
-        explosion.draw(context);
-      });
-      //
-      // now after the other stuff drawn on screen add layer4 so it is closest to user
-      this.background.layer4.draw(context);
-    }
-    addEnemy() {
-      // randomize adding enemies types 0 -1
-      const randomize = Math.random();
-      if (randomize < 0.3) this.enemies.push(new Angler1(this));
-      if (randomize < 0.6) this.enemies.push(new Angler2(this));
-      if (randomize < 0.7) this.enemies.push(new HiveWhale(this));
-      else this.enemies.push(new LuckyFish(this));
-    }
-    // method to add explosions
-    addExplosion(enemy) {
-      const randomize = Math.random();
-      if (randomize < 0.5) {
-        this.explosions.push(
-          new SmokeExplosion(
-            this,
-            enemy.x + enemy.width * 0.5,
-            enemy.y + enemy.height * 0.5
-          )
-        );
-      } else {
-        this.explosions.push(
-          new FireExplosion(
-            this,
-            enemy.x + enemy.width * 0.5,
-            enemy.y + enemy.height * 0.5
-          )
-        );
-      }
-    }
-    checkCollision(rect1, rect2) {
-      return (
-        rect1.x < rect2.x + rect2.width &&
-        rect1.x + rect1.width > rect2.x &&
-        rect1.y < rect2.y + rect2.height &&
-        rect1.height + rect1.y > rect2.y
-      );
     }
   }
-  // call the Game class constructor
-  const game = new Game(canvas.width, canvas.height);
-
-  // store values of time stamp from previous animation loop
+  // create instance of game object
+  const game = new Game(canvas);
+  game.init();
+  // ref to time stamp of previous animation loop
   let lastTime = 0;
-  // animation loop to re draw game every 60 miliseconds
-  // pass timeStamp to animate for deltaTime
   function animate(timeStamp) {
     const deltaTime = timeStamp - lastTime;
-    // console.log(deltaTime);
-    // re assign timeStamp to lastTime so it can be used to calculate deltaTime in next loop
+    // them reassign back to current timeStamp
     lastTime = timeStamp;
-    // clear the prior animation then draw this loop
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    game.draw(ctx);
-    // passing deltaTime to game to run periotic stuff
-    game.update(deltaTime);
-    // call next animation frame - pass in itself to make loop endless
-    // requestAnimationFrane can  pass time stamp in an arg to the function it calls
+
+    // need to draw over and over to see so calling render from inside animation loop
+    game.render(ctx, deltaTime);
     requestAnimationFrame(animate);
   }
-  // passing 0 as the first timestamp
+  // on first loop time stamp needs to be 0
   animate(0);
 });

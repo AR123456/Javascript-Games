@@ -10,6 +10,7 @@ window.addEventListener("load", function () {
   ctx.strokeStyle = "white";
   // font drawing and re drawing are resource intensive
   ctx.font = "40px Helvetica";
+  ctx.textAlign = "center";
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -120,11 +121,9 @@ window.addEventListener("load", function () {
       // collisions with obstacles
       this.game.obstacles.forEach((obstacle) => {
         // order of values being put into array in the return of  collision check
-        // return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
         // assign variable names using destructuring
         let [collision, distance, sumOfRadii, dx, dy] =
           this.game.checkCollision(this, obstacle);
-
         if (collision) {
           // create a vector or small 1 px line -point in the direction to push player back
           const unit_x = dx / distance;
@@ -149,7 +148,7 @@ window.addEventListener("load", function () {
       this.spriteHeight = 250;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // center image on top of collsion circle
+      // center image on top of collision circle
       this.spriteX = this.collisionX - this.width * 0.5;
       // - shift so collision point is on the "ground"
       this.spriteY = this.collisionY - this.height * 0.5 - 70;
@@ -158,7 +157,7 @@ window.addEventListener("load", function () {
       this.frameY = Math.floor(Math.random() * 3);
     }
     draw(context) {
-      // draw ofstacel image
+      // draw obstacle image
       context.drawImage(
         this.image,
         this.frameX * this.spriteWidth,
@@ -207,14 +206,11 @@ window.addEventListener("load", function () {
       this.spriteWidth = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      // adjust this later for eg shape - moving this to update method but need to declare here
-      // this.spriteX = this.collisionX - this.width * 0.5;
-      // this.spriteY = this.collisionY - this.height * 0.5 - 30;
       this.spriteX;
       this.spriteY;
       // egg hatching logic
       this.hatchTimer = 0;
-      this.hatchInterval = 5000;
+      this.hatchInterval = 3000;
       //  hatched eggs so they can be removed
       this.markedForDeletion = false;
     }
@@ -236,11 +232,16 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
-        context.fillText(this.hatchTimer, this.collisionX, this.collisionY);
+        const displayTimer = (this.hatchTimer * 0.001).toFixed(0);
+        context.fillText(
+          displayTimer,
+          this.collisionX,
+          this.collisionY - this.collisionRadius * 2.5
+        );
       }
     }
     update(deltaTime) {
-      // keep the debug circle collison area with the egg- declaired in the constructor
+      // keep the debug circle collision area with the egg- declaired in the constructor
       // adjust this later for eg shape
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
@@ -270,19 +271,19 @@ window.addEventListener("load", function () {
       });
       //////////////////////////hatching
       if (this.hatchTimer > this.hatchInterval) {
+        // the egg has hatched so push larva to a new array
+        this.game.hatchlings.push(
+          new Larva(this.game, this.collisionX, this.collisionY)
+        );
         this.markedForDeletion = true;
-        // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
+        // for efficancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
         this.game.removeGameObjects();
-        console.log(this.hatchTimer);
-        console.log(this.game.eggs);
       } else {
         this.hatchTimer += deltaTime;
-
-        // console.log(this.game.eggs);
       }
     }
   }
-  // eggs hatch into Larva that play protects by pushing to safe area
+  // eggs hatch into Larva that player protects by pushing to safe area
   class Larva {
     constructor(game, x, y) {
       // larva appear at same position as the egg they hatched from
@@ -299,15 +300,49 @@ window.addEventListener("load", function () {
       this.spriteY;
       // vertical speed
       this.speedY = 1 + Math.random();
+      // randomize drawing the 2 sprites on the sprite sheet
+      this.frameX = 0;
+      this.frameY = Math.floor(Math.random() * 2);
     }
     draw(context) {
-      context.drawImage(this.image, this.spriteX, this.spriteY);
+      context.drawImage(
+        this.image,
+        this.frameX * this.spriteWidth,
+        this.frameY * this.spriteHeight,
+        this.spriteWidth,
+        this.spriteHeight,
+        this.spriteX,
+        this.spriteY,
+        this.width,
+        this.height
+      );
+      //TODO make this a re usable helper
+      if (this.game.debug) {
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+      }
     }
     update() {
       this.collisionY -= this.speedY;
-      // changing the postion of the larva
+      // changing the position of the larva
       this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 50;
+      // larva are safe if the reach the mushroom forest
+      if (this.collisionY < this.game.topMargin) {
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+      }
     }
   }
   class Enemy {
@@ -419,6 +454,8 @@ window.addEventListener("load", function () {
       this.eggs = [];
       // enemy objects
       this.enemies = [];
+      // holder for hatchlings- when egg hatches push larva here
+      this.hatchlings = [];
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       this.gameObjects = [];
       this.mouse = {
@@ -466,6 +503,7 @@ window.addEventListener("load", function () {
           ...this.eggs,
           ...this.obstacles,
           ...this.enemies,
+          ...this.hatchlings,
         ];
         // sort by vertical position - do this before drawing
         // if nothing is passed into sort method JS will turn into string and sort by unicode value
@@ -523,6 +561,9 @@ window.addEventListener("load", function () {
     removeGameObjects() {
       // return array with marked for deletion filtered out
       this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
+      this.hatchlings = this.hatchlings.filter(
+        (object) => !object.markedForDeletion
+      );
     }
     init() {
       // create enemies

@@ -367,8 +367,8 @@ window.addEventListener("load", function () {
       });
       /////////////// collision with enemies
       this.game.enemies.forEach((enemy) => {
+        // [collision, distance, sumOfRadii, dx, dy] index 0 is the collision
         if (this.game.checkCollision(this, enemy)[0]) {
-          console.log(enemy.collisionX);
           this.markedForDeletion = true;
           // filter larva out of hatchlings array
           this.game.removeGameObjects();

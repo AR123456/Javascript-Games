@@ -548,6 +548,8 @@ window.addEventListener("load", function () {
       this.enemies = [];
       // holder for hatchlings- when egg hatches push larva here
       this.hatchlings = [];
+      // holder for active particles
+      this.particles = [];
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       this.gameObjects = [];
       // keeping track of game score
@@ -596,6 +598,7 @@ window.addEventListener("load", function () {
           ...this.obstacles,
           ...this.enemies,
           ...this.hatchlings,
+          ...this.particles,
         ];
         // sort by vertical position - do this before drawing
         // if nothing is passed into sort method JS will turn into string and sort by unicode value
@@ -661,6 +664,9 @@ window.addEventListener("load", function () {
       // return array with marked for deletion filtered out
       this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
       this.hatchlings = this.hatchlings.filter(
+        (object) => !object.markedForDeletion
+      );
+      this.particles = this.particles.filter(
         (object) => !object.markedForDeletion
       );
     }

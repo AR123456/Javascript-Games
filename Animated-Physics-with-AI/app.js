@@ -460,7 +460,13 @@ window.addEventListener("load", function () {
     }
   }
   class Particle {
-    constructor() {}
+    constructor(game, x, y, color) {
+      // convert arguments to class properties
+      this.game = game;
+      this.collisionX = x;
+      this.collisionY = y;
+      this.color = color;
+    }
   }
   class Firefly extends Particle {}
   class Spark extends Particle {}

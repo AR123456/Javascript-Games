@@ -416,15 +416,15 @@ window.addEventListener("load", function () {
       this.spriteY;
       // navigate sprite sheet to get enemies
       this.frameX = 0;
-      this.frameY = 0;
+      this.frameY = Math.floor(Math.random() * 4);
     }
     draw(context) {
       // using the long draw image method to navigate the sprite sheet
       //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
       context.drawImage(
         this.image,
-        0,
-        2 * this.spriteHeight,
+        this.frameX * this.spriteWidth,
+        this.frameY * this.spriteHeight,
         this.spriteWidth,
         this.spriteHeight,
         this.spriteX,
@@ -464,6 +464,8 @@ window.addEventListener("load", function () {
         this.collisionY =
           this.game.topMargin +
           Math.random() * (this.game.height - this.game.topMargin);
+        // get a random enemy after the last one scrolls of screen
+        this.frameY = Math.floor(Math.random() * 4);
       }
       //TODO can this be a re usable function slide around 2:09
       // re using this code from the egg class to make enemies treat obstacles and player as solid impassable object and slide around them

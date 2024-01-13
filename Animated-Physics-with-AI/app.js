@@ -598,6 +598,8 @@ window.addEventListener("load", function () {
       this.gameObjects = [];
       // keeping track of game score
       this.score = 0;
+      // winning score
+      this.winningScore = 5;
       this.lostHatchlings = 0;
       this.mouse = {
         x: this.width * 0.5,
@@ -675,6 +677,28 @@ window.addEventListener("load", function () {
         context.fillText(`Lost ${this.lostHatchlings}`, 25, 100);
       }
       context.restore();
+      // win / lose message
+      if (this.score >= this.winningScore) {
+        // cover screen with semi transparent message
+        context.save();
+        context.fillStyle = "rgba(0,0,0,0.5)";
+        context.fillRect(0, 0, this.width, this.height);
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        let message1;
+        let message2;
+        if (this.lostHatchlings <= 5) {
+          // win - based on hatchlings saved
+          message1 = "You did it!! ";
+          message2 = "You protected the hatchlings";
+        } else {
+          // loss based on hatchlings lost
+          message1 = "Bummer ";
+          message2 = `You lost  ${this.lostHatchlings} you should try again`;
+        }
+
+        context.restore();
+      }
     }
     // re usable collision detection method
     checkCollision(a, b) {

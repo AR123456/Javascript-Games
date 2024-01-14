@@ -600,6 +600,7 @@ window.addEventListener("load", function () {
       this.score = 0;
       // winning score
       this.winningScore = 5;
+      this.gameOver = false;
       this.lostHatchlings = 0;
       this.mouse = {
         x: this.width * 0.5,
@@ -679,6 +680,7 @@ window.addEventListener("load", function () {
       context.restore();
       // win / lose message
       if (this.score >= this.winningScore) {
+        this.gameOver = true;
         // cover screen with semi transparent message
         context.save();
         context.fillStyle = "rgba(0,0,0,0.5)";
@@ -799,7 +801,7 @@ window.addEventListener("load", function () {
     lastTime = timeStamp;
     // call render from inside animation loop
     game.render(ctx, deltaTime);
-    requestAnimationFrame(animate);
+    if (!game.gameOver) requestAnimationFrame(animate);
   }
   // on first loop time stamp needs to be 0
   animate(0);

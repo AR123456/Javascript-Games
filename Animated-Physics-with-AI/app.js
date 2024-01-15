@@ -372,6 +372,8 @@ window.addEventListener("load", function () {
       let collisionObjects = [
         this.game.player,
         ...this.game.obstacles,
+        // adding eggs so they interact with larva
+        ...this.game.eggs,
         // ...this.game.enemies,
       ];
       // for every player and individual objects

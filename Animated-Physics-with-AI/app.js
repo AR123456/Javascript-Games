@@ -699,6 +699,10 @@ window.addEventListener("load", function () {
         context.fillRect(0, 0, this.width, this.height);
         context.fillStyle = "white";
         context.textAlign = "center";
+        // putting in a fix for canvas shadow usage being labor intensive so limiting here
+        context.shadowOffsetX = 4;
+        context.shadowOffsetY = 4;
+        context.shadowColor = "black";
         let message1;
         let message2;
         if (this.lostHatchlings <= 5) {

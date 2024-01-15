@@ -643,6 +643,8 @@ window.addEventListener("load", function () {
       window.addEventListener("keydown", (e) => {
         // when d is pressed toggle debug move
         if (e.key === "d") this.debug = !this.debug;
+        // to restart game
+        if (e.key === "r") this.restart();
       });
     }
     render(context, deltaTime) {
@@ -771,6 +773,10 @@ window.addEventListener("load", function () {
       this.particles = this.particles.filter(
         (object) => !object.markedForDeletion
       );
+    }
+    // define re start method
+    restart() {
+      // code to restart game to its initial state
     }
     init() {
       // create enemies

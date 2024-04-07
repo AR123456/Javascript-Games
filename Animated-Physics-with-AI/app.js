@@ -210,6 +210,11 @@ window.addEventListener("load", function () {
       // this.spriteY = this.collisionY - this.height * 0.5 - 30;
       this.spriteX;
       this.spriteY;
+      // egg hatching logic
+      this.hatchTimer = 0;
+      this.hatchInterval = 5000;
+      //  hatched eggs so they can be removed
+      this.markedForDeletion = false;
     }
     draw(context) {
       context.drawImage(this.image, this.spriteX, this.spriteY);
@@ -231,11 +236,12 @@ window.addEventListener("load", function () {
         context.stroke();
       }
     }
-    update() {
+    update(deltaTime) {
       // keep the debug circle collison area with the egg- declaired in the constructor
       // adjust this later for eg shape
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
+      ///////////////collisions
       //TODO can this be a re usable function slide around 2:09
       // eggs can be pushed around
       // array of objects that eggs can interact with
@@ -259,6 +265,14 @@ window.addEventListener("load", function () {
           this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
         }
       });
+      //////////////////////////hatching
+      if (this.hatchTimer > this.hatchInterval) {
+        this.markedForDeletion = true;
+        // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame
+        this.game.removeGameObjects();
+      } else {
+        this.hatchTimer += deltaTime;
+      }
     }
   }
   // eggs hatch into Larva that play protects by pushing to safe area

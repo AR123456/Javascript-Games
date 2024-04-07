@@ -8,6 +8,8 @@ window.addEventListener("load", function () {
   ctx.fillStyle = "white";
   ctx.lineWidth = 3;
   ctx.strokeStyle = "white";
+  // font drawing and re drawing are resource intensive
+  ctx.font = "40px Helvetica";
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -234,6 +236,7 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
+        context.fillText(this.hatchTimer, this.collisionX, this.collisionY);
       }
     }
     update(deltaTime) {
@@ -270,9 +273,12 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
         // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
         this.game.removeGameObjects();
+        console.log(this.hatchTimer);
         console.log(this.game.eggs);
       } else {
         this.hatchTimer += deltaTime;
+
+        // console.log(this.game.eggs);
       }
     }
   }
@@ -470,7 +476,7 @@ window.addEventListener("load", function () {
         });
         this.gameObjects.forEach((object) => {
           object.draw(context);
-          object.update();
+          object.update(deltaTime);
         });
 
         this.timer = 0;

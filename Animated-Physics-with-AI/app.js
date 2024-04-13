@@ -10,7 +10,6 @@ window.addEventListener("load", function () {
   ctx.strokeStyle = "white";
   // font drawing and re drawing are resource intensive
   ctx.font = "40px Helvetica";
-  ctx.textAlign = "center";
   //OOP make it modular
   class Player {
     constructor(game) {
@@ -215,7 +214,7 @@ window.addEventListener("load", function () {
       this.spriteY;
       // egg hatching logic
       this.hatchTimer = 0;
-      this.hatchInterval = 3000;
+      this.hatchInterval = 5000;
       //  hatched eggs so they can be removed
       this.markedForDeletion = false;
     }
@@ -237,12 +236,7 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
-        const displayTimer = (this.hatchTimer * 0.001).toFixed(0);
-        context.fillText(
-          displayTimer,
-          this.collisionX,
-          this.collisionY - this.collisionRadius * 2.5
-        );
+        context.fillText(this.hatchTimer, this.collisionX, this.collisionY);
       }
     }
     update(deltaTime) {
@@ -276,13 +270,11 @@ window.addEventListener("load", function () {
       });
       //////////////////////////hatching
       if (this.hatchTimer > this.hatchInterval) {
-        // the egg has hatched so push larva to a new array
-        this.game.hatchlings.push(
-          new Larva(this.game, this.collisionX, this.collisionY)
-        );
         this.markedForDeletion = true;
         // for effecancy restructure the array here when something acctually gets marked vs checking for the markedForDeletion in every animation frame - this custom method is defined in the main game class below
         this.game.removeGameObjects();
+        console.log(this.hatchTimer);
+        console.log(this.game.eggs);
       } else {
         this.hatchTimer += deltaTime;
 
@@ -427,8 +419,6 @@ window.addEventListener("load", function () {
       this.eggs = [];
       // enemy objects
       this.enemies = [];
-      // holder for hatchlings- when egg hatches push larva here
-      this.hatchlings = [];
       // to give the illusion of depth by putting into an array then sort based on vertical coordinates
       this.gameObjects = [];
       this.mouse = {

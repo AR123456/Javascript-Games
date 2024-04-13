@@ -307,12 +307,15 @@ window.addEventListener("load", function () {
       this.spriteY;
       // vertical speed
       this.speedY = 1 + Math.random();
+      // randomize drawing the 2 sprites on the sprite sheet
+      this.frameX = 0;
+      this.frameY = Math.floor(Math.random() * 2);
     }
     draw(context) {
       context.drawImage(
         this.image,
-        0,
-        0,
+        this.frameX * this.spriteWidth,
+        this.frameY * this.spriteHeight,
         this.spriteWidth,
         this.spriteHeight,
         this.spriteX,
@@ -341,7 +344,7 @@ window.addEventListener("load", function () {
       this.collisionY -= this.speedY;
       // changing the postion of the larva
       this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 50;
       // larva are safe if the reach the mushroom forest
       if (this.collisionY < this.game.topMargin) {
         this.markedForDeletion = true;

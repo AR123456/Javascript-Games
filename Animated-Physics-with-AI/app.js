@@ -459,7 +459,11 @@ window.addEventListener("load", function () {
       });
     }
   }
-
+  class Particle {
+    constructor() {}
+  }
+  class Firefly extends Particle {}
+  class Spark extends Particle {}
   class Game {
     constructor(canvas) {
       this.canvas = canvas;

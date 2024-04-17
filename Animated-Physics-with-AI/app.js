@@ -476,6 +476,7 @@ window.addEventListener("load", function () {
       this.angle = 0;
       //how fast the angle is increasing
       this.va = Math.random() * 0.1 + 0.01;
+
       this.markedForDeletion = false;
     }
     // share draw method for all Fireflys and sparks
@@ -483,6 +484,7 @@ window.addEventListener("load", function () {
       context.save();
       context.fillStyle = this.color;
       context.beginPath();
+      //Math.PI*2 is a full circle in radiants
       context.arc(
         this.collisionX,
         this.collisionY,
@@ -490,14 +492,34 @@ window.addEventListener("load", function () {
         0,
         Math.PI * 2
       );
-      //Math.PI*2 is a full circle in radiants
+      context.fill();
+      context.stroke();
       context.restore();
     }
   }
   //child or sub class
-  class Firefly extends Particle {}
+  class Firefly extends Particle {
+    // will use the draw method and constructor from the parent (Particel) class
+    update() {
+      // float up and sway right and left
+      //increase angle by the angle velocity each animation frame
+      this.angle += this.va;
+      // x can be positive or negative so can go right or left
+      this.collisionX += this.speedX;
+      // float up
+      this.collisionY -= this.speedY;
+      // if the firefly moves past top edge of game area remove it
+      if (this.collisionY < 0 - this.radius) {
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+      }
+    }
+  }
   //child or sub class
-  class Spark extends Particle {}
+  class Spark extends Particle {
+    // will use the draw method and constructor from the parent (Particel) class
+    update() {}
+  }
   class Game {
     constructor(canvas) {
       this.canvas = canvas;

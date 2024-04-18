@@ -344,6 +344,12 @@ window.addEventListener("load", function () {
         this.game.removeGameObjects();
         // if larva are protected and reach safety increment score
         this.game.score++;
+        // swarm of 3 fireflys
+        for (let i = 0; i < 3; i++) {
+          this.game.particles.push(
+            new Firefly(this.game, this.collisionX, this.collisionY, "red")
+          );
+        }
       }
       /////////////collision with objects
       //TODO can this be a re usable function slide around 2:09 , 2:26

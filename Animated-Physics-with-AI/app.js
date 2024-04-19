@@ -382,6 +382,12 @@ window.addEventListener("load", function () {
           this.game.removeGameObjects();
           // track hatchlings lost
           this.game.lostHatchlings++;
+          // create sparks
+          for (let i = 0; i < 3; i++) {
+            this.game.particles.push(
+              new Spark(this.game, this.collisionX, this.collisionY, "blue")
+            );
+          }
         }
       });
     }
@@ -525,7 +531,12 @@ window.addEventListener("load", function () {
   //child or sub class
   class Spark extends Particle {
     // will use the draw method and constructor from the parent (Particel) class
-    update() {}
+    update() {
+      this.angle = +this.va * 0.5;
+      // pass ever increasing angle value
+      this.collisionX -= Math.cos(this.angle) * this.speedX;
+      this.collisionY -= Math.sin(this.angle) * this.speedY;
+    }
   }
   class Game {
     constructor(canvas) {

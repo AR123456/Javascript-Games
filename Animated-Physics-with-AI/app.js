@@ -345,7 +345,7 @@ window.addEventListener("load", function () {
         // if larva are protected and reach safety increment score
         this.game.score++;
         // swarm of 3 fireflys
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 30; i++) {
           this.game.particles.push(
             // for testing changing Firefly to Spark
             new Spark(this.game, this.collisionX, this.collisionY, "yellow")
@@ -384,7 +384,7 @@ window.addEventListener("load", function () {
           // track hatchlings lost
           this.game.lostHatchlings++;
           // create sparks
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 30; i++) {
             this.game.particles.push(
               new Spark(this.game, this.collisionX, this.collisionY, "blue")
             );
@@ -535,13 +535,14 @@ window.addEventListener("load", function () {
     update() {
       this.angle = +this.va * 0.5;
       // pass ever increasing angle value
-      this.collisionX -= Math.cos(this.angle) * this.speedX;
-      this.collisionY -= Math.sin(this.angle) * this.speedY;
+      this.collisionX -= Math.sin(this.angle) * this.speedX;
+      this.collisionY -= Math.cos(this.angle) * this.speedY;
       // make particles shrink - careful radi cannot be negative number
       if (this.radius > 0.1) this.radius -= 0.05;
       // remove from top edge
       if (this.radius < 0.2) {
         this.markedForDeletion = true;
+        this.game.removeGameObjects();
       }
     }
   }

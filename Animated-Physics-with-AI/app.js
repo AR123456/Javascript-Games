@@ -414,9 +414,12 @@ window.addEventListener("load", function () {
       // position of sprite sheet image in relation to collision circle coordinate
       this.spriteX;
       this.spriteY;
+      // navigate sprite sheet to get enemies
+      this.frameX = 0;
+      this.frameY = 0;
     }
     draw(context) {
-      context.drawImage(this.image, this.spriteX, this.spriteY);
+      context.drawImage(this.image, sx, sy, sw, sh, this.spriteX, this.spriteY);
       //TODO make this a re usable helper
       if (this.game.debug) {
         // draw a circle for egg

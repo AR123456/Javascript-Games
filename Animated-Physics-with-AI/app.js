@@ -270,7 +270,11 @@ window.addEventListener("load", function () {
         }
       });
       //////////////////////////hatching
-      if (this.hatchTimer > this.hatchInterval) {
+      // when player pushes egg to the safe area it will instantly turn into larva fireflies and score point
+      if (
+        this.hatchTimer > this.hatchInterval ||
+        this.collisionY < this.game.topMargin
+      ) {
         // the egg has hatched so push larva to a new array
         this.game.hatchlings.push(
           new Larva(this.game, this.collisionX, this.collisionY)

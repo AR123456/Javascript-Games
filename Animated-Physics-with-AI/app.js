@@ -419,7 +419,19 @@ window.addEventListener("load", function () {
       this.frameY = 0;
     }
     draw(context) {
-      context.drawImage(this.image, sx, sy, sw, sh, this.spriteX, this.spriteY);
+      // using the long draw image method to navigate the sprite sheet
+      //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+      context.drawImage(
+        this.image,
+        sx,
+        sy,
+        sw,
+        sh,
+        this.spriteX,
+        this.spriteY,
+        this.width,
+        this.height
+      );
       //TODO make this a re usable helper
       if (this.game.debug) {
         // draw a circle for egg

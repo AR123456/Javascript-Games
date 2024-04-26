@@ -401,7 +401,7 @@ window.addEventListener("load", function () {
       this.game = game;
       this.collisionRadius = 30;
       this.speedX = Math.random() * 3 + 0.5;
-      this.image = document.getElementById("toad");
+      this.image = document.getElementById("toads");
       this.spriteWidth = 140;
       this.spriteHeight = 260;
       this.width = this.spriteWidth;
@@ -423,10 +423,10 @@ window.addEventListener("load", function () {
       //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
       context.drawImage(
         this.image,
-        sx,
-        sy,
-        sw,
-        sh,
+        0,
+        2 * this.spriteHeight,
+        this.spriteWidth,
+        this.spriteHeight,
         this.spriteX,
         this.spriteY,
         this.width,

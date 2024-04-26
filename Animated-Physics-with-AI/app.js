@@ -583,7 +583,7 @@ window.addEventListener("load", function () {
       this.eggTimer = 0;
       this.eggInterval = 1000;
       this.numberOfObstacles = 10;
-      this.maxEggs = 20;
+      this.maxEggs = 5;
       // array to hold obstacles created
       this.obstacles = [];
       // hold eggs created

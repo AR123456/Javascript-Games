@@ -698,7 +698,9 @@ window.addEventListener("load", function () {
         }
         context.font = "130px Helvetica";
         context.fillText(message1, this.width * 0.5, this.height * 0.5);
-        content.font = "40px Hlevetica";
+        context.font = "40px Hlevetica";
+        context.fillText(message2, this.width * 0.5, this.height * 0.5);
+
         context.restore();
       }
     }

@@ -696,7 +696,9 @@ window.addEventListener("load", function () {
           message1 = "Bummer ";
           message2 = `You lost  ${this.lostHatchlings} you should try again`;
         }
-
+        context.font = "130px Helvetica";
+        context.fillText(message1, this.width * 0.5, this.height * 0.5);
+        content.font = "40px Hlevetica";
         context.restore();
       }
     }

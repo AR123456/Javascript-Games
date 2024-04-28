@@ -9,7 +9,7 @@ window.addEventListener("load", function () {
   ctx.lineWidth = 3;
   ctx.strokeStyle = "black";
   // font drawing and re drawing are resource intensive
-  ctx.font = "40px Helvetica";
+  ctx.font = "40px Bangers";
   ctx.textAlign = "center";
   //OOP make it modular
   class Player {
@@ -699,6 +699,10 @@ window.addEventListener("load", function () {
         context.fillRect(0, 0, this.width, this.height);
         context.fillStyle = "white";
         context.textAlign = "center";
+        // putting in a fix for canvas shadow usage being labor intensive so limiting here
+        context.shadowOffsetX = 4;
+        context.shadowOffsetY = 4;
+        context.shadowColor = "black";
         let message1;
         let message2;
         if (this.lostHatchlings <= 5) {
@@ -710,9 +714,9 @@ window.addEventListener("load", function () {
           message1 = "Bummer ";
           message2 = `You lost  ${this.lostHatchlings} you should try again`;
         }
-        context.font = "130px Helvetica";
+        context.font = "130px Bangers";
         context.fillText(message1, this.width * 0.5, this.height * 0.5 - 20);
-        context.font = "40px Hlevetica";
+        context.font = "40px Bangers";
         context.fillText(message2, this.width * 0.5, this.height * 0.5 + 30);
         context.fillText(
           `Final Score: ${this.score}. Press "R" to play again !`,

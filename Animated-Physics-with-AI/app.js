@@ -9,7 +9,7 @@ window.addEventListener("load", function () {
   ctx.lineWidth = 3;
   ctx.strokeStyle = "black";
   // font drawing and re drawing are resource intensive
-  ctx.font = "40px Bangers";
+  ctx.font = "40px Helvetica";
   ctx.textAlign = "center";
   //OOP make it modular
   class Player {
@@ -38,13 +38,6 @@ window.addEventListener("load", function () {
       //vertical navigation
       this.frameY = 5;
       this.image = document.getElementById("bull");
-    }
-    // implementing game restart
-    restart() {
-      this.collisionX = this.game.width * 0.5;
-      this.collisionY = this.game.height * 0.5;
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY - this.collisionY - this.height * 0.5 - 100;
     }
     // Player draw method
     draw(context) {
@@ -354,11 +347,7 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
         // if larva are protected and reach safety increment score
-        // this.game.score++;
-        // this is updating for if the game is over stop making eggs/larva
-        if (!this.game.gameOver) {
-          this.game.score++;
-        }
+        this.game.score++;
         // swarm of 3 fireflys
         for (let i = 0; i < 3; i++) {
           this.game.particles.push(
@@ -468,9 +457,7 @@ window.addEventListener("load", function () {
       //move enemy to left by random speed
       this.collisionX -= this.speedX;
       // keep from moving off right side of screen
-      // if (this.spriteX + this.width < 0) {
-      // updating this if to account for game over and stop enemies from comming
-      if (this.spriteX + this.width < 0 && !this.game.gameOver) {
+      if (this.spriteX + this.width < 0) {
         // re use object if you can vs creating new that later needs to be destroyed
         this.collisionX =
           this.game.width + this.width + Math.random() * this.game.width * 0.5;
@@ -613,7 +600,6 @@ window.addEventListener("load", function () {
       this.score = 0;
       // winning score
       this.winningScore = 5;
-      this.gameOver = false;
       this.lostHatchlings = 0;
       this.mouse = {
         x: this.width * 0.5,
@@ -677,13 +663,7 @@ window.addEventListener("load", function () {
       // increase timer by delta time
       this.timer += deltaTime;
       // add eggs periodically
-      // if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
-      // updated if to  stop eggs from adding if the game is over
-      if (
-        this.eggTimer > this.eggInterval &&
-        this.eggs.length < this.maxEggs &&
-        !this.gameOver
-      ) {
+      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
       } else {
@@ -699,17 +679,12 @@ window.addEventListener("load", function () {
       context.restore();
       // win / lose message
       if (this.score >= this.winningScore) {
-        this.gameOver = true;
         // cover screen with semi transparent message
         context.save();
         context.fillStyle = "rgba(0,0,0,0.5)";
         context.fillRect(0, 0, this.width, this.height);
         context.fillStyle = "white";
         context.textAlign = "center";
-        // putting in a fix for canvas shadow usage being labor intensive so limiting here
-        context.shadowOffsetX = 4;
-        context.shadowOffsetY = 4;
-        context.shadowColor = "black";
         let message1;
         let message2;
         if (this.lostHatchlings <= 5) {
@@ -721,14 +696,14 @@ window.addEventListener("load", function () {
           message1 = "Bummer ";
           message2 = `You lost  ${this.lostHatchlings} you should try again`;
         }
-        context.font = "130px Bangers";
+        context.font = "130px Helvetica";
         context.fillText(message1, this.width * 0.5, this.height * 0.5 - 20);
-        context.font = "40px Bangers";
-        context.fillText(message2, this.width * 0.5, this.height * 0.5 + 30);
+        context.font = "40px Hlevetica";
+        context.fillText(message2, this.width * 0.5, this.height * 0.5);
         context.fillText(
           `Final Score: ${this.score}. Press "R" to play again !`,
           this.width * 0.5,
-          this.height * 0.5 + 80
+          this.height * 0.5
         );
 
         context.restore();
@@ -824,8 +799,6 @@ window.addEventListener("load", function () {
     lastTime = timeStamp;
     // call render from inside animation loop
     game.render(ctx, deltaTime);
-    // this way of ending game stops all animation
-    // if (!game.gameOver) requestAnimationFrame(animate);
     requestAnimationFrame(animate);
   }
   // on first loop time stamp needs to be 0

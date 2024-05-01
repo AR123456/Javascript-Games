@@ -347,7 +347,11 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
         // if larva are protected and reach safety increment score
-        this.game.score++;
+        // this.game.score++;
+        // this is updating for if the game is over stop making eggs/larva
+        if (!this.game.gameOver) {
+          this.game.score++;
+        }
         // swarm of 3 fireflys
         for (let i = 0; i < 3; i++) {
           this.game.particles.push(
@@ -457,7 +461,9 @@ window.addEventListener("load", function () {
       //move enemy to left by random speed
       this.collisionX -= this.speedX;
       // keep from moving off right side of screen
-      if (this.spriteX + this.width < 0) {
+      // if (this.spriteX + this.width < 0) {
+      // updating this if to account for game over and stop enemies from comming
+      if (this.spriteX + this.width < 0 && !this.game.gameOver) {
         // re use object if you can vs creating new that later needs to be destroyed
         this.collisionX =
           this.game.width + this.width + Math.random() * this.game.width * 0.5;
@@ -664,7 +670,13 @@ window.addEventListener("load", function () {
       // increase timer by delta time
       this.timer += deltaTime;
       // add eggs periodically
-      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
+      // if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
+      // updated if to  stop eggs from adding if the game is over
+      if (
+        this.eggTimer > this.eggInterval &&
+        this.eggs.length < this.maxEggs &&
+        !this.gameOver
+      ) {
         this.addEgg();
         this.eggTimer = 0;
       } else {
@@ -802,7 +814,8 @@ window.addEventListener("load", function () {
     // call render from inside animation loop
     game.render(ctx, deltaTime);
     // this way of ending game stops all animation
-    if (!game.gameOver) requestAnimationFrame(animate);
+    // if (!game.gameOver) requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
   // on first loop time stamp needs to be 0
   animate(0);

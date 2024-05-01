@@ -801,7 +801,6 @@ window.addEventListener("load", function () {
     lastTime = timeStamp;
     // call render from inside animation loop
     game.render(ctx, deltaTime);
-    // this way of ending game stops all animation
     if (!game.gameOver) requestAnimationFrame(animate);
   }
   // on first loop time stamp needs to be 0

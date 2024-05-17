@@ -777,6 +777,29 @@ window.addEventListener("load", function () {
     // define re start method
     restart() {
       // code to restart game to its initial state
+      this.player.restart();
+      // array to hold obstacles created
+      this.obstacles = [];
+      // hold eggs created
+      this.eggs = [];
+      // enemy objects
+      this.enemies = [];
+      // holder for hatchlings- when egg hatches push larva here
+      this.hatchlings = [];
+      // holder for active particles
+      this.particles = [];
+      // reset mouse postion
+      this.mouse = {
+        X: this.width * 0.5,
+        y: this.height * 0.5,
+        pressed: false,
+      };
+      // reset score and lost hatchlings
+      this.score = 0;
+      this.lostHatchlings = 0;
+      // set game over back to not true
+      this.gameOver = false;
+      this.init();
     }
     init() {
       // create enemies

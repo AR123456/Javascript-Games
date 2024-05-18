@@ -857,9 +857,9 @@ window.addEventListener("load", function () {
     lastTime = timeStamp;
     // call render from inside animation loop
     game.render(ctx, deltaTime);
-    // this way of ending game stops all animation
-    // if (!game.gameOver) requestAnimationFrame(animate);
-    requestAnimationFrame(animate);
+    // this way of ending game stops all animation - using this for now to stop flicker bugr
+    if (!game.gameOver) requestAnimationFrame(animate);
+    // requestAnimationFrame(animate);
   }
   // on first loop time stamp needs to be 0
   animate(0);

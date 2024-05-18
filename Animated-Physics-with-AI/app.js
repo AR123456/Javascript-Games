@@ -250,8 +250,8 @@ window.addEventListener("load", function () {
     update(deltaTime) {
       // keep the debug circle collision area with the egg- declared in the constructor
       // adjust this later for egg shape
-      this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5 - 30;
+      this.spriteX = this.collisionX - this.width * 0.42;
+      this.spriteY = this.collisionY - this.height * 0.5 - 35;
       ///////////////collisions
       //TODO can this be a re usable function slide around 2:09
       // eggs can be pushed around
@@ -350,7 +350,7 @@ window.addEventListener("load", function () {
       this.collisionY -= this.speedY;
       // changing the position of the larva
       this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5 - 50;
+      this.spriteY = this.collisionY - this.height * 0.5 - 40;
       // larva are safe if the reach the mushroom forest
       if (this.collisionY < this.game.topMargin) {
         this.markedForDeletion = true;

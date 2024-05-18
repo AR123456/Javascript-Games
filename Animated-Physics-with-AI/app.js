@@ -261,6 +261,8 @@ window.addEventListener("load", function () {
         this.game.player,
         ...this.game.obstacles,
         ...this.game.enemies,
+        // if I add hatchlings here the hatchlings  push the egg around -makes game easier
+        ...this.game.hatchlings,
       ];
       // for every player and individual objects
       collisionObjects.forEach((object) => {
@@ -372,8 +374,8 @@ window.addEventListener("load", function () {
       let collisionObjects = [
         this.game.player,
         ...this.game.obstacles,
-        // adding eggs so they interact with larva
-        ...this.game.eggs,
+        // adding eggs so they interact with larva needing to move around them - makes game harder
+        // ...this.game.eggs,
         // ...this.game.enemies,
       ];
       // for every player and individual objects
@@ -614,7 +616,7 @@ window.addEventListener("load", function () {
       // keeping track of game score
       this.score = 0;
       // winning score
-      this.winningScore = 5;
+      this.winningScore = 55;
       this.gameOver = false;
       this.lostHatchlings = 0;
       this.mouse = {

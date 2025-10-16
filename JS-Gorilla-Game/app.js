@@ -13,14 +13,7 @@ newGame();
 //main game function
 function newGame() {
   // reset game state
-  state = {
-    // phase - aiming, in flight celebrating
-    //buildings  - array of positions and sizes
-    backgroundBuildings: [],
-  };
-  for (let i = 0; i < 11; i++) {
-    generateBackgroundBuilding(i);
-  }
+  state = {};
   //call draw function - paints the screen when called
   draw();
 }

@@ -15,8 +15,10 @@ function newGame() {
   // reset game state
   state = {
     // phase - aiming, in flight celebrating
+    phase: "aiming",
     // keep track of who the current player is
     currentPlayer: 1,
+    bomb: {},
     //buildings  - array of positions and sizes
     backgroundBuildings: [],
     // buildings with windows

@@ -15,11 +15,18 @@ function newGame() {
   // reset game state
   state = {
     // phase - aiming, in flight celebrating
+    // keep track of who the current player is
+    currentPlayer: 1,
     //buildings  - array of positions and sizes
     backgroundBuildings: [],
+    // buildings with windows
+    buildings: [],
   };
   for (let i = 0; i < 11; i++) {
     generateBackgroundBuilding(i);
+  }
+  for (let i = 0; i < 8; i++) {
+    generateBuilding(i);
   }
   //call draw function - paints the screen when called
   draw();

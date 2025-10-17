@@ -18,7 +18,12 @@ function newGame() {
     phase: "aiming",
     // keep track of who the current player is
     currentPlayer: 1,
-    bomb: {},
+    bomb: {
+      x: undefined,
+      y: undefined,
+      rotation: 0,
+      velocity: { x: 0, y: 0 },
+    },
     //buildings  - array of positions and sizes
     backgroundBuildings: [],
     // buildings with windows

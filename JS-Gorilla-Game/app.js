@@ -10,6 +10,7 @@ const ctx = canvas.getContext("2d");
 console.log(ctx);
 // new game
 newGame();
+
 //main game function
 function newGame() {
   // reset game state
@@ -40,6 +41,9 @@ function newGame() {
   //call draw function - paints the screen when called
   draw();
 }
+function generateBackgroundBuilding(index) {}
+function generateBuilding() {}
+function initializeBombPosition() {}
 // draw function
 function draw() {}
 // event handlers

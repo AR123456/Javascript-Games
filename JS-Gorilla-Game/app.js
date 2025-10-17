@@ -35,6 +35,8 @@ function newGame() {
   for (let i = 0; i < 8; i++) {
     generateBuilding(i);
   }
+  // position bomb in hand of gorilla
+  initializeBombPosition();
   //call draw function - paints the screen when called
   draw();
 }

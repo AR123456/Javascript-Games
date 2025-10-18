@@ -7,7 +7,8 @@ canvas.width = window.innerWidth;
 canvas.height = window.height;
 // draw function needs context
 const ctx = canvas.getContext("2d");
-
+ctx.fillStyle = "#4A3C68";
+ctx.fillRect(200, 200, 440, 320);
 // new game
 newGame();
 

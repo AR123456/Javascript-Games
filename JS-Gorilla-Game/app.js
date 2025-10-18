@@ -7,7 +7,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.height;
 // draw function needs context
 const ctx = canvas.getContext("2d");
-console.log(ctx);
+
 // new game
 newGame();
 
@@ -16,7 +16,7 @@ function newGame() {
   // reset game state
   state = {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
-    phase: "in flight",
+    phase: "aiming",
     // keep track of who the current player is
     currentPlayer: 1,
     bomb: {
@@ -29,6 +29,8 @@ function newGame() {
     backgroundBuildings: [],
     // buildings with windows
     buildings: [],
+    // blasts
+    blastHoles: [],
   };
   for (let i = 0; i < 11; i++) {
     generateBackgroundBuilding(i);

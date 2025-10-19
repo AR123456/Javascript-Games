@@ -11,10 +11,8 @@ ctx.fillStyle = "#4A3C68";
 ctx.strokeStyle = "#4A3C68";
 ctx.lineWidth = 16;
 ctx.beginPath();
-ctx.moveTo(300, 300);
-ctx.lineTo(400, 350);
-ctx.lineTo(300, 400);
-ctx.fillStyle();
+ctx.moveTo(100, 350);
+ctx.quadraticCurveTo(300, 500, 500, 350);
 ctx.stroke();
 // new game
 newGame();

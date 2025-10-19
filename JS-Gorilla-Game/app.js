@@ -13,6 +13,7 @@ ctx.moveTo(300, 300);
 ctx.lineTo(400, 350);
 ctx.lineTo(300, 400);
 ctx.fillStyle();
+ctx.stroke();
 // new game
 newGame();
 

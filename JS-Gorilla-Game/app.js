@@ -8,6 +8,8 @@ canvas.height = window.height;
 // draw function needs context
 const ctx = canvas.getContext("2d");
 ctx.fillStyle = "#4A3C68";
+ctx.strokeStyle = "#4A3C68";
+ctx.lineWidth = 16;
 ctx.beginPath();
 ctx.moveTo(300, 300);
 ctx.lineTo(400, 350);

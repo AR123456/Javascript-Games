@@ -4,7 +4,7 @@ let state = {};
 // main canvas element and its drawing context
 const canvas = document.getElementById("game");
 canvas.width = window.innerWidth;
-canvas.height = window.height;
+canvas.height = window.innerHeight;
 // draw function needs context
 const ctx = canvas.getContext("2d");
 
@@ -52,6 +52,7 @@ function draw() {
   ctx.translate(0, window.innerHeight);
   // flip the x
   ctx.scale(1, -1);
+  ///// call the draw functions
   // reset/restore transformation
   ctx.restore();
 }

@@ -48,8 +48,10 @@ function generateBuilding() {}
 function initializeBombPosition() {}
 // draw function
 function draw() {
-  // flip coordinate system tu upside down
+  // flip coordinate system to upside down - down the y axis by size of browser window
   ctx.translate(0, window.innerHeight);
+  // flip the x
+  ctx.scale(1, -1);
 }
 // event handlers
 function throwBomb() {}

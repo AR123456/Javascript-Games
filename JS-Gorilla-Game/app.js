@@ -52,6 +52,8 @@ function draw() {
   ctx.translate(0, window.innerHeight);
   // flip the x
   ctx.scale(1, -1);
+  // reset/restore transformation
+  ctx.restore();
 }
 // event handlers
 function throwBomb() {}

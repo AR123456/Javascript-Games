@@ -7,13 +7,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.height;
 // draw function needs context
 const ctx = canvas.getContext("2d");
-ctx.fillStyle = "#4A3C68";
-ctx.strokeStyle = "#4A3C68";
-ctx.lineWidth = 16;
-ctx.beginPath();
-ctx.moveTo(100, 350);
-ctx.quadraticCurveTo(300, 500, 500, 350);
-ctx.stroke();
+
 // new game
 newGame();
 
@@ -53,7 +47,12 @@ function generateBackgroundBuilding(index) {}
 function generateBuilding() {}
 function initializeBombPosition() {}
 // draw function
-function draw() {}
+function draw() {
+  // flip coordinate system to upside down - down the y axis by size of browser window
+  ctx.translate(0, window.innerHeight);
+  // flip the x
+  ctx.scale(1, -1);
+}
 // event handlers
 function throwBomb() {}
 // calculate position of banana as it moves across the sky

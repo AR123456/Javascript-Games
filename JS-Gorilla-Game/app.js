@@ -53,6 +53,13 @@ function draw() {
   // flip the x
   ctx.scale(1, -1);
   ///// call the draw functions
+  drawBackground();
+  drawBackgroundBuildings();
+  drawBuildings();
+  drawGorilla(1);
+  drawGorilla(2);
+  drawBomb();
+
   // reset/restore transformation
   ctx.restore();
 }

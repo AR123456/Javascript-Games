@@ -71,4 +71,7 @@ function drawBackground() {
   // set up gradient
   const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
   gradient.addColorStop(1, "#F8BA85");
+  // draw sky
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }

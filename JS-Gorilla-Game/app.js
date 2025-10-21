@@ -54,11 +54,11 @@ function draw() {
   ctx.scale(1, -1);
   ///// call the draw functions
   drawBackground();
-  drawBackgroundBuildings();
-  drawBuildings();
-  drawGorilla(1);
-  drawGorilla(2);
-  drawBomb();
+  // drawBackgroundBuildings();
+  // drawBuildings();
+  // drawGorilla(1);
+  // drawGorilla(2);
+  // drawBomb();
 
   // reset/restore transformation
   ctx.restore();
@@ -67,3 +67,8 @@ function draw() {
 function throwBomb() {}
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {}
+function drawBackground() {
+  // set up gradient
+  const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
+  gradient.addColorStop(1, "#F8BA85");
+}

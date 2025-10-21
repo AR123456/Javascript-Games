@@ -33,6 +33,7 @@ function newGame() {
     blastHoles: [],
   };
   for (let i = 0; i < 11; i++) {
+    // init background buildings array in state
     generateBackgroundBuilding(i);
   }
   for (let i = 0; i < 8; i++) {
@@ -54,7 +55,7 @@ function draw() {
   ctx.scale(1, -1);
   ///// call the draw functions
   drawBackground();
-  // drawBackgroundBuildings();
+  drawBackgroundBuildings();
   // drawBuildings();
   // drawGorilla(1);
   // drawGorilla(2);

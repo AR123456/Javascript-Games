@@ -77,4 +77,8 @@ function drawBackground() {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
   //  adding moon to background
+  ctx.fillStyle = "rgba(255,253,253,0.61)";
+  ctx.beginPath();
+  ctx.arc(300, 350, 60, 0, 2 * Math.PI);
+  ctx.fill();
 }

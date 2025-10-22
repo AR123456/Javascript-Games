@@ -33,7 +33,7 @@ function newGame() {
     blastHoles: [],
   };
   for (let i = 0; i < 11; i++) {
-    // init background buildings array in state
+    // init background buildings array in
     generateBackgroundBuilding(i);
   }
   for (let i = 0; i < 8; i++) {
@@ -44,7 +44,12 @@ function newGame() {
   //call draw function - paints the screen when called
   draw();
 }
-function generateBackgroundBuilding(index) {}
+function generateBackgroundBuilding(index) {
+  const previousBuilding = state.backgroundBuildings[index - 1];
+  const x = previousBuilding
+    ? previousBuilding.x + previousBuilding.width + 4
+    : -30;
+}
 function generateBuilding() {}
 function initializeBombPosition() {}
 // draw function

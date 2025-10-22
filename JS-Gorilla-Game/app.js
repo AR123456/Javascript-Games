@@ -100,9 +100,8 @@ function drawBackground() {
   ctx.fill();
 }
 function drawBackgroundBuildings() {
-  ctx.fillStyle = "rgba(255,253,253,0.61)";
-  ctx.beginPath();
-  ctx.fillRect(state.x, 0, state.width, state.height);
-
-  ctx.fill();
+  state.backgroundBuildings.forEach((building) => {
+    ctx.fillStyle = "#947283";
+    ctx.fillRect(building.x, 0, building.width, building.height);
+  });
 }

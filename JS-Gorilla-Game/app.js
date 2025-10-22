@@ -60,7 +60,6 @@ function generateBackgroundBuilding(index) {
   const maxHeight = 350;
   const height = minHeight + Math.random() * (maxHeight - minHeight);
   state.backgroundBuildings.push({ x, width, height });
-  console.log(state.backgroundBuildings);
 }
 function generateBuilding() {}
 function initializeBombPosition() {}
@@ -98,5 +97,12 @@ function drawBackground() {
   ctx.fillStyle = "rgba(255,253,253,0.61)";
   ctx.beginPath();
   ctx.arc(300, 350, 60, 0, 2 * Math.PI);
+  ctx.fill();
+}
+function drawBackgroundBuildings() {
+  ctx.fillStyle = "rgba(255,253,253,0.61)";
+  ctx.beginPath();
+  ctx.fillRect(state.x, 0, state.width, state.height);
+
   ctx.fill();
 }

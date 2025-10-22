@@ -49,6 +49,10 @@ function generateBackgroundBuilding(index) {
   const x = previousBuilding
     ? previousBuilding.x + previousBuilding.width + 4
     : -30;
+  // generate size
+  const minWidth = 60;
+  const maxWidth = 110;
+  const width = minWidth + Math.random() * (maxWidth - minWidth);
 }
 function generateBuilding() {}
 function initializeBombPosition() {}

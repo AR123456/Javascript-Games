@@ -27,15 +27,18 @@ function newGame() {
     },
     //buildings  - array of positions and sizes
     backgroundBuildings: [],
+
     // buildings with windows
     buildings: [],
     // blasts
     blastHoles: [],
   };
+
   for (let i = 0; i < 11; i++) {
     // init background buildings array in
     generateBackgroundBuilding(i);
   }
+
   for (let i = 0; i < 8; i++) {
     generateBuilding(i);
   }
@@ -56,6 +59,8 @@ function generateBackgroundBuilding(index) {
   const minHeight = 80;
   const maxHeight = 350;
   const height = minHeight + Math.random() * (maxHeight - minHeight);
+  state.backgroundBuildings.push({ x, width, height });
+  console.log(state.backgroundBuildings);
 }
 function generateBuilding() {}
 function initializeBombPosition() {}

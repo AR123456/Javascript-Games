@@ -27,8 +27,7 @@ function newGame() {
     },
     //buildings  - array of positions and sizes
     backgroundBuildings: [],
-
-    // buildings with windows
+    // buildings with windows - build with for loop
     buildings: [],
     // blasts
     blastHoles: [],
@@ -72,7 +71,7 @@ function draw() {
   ///// call the draw functions
   drawBackground();
   drawBackgroundBuildings();
-  // drawBuildings();
+  drawBuildings();
   // drawGorilla(1);
   // drawGorilla(2);
   // drawBomb();

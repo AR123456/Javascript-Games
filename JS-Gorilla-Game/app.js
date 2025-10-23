@@ -60,7 +60,12 @@ function generateBackgroundBuilding(index) {
   const height = minHeight + Math.random() * (maxHeight - minHeight);
   state.backgroundBuildings.push({ x, width, height });
 }
-function generateBuilding() {}
+function generateBuilding() {
+  const previousBuilding = state.buildings[index - 1];
+  const x = previousBuilding
+    ? previousBuilding.x + previousBuilding.width + 4
+    : -30;
+}
 function initializeBombPosition() {}
 // draw function
 function draw() {

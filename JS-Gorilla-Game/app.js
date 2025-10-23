@@ -55,6 +55,9 @@ function generateBackgroundBuilding(index) {
   const minWidth = 60;
   const maxWidth = 110;
   const width = minWidth + Math.random() * (maxWidth - minWidth);
+
+  const platformWithGorilla = index === 1 || index === 6;
+
   const minHeight = 80;
   const maxHeight = 350;
   const height = minHeight + Math.random() * (maxHeight - minHeight);

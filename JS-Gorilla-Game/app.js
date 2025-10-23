@@ -65,6 +65,9 @@ function generateBuilding() {
   const x = previousBuilding
     ? previousBuilding.x + previousBuilding.width + 4
     : -30;
+  const minWidth = 80;
+  const maxWidth = 130;
+  const width = minWidth + Math.random() * (maxWidth - minWidth);
 }
 function initializeBombPosition() {}
 // draw function

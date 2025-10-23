@@ -100,6 +100,7 @@ function drawBackground() {
   ctx.fill();
 }
 function drawBackgroundBuildings() {
+  // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {
     ctx.fillStyle = "#947283";
     ctx.fillRect(building.x, 0, building.width, building.height);

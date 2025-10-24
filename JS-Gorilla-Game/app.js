@@ -64,13 +64,17 @@ function generateBuilding() {
   const previousBuilding = state.buildings[index - 1];
   const x = previousBuilding
     ? previousBuilding.x + previousBuilding.width + 4
-    : -30;
+    : 0;
   const minWidth = 80;
   const maxWidth = 130;
   const width = minWidth + Math.random() * (maxWidth - minWidth);
+
+  const platformWithGorilla = index === 1 || index === 6;
+
   const minHeight = 40;
   const maxHeight = 300;
-  const height = minHeight + Math.random() * (maxHeight - minHeight);
+  const minHeightGorilla = 30;
+  const maxHeightGorilla = 150;
 }
 function initializeBombPosition() {}
 // draw function

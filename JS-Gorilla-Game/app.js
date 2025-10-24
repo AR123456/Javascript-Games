@@ -60,8 +60,8 @@ function generateBackgroundBuilding(index) {
 
   const minHeight = 80;
   const maxHeight = 350;
-  const height = minHeight + Math.random() * (maxHeight - minHeight);
-  state.backgroundBuildings.push({ x, width, height });
+  const minHeightGorilla = 30;
+  const maxHeightGorilla = 150;
 }
 function generateBuilding() {
   const previousBuilding = state.buildings[index - 1];

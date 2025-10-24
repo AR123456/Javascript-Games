@@ -75,6 +75,9 @@ function generateBuilding() {
   const maxHeight = 300;
   const minHeightGorilla = 30;
   const maxHeightGorilla = 150;
+  const height = platformWithGorilla
+    ? minHeightGorilla + Math.random() * (maxHeightGorilla - minHightGorilla)
+    : minHeight + Math.random() * (maxHeight - minHeight);
 }
 function initializeBombPosition() {}
 // draw function

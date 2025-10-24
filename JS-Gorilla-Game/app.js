@@ -60,7 +60,7 @@ function generateBackgroundBuilding(index) {
   const height = minHeight + Math.random() * (maxHeight - minHeight);
   state.backgroundBuildings.push({ x, width, height });
 }
-function generateBuilding() {
+function generateBuilding(index) {
   const previousBuilding = state.buildings[index - 1];
   const x = previousBuilding
     ? previousBuilding.x + previousBuilding.width + 4
@@ -76,7 +76,7 @@ function generateBuilding() {
   const minHeightGorilla = 30;
   const maxHeightGorilla = 150;
   const height = platformWithGorilla
-    ? minHeightGorilla + Math.random() * (maxHeightGorilla - minHightGorilla)
+    ? minHeightGorilla + Math.random() * (maxHeightGorilla - minHeightGorilla)
     : minHeight + Math.random() * (maxHeight - minHeight);
 }
 function initializeBombPosition() {}
@@ -123,3 +123,4 @@ function drawBackgroundBuildings() {
     ctx.fillRect(building.x, 0, building.width, building.height);
   });
 }
+function drawBuildings() {}

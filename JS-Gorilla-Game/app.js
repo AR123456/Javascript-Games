@@ -66,15 +66,18 @@ function generateBuilding(index) {
     ? previousBuilding.x + previousBuilding.width + 4
     : 0;
   const minWidth = 80;
+  // main buildings are a bit wider
   const maxWidth = 130;
   const width = minWidth + Math.random() * (maxWidth - minWidth);
-
+  // need relatively higher buildings between gorillas so they serve as obstacles
+  // gorillas always stand on same building one on left index 1  the one on r index 6 ( for array length of 8)
   const platformWithGorilla = index === 1 || index === 6;
 
   const minHeight = 40;
   const maxHeight = 300;
   const minHeightGorilla = 30;
   const maxHeightGorilla = 150;
+
   const height = platformWithGorilla
     ? minHeightGorilla + Math.random() * (maxHeightGorilla - minHeightGorilla)
     : minHeight + Math.random() * (maxHeight - minHeight);

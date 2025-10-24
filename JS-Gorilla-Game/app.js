@@ -55,13 +55,10 @@ function generateBackgroundBuilding(index) {
   const minWidth = 60;
   const maxWidth = 110;
   const width = minWidth + Math.random() * (maxWidth - minWidth);
-
-  const platformWithGorilla = index === 1 || index === 6;
-
   const minHeight = 80;
   const maxHeight = 350;
-  const minHeightGorilla = 30;
-  const maxHeightGorilla = 150;
+  const height = minHeight + Math.random() * (maxHeight - minHeight);
+  state.backgroundBuildings.push({ x, width, height });
 }
 function generateBuilding() {
   const previousBuilding = state.buildings[index - 1];

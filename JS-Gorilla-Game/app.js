@@ -139,5 +139,8 @@ function drawBuildings() {
   state.buildings.forEach((building) => {
     ctx.fillStyle = "#4A3C68";
     ctx.fillRect(building.x, 0, building.width, building.height);
+    // draw windows
+    const windowWidth = 10;
+    const windowHeight = 12;
   });
 }

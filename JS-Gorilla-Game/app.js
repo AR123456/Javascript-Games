@@ -134,4 +134,10 @@ function drawBackgroundBuildings() {
     ctx.fillRect(building.x, 0, building.width, building.height);
   });
 }
-function drawBuildings() {}
+function drawBuildings() {
+  //  starts same way as drawing the background buildings
+  state.buildings.forEach((building) => {
+    ctx.fillStyle = "#4A3C68";
+    ctx.fillRect(building.x, 0, building.width, building.height);
+  });
+}

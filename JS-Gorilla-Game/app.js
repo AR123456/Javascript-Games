@@ -142,5 +142,7 @@ function drawBuildings() {
     // draw windows
     const windowWidth = 10;
     const windowHeight = 12;
+    // use gap to position 1st window and space between windows
+    const gap = 18;
   });
 }

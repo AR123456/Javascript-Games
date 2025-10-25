@@ -77,10 +77,17 @@ function generateBuilding(index) {
   const maxHeight = 300;
   const minHeightGorilla = 30;
   const maxHeightGorilla = 150;
-
+  // if the building index is 1 or 6 set its height based on the range for buildings with a gorilla on them , else use the other range (non gorilla buildings)
   const height = platformWithGorilla
     ? minHeightGorilla + Math.random() * (maxHeightGorilla - minHeightGorilla)
     : minHeight + Math.random() * (maxHeight - minHeight);
+  // adding lights to buildings using array of true false
+  const lightsOn = [];
+  for (let i = 0; i < 50; i++) {
+    const light = Math.random() <= 0.33 ? true : false;
+    lightsOn.push(light);
+    console.log(lightsOn);
+  }
 }
 function initializeBombPosition() {}
 // draw function

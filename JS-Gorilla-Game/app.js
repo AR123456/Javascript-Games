@@ -86,8 +86,9 @@ function generateBuilding(index) {
   for (let i = 0; i < 50; i++) {
     const light = Math.random() <= 0.33 ? true : false;
     lightsOn.push(light);
-    console.log(lightsOn);
   }
+  // push buildings to state object
+  state.buildings.push({ x, width, height, lightsOn });
 }
 function initializeBombPosition() {}
 // draw function

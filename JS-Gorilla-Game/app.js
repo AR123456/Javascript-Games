@@ -143,6 +143,11 @@ function drawBuildings() {
     const windowWidth = 10;
     const windowHeight = 12;
     // use gap to position 1st window and space between windows
-    const gap = 18;
+    const gap = 15;
+    // determine number of floors
+    const numberOfFloors = Math.ceil(
+      (building.height - gap) / (windowHeight + gap)
+    );
+    console.log(numberOfFloors);
   });
 }

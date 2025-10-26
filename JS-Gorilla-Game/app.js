@@ -160,7 +160,10 @@ function drawBuildings() {
           ctx.save();
           // for ease flip the coordinate system so window is top left
           ctx.translate(building.x + gap, building.height - gap);
-          CSSTransformComponent.scale(1, -1);
+          ctx.scale(1, -1);
+
+          // must restore ctx so that the flip of coord system is just for windows
+          ctx.restore();
         }
       }
     }

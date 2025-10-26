@@ -144,10 +144,13 @@ function drawBuildings() {
     const windowHeight = 12;
     // use gap to position 1st window and space between windows
     const gap = 15;
-    // determine number of floors
+    // determine number of floors - lowest floor will overflow screen but will be un seen
     const numberOfFloors = Math.ceil(
       (building.height - gap) / (windowHeight + gap)
     );
-    console.log(numberOfFloors);
+    // rooms per floor
+    const numberOfRoomsPerFloor = Math.floor(
+      (building.width - gap) / (windowWidth + gap)
+    );
   });
 }

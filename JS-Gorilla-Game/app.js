@@ -148,9 +148,15 @@ function drawBuildings() {
     const numberOfFloors = Math.ceil(
       (building.height - gap) / (windowHeight + gap)
     );
-    // rooms per floor
+    // rooms per floor - round down so no window only partially fits building
     const numberOfRoomsPerFloor = Math.floor(
       (building.width - gap) / (windowWidth + gap)
     );
+    // iterate to make grid
+    for (let floor = 0; floor < numberOfFloors; floor++) {
+      for (let room = 0; room < numberOfRoomsPerFloor; room++) {
+        console.log(floor, room);
+      }
+    }
   });
 }

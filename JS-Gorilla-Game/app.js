@@ -157,7 +157,10 @@ function drawBuildings() {
       for (let room = 0; room < numberOfRoomsPerFloor; room++) {
         // determine which lights are on map floor and room index to lightsOn boolean index
         if (building.lightsOn[floor * numberOfRoomsPerFloor + room]) {
-          console.log("on");
+          ctx.save();
+          // for ease flip the coordinate system so window is top left
+          ctx.translate(building.x + gap, building.height - gap);
+          CSSTransformComponent.scale(1, -1);
         }
       }
     }

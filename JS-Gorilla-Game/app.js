@@ -161,6 +161,11 @@ function drawBuildings() {
           // for ease flip the coordinate system so window is top left
           ctx.translate(building.x + gap, building.height - gap);
           ctx.scale(1, -1);
+          // paint- draw rectangle
+          const x = room * (windowWidth + gap);
+          const y = floor * (windowHeight + gap);
+          ctx.fillStyle = "#ebb6a2";
+          ctx.fillRect(x, y, windowWidth, windowHeight);
 
           // must restore ctx so that the flip of coord system is just for windows
           ctx.restore();

@@ -155,7 +155,10 @@ function drawBuildings() {
     // iterate to make grid
     for (let floor = 0; floor < numberOfFloors; floor++) {
       for (let room = 0; room < numberOfRoomsPerFloor; room++) {
-        console.log(floor, room);
+        // determine which lights are on map floor and room index to lightsOn boolean index
+        if (building.lightsOn[floor * numberOfRoomsPerFloor + room]) {
+          console.log("on");
+        }
       }
     }
   });

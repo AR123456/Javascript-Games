@@ -101,7 +101,7 @@ function draw() {
   drawBackground();
   drawBackgroundBuildings();
   drawBuildings();
-  // drawGorilla(1);
+  drawGorilla(1);
   // drawGorilla(2);
   // drawBomb();
 
@@ -195,6 +195,9 @@ function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();
   // building at index 1 or second to last index
-  const building = player === 1 ? state.building.at(1) : state.building.at(-2);
+  const building =
+    player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
   ctx.translate(building.x + building.width / 2, building.height);
+  drawGorillaBody();
+  ctx.restore();
 }

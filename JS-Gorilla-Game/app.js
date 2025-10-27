@@ -191,3 +191,9 @@ function drawGorillaBody() {
   ctx.lineTo(7, 0);
   ctx.fill();
 }
+function drawGorilla(player) {
+  //  takes in player one or two
+  ctx.save();
+  // building at index 1 or second to last index
+  const building = player === 1 ? state.building.at(1) : state.building.at(-2);
+}

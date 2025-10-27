@@ -196,4 +196,5 @@ function drawGorilla(player) {
   ctx.save();
   // building at index 1 or second to last index
   const building = player === 1 ? state.building.at(1) : state.building.at(-2);
+  ctx.translate(building.x + building.width / 2, building.height);
 }

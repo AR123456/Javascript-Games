@@ -174,3 +174,10 @@ function drawBuildings() {
     }
   });
 }
+function drawGorillaBody() {
+  ctx.fillStyle = "black";
+  ctx.moveTo(0, 15);
+  // leg
+  ctx.lineTo(-7, 0);
+  ctx.lineTo(-20, 0);
+}

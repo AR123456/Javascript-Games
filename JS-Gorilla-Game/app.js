@@ -203,6 +203,18 @@ function drawGorillaLeftArm() {
   }
   ctx.stroke();
 }
+function drawGorillaRightArm() {
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 18;
+  ctx.beginPath();
+  ctx.moveTo(+14, 50);
+  if (condition) {
+    //
+  } else {
+    ctx.quadraticCurveTo(+44, 45, +28, 12);
+  }
+  ctx.stroke();
+}
 function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();

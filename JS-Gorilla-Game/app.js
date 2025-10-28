@@ -102,7 +102,7 @@ function draw() {
   drawBackgroundBuildings();
   drawBuildings();
   drawGorilla(1);
-  // drawGorilla(2);
+  drawGorilla(2);
   // drawBomb();
 
   // reset/restore transformation
@@ -199,5 +199,7 @@ function drawGorilla(player) {
     player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
   ctx.translate(building.x + building.width / 2, building.height);
   drawGorillaBody();
+  drawGorillaLeftArm(player)
+  drawGorillaRightArm(player)
   ctx.restore();
 }

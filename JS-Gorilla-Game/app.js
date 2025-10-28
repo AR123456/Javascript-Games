@@ -195,7 +195,9 @@ function drawGorillaLeftArm() {
   ctx.strokeStyle = "black";
   ctx.lineWidth = 18;
   ctx.beginPath();
+  // shoulder of gorilla
   ctx.moveTo(-14, 50);
+  // check to see if the gorilla is aiming
   if (condition) {
     //
   } else {
@@ -207,6 +209,7 @@ function drawGorillaRightArm() {
   ctx.strokeStyle = "black";
   ctx.lineWidth = 18;
   ctx.beginPath();
+  // move to shoulder of gorilla
   ctx.moveTo(+14, 50);
   if (condition) {
     //

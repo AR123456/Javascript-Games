@@ -191,6 +191,18 @@ function drawGorillaBody() {
   ctx.lineTo(7, 0);
   ctx.fill();
 }
+function drawGorillaLeftArm() {
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 18;
+  ctx.beginPath();
+  ctx.moveTo(-14, 50);
+  if (condition) {
+    //
+  } else {
+    ctx.quadraticCurveTo(-44, 45, -28, 12);
+  }
+  ctx.stroke();
+}
 function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();
@@ -199,7 +211,7 @@ function drawGorilla(player) {
     player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
   ctx.translate(building.x + building.width / 2, building.height);
   drawGorillaBody();
-  drawGorillaLeftArm(player)
-  drawGorillaRightArm(player)
+  drawGorillaLeftArm(player);
+  drawGorillaRightArm(player);
   ctx.restore();
 }

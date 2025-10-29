@@ -197,9 +197,11 @@ function drawGorillaLeftArm() {
   ctx.beginPath();
   // shoulder of gorilla
   ctx.moveTo(-14, 50);
-  // check to see if the gorilla is aiming
-  if (condition) {
-    //
+  // check to see if the gorilla is aiming- gorilla on l is aiming by default
+  if (state.phase === "aiming" && state.currentPlayer === 1 && player === 1) {
+    ctx.quadraticCurveTo("aiming");
+  } else if ("celebrating") {
+    ("that curve");
   } else {
     ctx.quadraticCurveTo(-44, 45, -28, 12);
   }

@@ -201,8 +201,8 @@ function drawGorillaLeftArm() {
   if (state.phase === "aiming" && state.currentPlayer === 1 && player === 1) {
     // left hand goes up
     ctx.quadraticCurveTo(-44, 63, -28, 107);
-  } else if ("celebrating") {
-    ("that curve");
+  } else if (state.phase === "celebrating" && state.currentPlayer === player) {
+    ctx.quadraticCurveTo(-44, 63, -28, 107);
   } else {
     ctx.quadraticCurveTo(-44, 45, -28, 12);
   }

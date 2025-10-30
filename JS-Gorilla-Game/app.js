@@ -18,7 +18,7 @@ function newGame() {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
     phase: "aiming",
     // keep track of who the current player is
-    currentPlayer: 1,
+    currentPlayer: 2,
     bomb: {
       x: undefined,
       y: undefined,

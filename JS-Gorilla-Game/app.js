@@ -18,7 +18,7 @@ function newGame() {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
     phase: "aiming",
     // keep track of who the current player is
-    currentPlayer: 2,
+    currentPlayer: 1,
     bomb: {
       x: undefined,
       y: undefined,
@@ -224,6 +224,37 @@ function drawGorillaRightArm(player) {
   }
   ctx.stroke();
 }
+function drawGorillaFace(player) {
+  // face starts as an arc
+  ctx.fillStyle = "lightgray";
+  ctx.beginPath();
+  ctx.arc(0, 63, 9, 0, 2 * Math.PI);
+
+  // 2 more circles - mirrors of one another
+  ctx.moveTo(-3.5, 70);
+  ctx.arc(-3.5, 70, 4, 0, 2 * Math.PI);
+  ctx.moveTo(+3.5, 70);
+  ctx.arc(+3.5, 70, 4, 0, 2 * Math.PI);
+  ctx.fill();
+  // eyes
+  ctx.fillStyle = "black";
+  ctx.beginPath();
+  // ctx.arc(x,y,radius,startAngle, 2*Math.PI);
+  ctx.arc(-3.5, 70, 1.4, 0, 2 * Math.PI);
+  ctx.arc(+3.5, 70, 1.4, 0, 2 * Math.PI);
+  ctx.fill();
+  // stroke width for nose and mouth
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1.4;
+  // nose
+  ctx.beginPath();
+  ctx.moveTo(-3.5, 66.5);
+  ctx.lineTo(-1.5, 65);
+  ctx.moveTo(3.5, 66.5);
+  ctx.lineTo(1.5, 65);
+  ctx.stroke();
+  // mouth - fighting and celebrating
+}
 function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();
@@ -234,5 +265,6 @@ function drawGorilla(player) {
   drawGorillaBody();
   drawGorillaLeftArm(player);
   drawGorillaRightArm(player);
+  drawGorillaFace(player);
   ctx.restore();
 }

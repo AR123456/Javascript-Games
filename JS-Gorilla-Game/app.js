@@ -18,7 +18,7 @@ function newGame() {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
     phase: "aiming",
     // keep track of who the current player is
-    currentPlayer: 2,
+    currentPlayer: 1,
     bomb: {
       x: undefined,
       y: undefined,
@@ -191,39 +191,6 @@ function drawGorillaBody() {
   ctx.lineTo(7, 0);
   ctx.fill();
 }
-function drawGorillaLeftArm(player) {
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 18;
-  ctx.beginPath();
-  // shoulder of gorilla
-  ctx.moveTo(-14, 50);
-  // check to see if the gorilla is aiming- gorilla on l is aiming by default
-  if (state.phase === "aiming" && state.currentPlayer === 1 && player === 1) {
-    // left hand goes up
-    ctx.quadraticCurveTo(-44, 63, -28, 107);
-  } else if (state.phase === "celebrating" && state.currentPlayer === player) {
-    ctx.quadraticCurveTo(-44, 63, -28, 107);
-  } else {
-    ctx.quadraticCurveTo(-44, 45, -28, 12);
-  }
-  ctx.stroke();
-}
-function drawGorillaRightArm(player) {
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 18;
-  ctx.beginPath();
-  // move to shoulder of gorilla
-  ctx.moveTo(+14, 50);
-  // check to see if the gorilla is aiming- gorilla on r is aiming by default
-  if (state.phase === "aiming" && state.currentPlayer === 2 && player === 2) {
-    ctx.quadraticCurveTo(+44, 63, +28, 107);
-  } else if (state.phase === "celebrating" && state.currentPlayer === player) {
-    ctx.quadraticCurveTo(+44, 63, +28, 107);
-  } else {
-    ctx.quadraticCurveTo(+44, 45, +28, 12);
-  }
-  ctx.stroke();
-}
 function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();
@@ -232,7 +199,5 @@ function drawGorilla(player) {
     player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
   ctx.translate(building.x + building.width / 2, building.height);
   drawGorillaBody();
-  drawGorillaLeftArm(player);
-  drawGorillaRightArm(player);
   ctx.restore();
 }

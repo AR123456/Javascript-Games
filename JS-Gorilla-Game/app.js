@@ -229,12 +229,13 @@ function drawGorillaFace(player) {
   ctx.fillStyle = "lightgray";
   ctx.beginPath();
   ctx.arc(0, 63, 9, 0, 2 * Math.PI);
-  ctx.stroke();
+
   // 2 more circles - mirrors of one another
   ctx.moveTo(-3.5, 70);
   ctx.arc(-3.5, 70, 4, 0, 2 * Math.PI);
   ctx.moveTo(+3.5, 70);
   ctx.arc(+3.5, 70, 4, 0, 2 * Math.PI);
+  ctx.fill();
 }
 function drawGorilla(player) {
   //  takes in player one or two

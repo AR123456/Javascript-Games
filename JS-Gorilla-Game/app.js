@@ -16,7 +16,7 @@ function newGame() {
   // reset game state
   state = {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
-    phase: "celebrating",
+    phase: "aiming",
     // keep track of who the current player is
     currentPlayer: 1,
     bomb: {
@@ -224,6 +224,13 @@ function drawGorillaRightArm(player) {
   }
   ctx.stroke();
 }
+function drawGorillaFace(player) {
+  // face starts as an arc
+  ctx.fillStyle = "lightgray";
+  ctx.beginPath();
+  ctx.arc(0, 63, 9, 0, 2 * Math.PI);
+  ctx.stroke();
+}
 function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();
@@ -234,5 +241,6 @@ function drawGorilla(player) {
   drawGorillaBody();
   drawGorillaLeftArm(player);
   drawGorillaRightArm(player);
+  drawGorillaFace(player);
   ctx.restore();
 }

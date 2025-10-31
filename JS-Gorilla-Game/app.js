@@ -239,8 +239,11 @@ function drawGorillaFace(player) {
   // eyes
   ctx.fillStyle = "black";
   ctx.beginPath();
-  // ctx.arc(x,y,radius,startAngle,endAngle, 2*Math.PI);
-  ctx.arc(x, y, radius, startAngle, endAngle, 2 * Math.PI);
+  // ctx.arc(x,y,radius,startAngle, 2*Math.PI);
+  ctx.arc(-3.5, 70, 1.4, 0, 2 * Math.PI);
+  ctx.arc(+3.5, 70, 1.4, 0, 2 * Math.PI);
+  ctx.fill();
+  // nose
 }
 function drawGorilla(player) {
   //  takes in player one or two

@@ -243,14 +243,24 @@ function drawGorillaFace(player) {
   ctx.arc(-3.5, 70, 1.4, 0, 2 * Math.PI);
   ctx.arc(+3.5, 70, 1.4, 0, 2 * Math.PI);
   ctx.fill();
-  // nose
+  // stroke width for nose and mouth
   ctx.strokeStyle = "black";
   ctx.lineWidth = 1.4;
+  // nose
   ctx.beginPath();
   ctx.moveTo(-3.5, 66.5);
   ctx.lineTo(-1.5, 65);
   ctx.moveTo(3.5, 66.5);
   ctx.lineTo(1.5, 65);
+  ctx.stroke();
+  // mouth - fighting and celebrating
+  if (condition) {
+    // show celebrating
+  } else {
+    // show fighting
+    ctx.moveTo(-5, 56);
+    ctx.quadraticCurveTo(0, 60, 5, 56);
+  }
   ctx.stroke();
 }
 function drawGorilla(player) {

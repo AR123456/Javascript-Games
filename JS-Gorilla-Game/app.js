@@ -253,6 +253,16 @@ function drawGorillaFace(player) {
   ctx.moveTo(3.5, 66.5);
   ctx.lineTo(1.5, 65);
   ctx.stroke();
+  // mouth - fighting and celebrating
+  ctx.beginPath();
+  if (false) {
+    // show celebrating
+  } else {
+    // show fighting
+    ctx.moveTo(-5, 56);
+    ctx.quadraticCurveTo(0, 60, 5, 56);
+  }
+  ctx.stroke();
 }
 function drawGorilla(player) {
   //  takes in player one or two

@@ -108,11 +108,12 @@ function draw() {
   drawBuildings();
   drawGorilla(1);
   drawGorilla(2);
-  // drawBomb();
+  drawBomb();
 
   // reset/restore transformation
   ctx.restore();
 }
+function drawBomb() {}
 // event handlers
 function throwBomb() {}
 // calculate position of banana as it moves across the sky

@@ -16,7 +16,7 @@ function newGame() {
   // reset game state
   state = {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
-    phase: "aiming",
+    phase: "celebrating",
     // keep track of who the current player is
     currentPlayer: 1,
     bomb: {
@@ -255,8 +255,9 @@ function drawGorillaFace(player) {
   ctx.stroke();
   // mouth - fighting and celebrating
   ctx.beginPath();
-  if (false) {
-    // show celebrating
+  if (state.phase === "celebrating" && state.currentPlayer === player) {
+    ctx.moveTo(-5, 60);
+    ctx.quadraticCurveTo(0, 56, 5, 60);
   } else {
     // show fighting
     ctx.moveTo(-5, 56);

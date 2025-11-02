@@ -95,6 +95,7 @@ function initializeBombPosition() {
   // depends on position of gorilla on building, so index 1 or second to last
   const building =
     state.currentPlayer === 1 ? state.buildings.at(1) : state.buildings.at(-2);
+  console.log(building);
 }
 // draw function
 function draw() {
@@ -113,7 +114,9 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
-function drawBomb() {}
+function drawBomb() {
+  initializeBombPosition();
+}
 // event handlers
 function throwBomb() {}
 // calculate position of banana as it moves across the sky

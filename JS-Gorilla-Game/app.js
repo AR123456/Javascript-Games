@@ -101,6 +101,10 @@ function initializeBombPosition() {
   // gorilla hand depending on which player
   const gorillaHandOffsetX = state.currentPlayer === 1 ? -28 : 28;
   const gorillaHandOffsetY = 107;
+  // position of bomb in hand
+  state.bomb.x = gorillaX + gorillaHandOffsetX;
+  state.bomb.y = gorillaY + gorillaHandOffsetY;
+  // velocity
 }
 // draw function
 function draw() {

@@ -95,9 +95,12 @@ function initializeBombPosition() {
   // depends on position of gorilla on building, so index 1 or second to last
   const building =
     state.currentPlayer === 1 ? state.buildings.at(1) : state.buildings.at(-2);
+  // mid point of buildings
   const gorillaX = building.x + building.width / 2;
   const gorillaY = building.height;
-  console.log(gorillaX, gorillaY);
+  // gorilla hand depending on which player
+  const gorillaHandOffsetX = state.currentPlayer === 1 ? -28 : 28;
+  const gorillaHandOffsetY = 107;
 }
 // draw function
 function draw() {

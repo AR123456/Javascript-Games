@@ -16,7 +16,7 @@ function newGame() {
   // reset game state
   state = {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
-    phase: "aiming",
+    phase: "celebrating",
     // keep track of who the current player is
     currentPlayer: 1,
     bomb: {
@@ -41,9 +41,8 @@ function newGame() {
   for (let i = 0; i < 8; i++) {
     generateBuilding(i);
   }
-  // call after gen building/position of gorilla is known
+  // position bomb in hand of gorilla
   initializeBombPosition();
-
   //call draw function - paints the screen when called
   draw();
 }
@@ -91,12 +90,7 @@ function generateBuilding(index) {
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
 }
-function initializeBombPosition() {
-  // depends on position of gorilla on building, so index 1 or second to last
-  const building =
-    state.currentPlayer === 1 ? state.buildings.at(1) : state.buildings.at(-2);
-  console.log(building);
-}
+function initializeBombPosition() {}
 // draw function
 function draw() {
   // flip coordinate system to upside down - down the y axis by size of browser window
@@ -109,13 +103,10 @@ function draw() {
   drawBuildings();
   drawGorilla(1);
   drawGorilla(2);
-  drawBomb();
+  // drawBomb();
 
   // reset/restore transformation
   ctx.restore();
-}
-function drawBomb() {
-  initializeBombPosition();
 }
 // event handlers
 function throwBomb() {}

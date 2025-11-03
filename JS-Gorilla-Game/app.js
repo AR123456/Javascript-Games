@@ -16,7 +16,7 @@ function newGame() {
   // reset game state
   state = {
     // phase - aiming, in flight- bomb is moving across the sky celebrating
-    phase: "celebrating",
+    phase: "aiming",
     // keep track of who the current player is
     currentPlayer: 1,
     bomb: {
@@ -43,6 +43,7 @@ function newGame() {
   }
   // position bomb in hand of gorilla
   initializeBombPosition();
+  // place in hand of gorilla throwing
   //call draw function - paints the screen when called
   draw();
 }

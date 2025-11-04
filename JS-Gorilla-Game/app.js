@@ -132,7 +132,7 @@ function drawBomb() {
   // draw circle
   ctx.fillStyle = "white";
   ctx.beginPath();
-  ctx.arc(0, 0, 0, 2 * Math.PI);
+  ctx.arc(0, 0, 6, 0, 2 * Math.PI);
   ctx.fill();
   // restore transformation
   ctx.restore();

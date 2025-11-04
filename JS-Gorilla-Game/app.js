@@ -125,7 +125,13 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
-function drawBomb() {}
+function drawBomb() {
+  // translate the coord system, move origin to center of bomb position S
+  ctx.save();
+  ctx.translate(state.bomb.x, state.bomb.y);
+  // restore transformation
+  ctx.restore();
+}
 // event handlers
 function throwBomb() {}
 // calculate position of banana as it moves across the sky

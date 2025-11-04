@@ -105,6 +105,8 @@ function initializeBombPosition() {
   state.bomb.x = gorillaX + gorillaHandOffsetX;
   state.bomb.y = gorillaY + gorillaHandOffsetY;
   // velocity
+  state.bomb.velocity.x = 0;
+  state.bomb.velocity.y = 0;
 }
 // draw function
 function draw() {

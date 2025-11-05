@@ -44,6 +44,8 @@ function newGame() {
   for (let i = 0; i < 8; i++) {
     generateBuilding(i);
   }
+  // buildings generated now calc scale
+  calculateScale();
   // call after gen building/position of gorilla is known
   initializeBombPosition();
 
@@ -93,6 +95,9 @@ function generateBuilding(index) {
   }
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
+}
+function calculateScale() {
+  console.log("now calc scale");
 }
 function initializeBombPosition() {
   // depends on position of gorilla on building, so index 1 or second to last

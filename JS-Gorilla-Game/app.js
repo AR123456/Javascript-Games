@@ -31,6 +31,8 @@ function newGame() {
     buildings: [],
     // blasts
     blastHoles: [],
+    // scale to screen
+    scale: 1,
   };
 
   for (let i = 0; i < 11; i++) {

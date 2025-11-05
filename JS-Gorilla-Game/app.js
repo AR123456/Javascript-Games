@@ -31,7 +31,8 @@ function newGame() {
     buildings: [],
     // blasts
     blastHoles: [],
-    // scale to screen
+    // scale to screen-value depends on size of generated buildings
+    // so after city is generated call function to calculate scale
     scale: 1,
   };
 

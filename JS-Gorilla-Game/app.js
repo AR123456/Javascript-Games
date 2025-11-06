@@ -165,7 +165,6 @@ function drawBackground() {
     window.innerHeight / state.scale
   );
   // set up gradient
-  // const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
   background.addColorStop(1, "#F8BA85");
   background.addColorStop(0, "#FFC28E");
 
@@ -335,3 +334,11 @@ function drawGorilla(player) {
   drawGorillaFace(player);
   ctx.restore();
 }
+// event handler
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  calculateScale();
+  initializeBombPosition();
+  draw();
+});

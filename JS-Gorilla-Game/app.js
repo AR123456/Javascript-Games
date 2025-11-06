@@ -165,7 +165,13 @@ function drawBackground() {
 
   // draw sky
   ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+  ctx.fillRect(
+    0,
+    0,
+    // account for dynamic scale
+    window.innerWidth / state.scale,
+    window.innerHeight / state.scale
+  );
   //  adding moon to background
   ctx.fillStyle = "rgba(255,253,253,0.61)";
   ctx.beginPath();

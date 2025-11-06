@@ -137,6 +137,7 @@ function draw() {
   drawGorilla(1);
   drawGorilla(2);
   drawBomb();
+  drawInfoPanel();
 
   // reset/restore transformation
   ctx.restore();
@@ -333,6 +334,14 @@ function drawGorilla(player) {
   drawGorillaRightArm(player);
   drawGorillaFace(player);
   ctx.restore();
+}
+function drawInfoPanel() {
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2;
+
+  ctx.translate(50, 50, 100, 100, 14);
+  ctx.roundRect(50, 50, 100, 100, 14);
+  ctx.stroke();
 }
 // event handler
 window.addEventListener("resize", () => {

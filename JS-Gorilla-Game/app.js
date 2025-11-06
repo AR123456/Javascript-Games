@@ -158,13 +158,19 @@ function throwBomb() {}
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {}
 function drawBackground() {
+  const background = ctx.createLinearGradient(
+    0,
+    0,
+    0,
+    window.innerHeight / state.scale
+  );
   // set up gradient
-  const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
-  gradient.addColorStop(1, "#F8BA85");
-  gradient.addColorStop(0, "#FFC28E");
+  // const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
+  background.addColorStop(1, "#F8BA85");
+  background.addColorStop(0, "#FFC28E");
 
   // draw sky
-  ctx.fillStyle = gradient;
+  ctx.fillStyle = background;
   ctx.fillRect(
     0,
     0,

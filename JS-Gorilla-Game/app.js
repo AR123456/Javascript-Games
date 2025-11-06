@@ -104,6 +104,7 @@ function calculateScale() {
   const totalWidthOfTheCity = lastBuilding.x + lastBuilding.width;
 
   state.scale = window.innerWidth / totalWidthOfTheCity;
+  console.log(state.scale);
 }
 function initializeBombPosition() {
   // depends on position of gorilla on building, so index 1 or second to last

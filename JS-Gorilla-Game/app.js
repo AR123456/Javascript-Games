@@ -7,6 +7,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 // draw function needs context
 const ctx = canvas.getContext("2d");
+// consts for js
+// left info panel
+const angle1DOM = document.querySelector("#info-left .angle");
+const velocity1DOM = document.querySelector("#info-left .velocity");
 
 // new game
 newGame();

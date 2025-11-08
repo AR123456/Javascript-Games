@@ -130,6 +130,10 @@ function initializeBombPosition() {
   // velocity
   state.bomb.velocity.x = 0;
   state.bomb.velocity.y = 0;
+  // position the html grab area with the bomb
+  const grabAreaRadius = 15;
+  const left = state.bomb.x * state.scale - grabAreaRadius;
+  const bottom = state.bomb.y * state.scale - grabAreaRadius;
 }
 // draw function
 function draw() {

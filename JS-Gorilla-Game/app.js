@@ -134,6 +134,8 @@ function initializeBombPosition() {
   const grabAreaRadius = 15;
   const left = state.bomb.x * state.scale - grabAreaRadius;
   const bottom = state.bomb.y * state.scale - grabAreaRadius;
+  bombGrabAreaDOM.style.left = `${left}px`;
+  bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
 // draw function
 function draw() {

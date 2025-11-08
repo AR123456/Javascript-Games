@@ -11,6 +11,9 @@ const ctx = canvas.getContext("2d");
 // left info panel
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");
+// right info panel
+const angle2DOM = document.querySelector("#info-right .angle");
+const velocity2DOM = document.querySelector("#info-right .velocity");
 
 // new game
 newGame();

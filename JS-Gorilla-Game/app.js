@@ -351,8 +351,11 @@ function drawGorilla(player) {
 }
 
 // event handler
-bombGrabAreaDOM.addEventListener("mousedown", function () {
+bombGrabAreaDOM.addEventListener("mousedown", function (e) {
   console.log("mouse down happened ");
+});
+window.addEventListener("mousemove", function (e) {
+  console.log("mouse is moving");
 });
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;

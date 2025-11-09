@@ -352,6 +352,7 @@ function drawGorilla(player) {
 
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
+  // we only care about this if aiming
   if (state.phase === "aiming") {
     isDragging = true;
     dragStartX = e.clientX;

@@ -352,14 +352,19 @@ function drawGorilla(player) {
 
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
-  console.log("mouse down happened ");
+  if (state.phase === "aiming") {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    document.body.style.cursor = "grabbing";
+  }
 });
 // window.addEventListener("mousemove", function (e) {
 //   console.log("mouse is moving");
 // });
-window.addEventListener("mouseup", function (e) {
-  console.log("mouse up ");
-});
+// window.addEventListener("mouseup", function (e) {
+//   console.log("mouse up ");
+// });
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

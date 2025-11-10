@@ -16,6 +16,9 @@ const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
 // bomb grab area
 const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
+let isDragging = false;
+let dragStartX = undefined;
+let dragStartY = undefined;
 
 // new game
 newGame();
@@ -360,9 +363,12 @@ bombGrabAreaDOM.addEventListener("mousedown", function (e) {
     document.body.style.cursor = "grabbing";
   }
 });
-// window.addEventListener("mousemove", function (e) {
-//   console.log("mouse is moving");
-// });
+window.addEventListener("mousemove", function (e) {
+  //  only track when we are dragging
+  if (isDragging) {
+    console.log("mouse is moving");
+  }
+});
 // window.addEventListener("mouseup", function (e) {
 //   console.log("mouse up ");
 // });

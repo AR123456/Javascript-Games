@@ -366,7 +366,10 @@ bombGrabAreaDOM.addEventListener("mousedown", function (e) {
 window.addEventListener("mousemove", function (e) {
   //  only track when we are dragging
   if (isDragging) {
-    console.log("mouse is moving");
+    let deltaX = e.clientX - dragStartX;
+    let deltaY = e.clientY - dragStartY;
+    state.bomb.velocity.x = -deltaX;
+    state.bomb.velocity.y = -deltaY;
   }
 });
 // window.addEventListener("mouseup", function (e) {

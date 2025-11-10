@@ -370,6 +370,8 @@ window.addEventListener("mousemove", function (e) {
     let deltaY = e.clientY - dragStartY;
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = -deltaY;
+    setInfo(deltaX, deltaY);
+    draw();
   }
 });
 // window.addEventListener("mouseup", function (e) {

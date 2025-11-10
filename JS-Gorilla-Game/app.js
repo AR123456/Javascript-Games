@@ -368,8 +368,7 @@ window.addEventListener("mousemove", function (e) {
   if (isDragging) {
     let deltaX = e.clientX - dragStartX;
     let deltaY = e.clientY - dragStartY;
-    state.bomb.velocity.x = -deltaX;
-    state.bomb.velocity.y = -deltaY;
+    console.log(deltaX, deltaY);
   }
 });
 // window.addEventListener("mouseup", function (e) {

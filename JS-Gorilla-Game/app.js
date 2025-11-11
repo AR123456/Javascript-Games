@@ -390,9 +390,9 @@ function setInfo(deltaX, deltaY) {
     velocity2DOM.innerText = Math.round(hypotenuse);
   }
 }
-// window.addEventListener("mouseup", function (e) {
-//   console.log("mouse up ");
-// });
+window.addEventListener("mouseup", function (e) {
+  console.log("mouse up ");
+});
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

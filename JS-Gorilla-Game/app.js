@@ -353,14 +353,7 @@ function drawGorilla(player) {
   drawGorillaFace(player);
   ctx.restore();
 }
-function setInfo(deltaX, deltaY) {
-  // the trig to calc velocity ect
-  const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-  // convert to Radians
-  const angleInRadians = Math.asin(deltaY / hypotenuse);
-  const angleInDegrees = (angleInRadians / Math.PI) * 160;
-  console.log(angleInRadians, angleInDegrees);
-}
+
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
   // we only care about this if aiming
@@ -383,6 +376,20 @@ window.addEventListener("mousemove", function (e) {
     // draw();
   }
 });
+function setInfo(deltaX, deltaY) {
+  // the trig to calc velocity ect
+  const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+  // convert to Radians
+  const angleInRadians = Math.asin(deltaY / hypotenuse);
+  const angleInDegrees = (angleInRadians / Math.PI) * 160;
+  if (state.currentPlayer === 1) {
+    angle1DOM.innerText = Math.round(angleInDegrees);
+    velocity1DOM.innerText = Math.round(hypotenuse);
+  } else {
+    angle2DOM.innerText = Math.round(angleInDegrees);
+    velocity2DOM.innerText = Math.round(hypotenuse);
+  }
+}
 // window.addEventListener("mouseup", function (e) {
 //   console.log("mouse up ");
 // });

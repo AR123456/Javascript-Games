@@ -277,7 +277,12 @@ function drawGorillaLeftArm(player) {
   // check to see if the gorilla is aiming- gorilla on l is aiming by default
   if (state.phase === "aiming" && state.currentPlayer === 1 && player === 1) {
     // left hand goes up
-    ctx.quadraticCurveTo(-44, 63, -28, 107);
+    ctx.quadraticCurveTo(
+      -44,
+      63,
+      -28 - state.bomb.velocity.x / 6.25,
+      107 - state.bomb.velocity.y / 6.25
+    );
   } else if (state.phase === "celebrating" && state.currentPlayer === player) {
     ctx.quadraticCurveTo(-44, 63, -28, 107);
   } else {
@@ -293,7 +298,12 @@ function drawGorillaRightArm(player) {
   ctx.moveTo(+14, 50);
   // check to see if the gorilla is aiming- gorilla on r is aiming by default
   if (state.phase === "aiming" && state.currentPlayer === 2 && player === 2) {
-    ctx.quadraticCurveTo(+44, 63, +28, 107);
+    ctx.quadraticCurveTo(
+      +44,
+      63,
+      +28 - state.bomb.velocity.x / 6.25,
+      107 - state.bomb.velocity.y / 6.25
+    );
   } else if (state.phase === "celebrating" && state.currentPlayer === player) {
     ctx.quadraticCurveTo(+44, 63, +28, 107);
   } else {
@@ -388,7 +398,7 @@ window.addEventListener("mousemove", function (e) {
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = deltaY;
     setInfo(deltaX, deltaY);
-    // draw();
+    draw();
   }
 });
 

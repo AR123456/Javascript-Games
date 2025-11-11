@@ -19,6 +19,7 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 let isDragging = false;
 let dragStartX = undefined;
 let dragStartY = undefined;
+let deltaX, deltaY;
 
 // new game
 newGame();
@@ -352,7 +353,11 @@ function drawGorilla(player) {
   drawGorillaFace(player);
   ctx.restore();
 }
-
+function setInfo() {
+  // the trig to calc velocity ect
+  const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+  console.log(hypotenuse);
+}
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
   // we only care about this if aiming
@@ -363,9 +368,7 @@ bombGrabAreaDOM.addEventListener("mousedown", function (e) {
     document.body.style.cursor = "grabbing";
   }
 });
-function setInfo() {
-  // the trig to calc velocity ect
-}
+
 window.addEventListener("mousemove", function (e) {
   //  only track when we are dragging
   if (isDragging) {
@@ -374,7 +377,7 @@ window.addEventListener("mousemove", function (e) {
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = deltaY;
     setInfo(deltaX, deltaY);
-    draw();
+    // draw();
   }
 });
 // window.addEventListener("mouseup", function (e) {

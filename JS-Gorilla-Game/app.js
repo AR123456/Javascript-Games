@@ -143,22 +143,26 @@ function initializeBombPosition() {
 }
 // draw function
 function draw() {
-  // flip coordinate system to upside down - down the y axis by size of browser window
-  ctx.translate(0, window.innerHeight);
-  // flip the x
-  ctx.scale(1, -1);
-  // use the calculated scale
-  ctx.scale(state.scale, state.scale);
-  ///// call the draw functions
-  drawBackground();
-  drawBackgroundBuildings();
-  drawBuildings();
-  drawGorilla(1);
-  drawGorilla(2);
-  drawBomb();
+  try {
+    // flip coordinate system to upside down - down the y axis by size of browser window
+    ctx.translate(0, window.innerHeight);
+    // flip the x
+    ctx.scale(1, -1);
+    // use the calculated scale
+    ctx.scale(state.scale, state.scale);
+    ///// call the draw functions
+    drawBackground();
+    drawBackgroundBuildings();
+    drawBuildings();
+    drawGorilla(1);
+    drawGorilla(2);
+    drawBomb();
 
-  // reset/restore transformation
-  ctx.restore();
+    // reset/restore transformation
+    ctx.restore();
+  } catch (error) {
+    console.log(error);
+  }
 }
 function drawBomb() {
   // translate the coord system, move origin to center of bomb position S
@@ -398,6 +402,7 @@ window.addEventListener("mousemove", function (e) {
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = deltaY;
     setInfo(deltaX, deltaY);
+    // console.log(deltaX, deltaY);
     draw();
   }
 });

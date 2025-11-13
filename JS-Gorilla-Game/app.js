@@ -164,6 +164,9 @@ function drawBomb() {
   // translate the coord system, move origin to center of bomb position S
   ctx.save();
   ctx.translate(state.bomb.x, state.bomb.y);
+  if (state.phase === "aiming") {
+    ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
+  }
   // draw circle
   ctx.fillStyle = "white";
   ctx.beginPath();

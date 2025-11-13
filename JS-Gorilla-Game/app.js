@@ -164,6 +164,9 @@ function drawBomb() {
   // translate the coord system, move origin to center of bomb position S
   ctx.save();
   ctx.translate(state.bomb.x, state.bomb.y);
+  if (state.phase === "aiming") {
+    ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
+  }
   // draw circle
   ctx.fillStyle = "white";
   ctx.beginPath();
@@ -173,7 +176,9 @@ function drawBomb() {
   ctx.restore();
 }
 // event handlers
-function throwBomb() {}
+function throwBomb() {
+  console.log("throwing bomb");
+}
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {}
 function drawBackground() {
@@ -275,7 +280,12 @@ function drawGorillaLeftArm(player) {
   // check to see if the gorilla is aiming- gorilla on l is aiming by default
   if (state.phase === "aiming" && state.currentPlayer === 1 && player === 1) {
     // left hand goes up
-    ctx.quadraticCurveTo(-44, 63, -28, 107);
+    ctx.quadraticCurveTo(
+      -44,
+      63,
+      -28 - state.bomb.velocity.x / 6.25,
+      107 - state.bomb.velocity.y / 6.25
+    );
   } else if (state.phase === "celebrating" && state.currentPlayer === player) {
     ctx.quadraticCurveTo(-44, 63, -28, 107);
   } else {
@@ -291,7 +301,12 @@ function drawGorillaRightArm(player) {
   ctx.moveTo(+14, 50);
   // check to see if the gorilla is aiming- gorilla on r is aiming by default
   if (state.phase === "aiming" && state.currentPlayer === 2 && player === 2) {
-    ctx.quadraticCurveTo(+44, 63, +28, 107);
+    ctx.quadraticCurveTo(
+      +44,
+      63,
+      +28 - state.bomb.velocity.x / 6.25,
+      107 - state.bomb.velocity.y / 6.25
+    );
   } else if (state.phase === "celebrating" && state.currentPlayer === player) {
     ctx.quadraticCurveTo(+44, 63, +28, 107);
   } else {
@@ -356,7 +371,16 @@ function drawGorilla(player) {
 function setInfo(deltaX, deltaY) {
   // the trig to calc velocity ect
   const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-  console.log(hypotenuse);
+  // convert to Radians
+  const angleInRadians = Math.asin(deltaY / hypotenuse);
+  const angleInDegrees = (angleInRadians / Math.PI) * 160;
+  if (state.currentPlayer === 1) {
+    angle1DOM.innerText = Math.round(angleInDegrees);
+    velocity1DOM.innerText = Math.round(hypotenuse);
+  } else {
+    angle2DOM.innerText = Math.round(angleInDegrees);
+    velocity2DOM.innerText = Math.round(hypotenuse);
+  }
 }
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
@@ -377,12 +401,19 @@ window.addEventListener("mousemove", function (e) {
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = deltaY;
     setInfo(deltaX, deltaY);
-    // draw();
+    // console.log(deltaX, deltaY);
+    console.log(state);
+    draw();
   }
 });
-// window.addEventListener("mouseup", function (e) {
-//   console.log("mouse up ");
-// });
+
+window.addEventListener("mouseup", function (e) {
+  if (isDragging) {
+    isDragging = false;
+    this.document.body.style.cursor = "default";
+    throwBomb();
+  }
+});
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

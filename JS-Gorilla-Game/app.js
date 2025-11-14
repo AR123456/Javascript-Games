@@ -143,7 +143,6 @@ function initializeBombPosition() {
 }
 // draw function
 function draw() {
-  ctx.save();
   // flip coordinate system to upside down - down the y axis by size of browser window
   ctx.translate(0, window.innerHeight);
   // flip the x
@@ -402,8 +401,7 @@ window.addEventListener("mousemove", function (e) {
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = deltaY;
     setInfo(deltaX, deltaY);
-    console.log(deltaX, deltaY);
-
+    // console.log(deltaX, deltaY);
     draw();
   }
 });

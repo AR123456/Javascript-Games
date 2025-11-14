@@ -166,7 +166,9 @@ function drawBomb() {
   ctx.save();
   ctx.translate(state.bomb.x, state.bomb.y);
   if (state.phase === "aiming") {
+    // move bomb with mouse when aiming
     ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
+    // code to draw the trajectory line
   }
   // draw circle
   ctx.fillStyle = "white";

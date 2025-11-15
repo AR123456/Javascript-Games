@@ -170,6 +170,7 @@ function drawBomb() {
     ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
     //  trajectory line
     ctx.strokeStyle = "rgba(255,255,255,0.7)";
+    // 3 px line 8 px space repeat
     ctx.setLineDash([3, 8]);
     ctx.lineWidth = 3;
 

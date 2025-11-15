@@ -176,6 +176,8 @@ function drawBomb() {
     ctx.beginPath();
     // start at center of circel
     ctx.moveTo(0, 0);
+    ctx.lineTo(state.bomb.velocity.x, state.bomb.velocity.y);
+    ctx.stroke();
   }
   // draw circle
   ctx.fillStyle = "white";

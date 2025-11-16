@@ -197,8 +197,18 @@ function throwBomb() {
 }
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
-  //throwBomb kicked this off
-
+  //throwBomb kicked this off - each frame moves the bomb a little
+  // hit detection
+  const miss = false;
+  const hit = false;
+  if (miss) {
+    // stop animation
+    return;
+  }
+  if (hit) {
+    // stope animation
+    return;
+  }
   //continue the loop
   requestAnimationFrame(animate);
 }

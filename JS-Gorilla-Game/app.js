@@ -172,6 +172,7 @@ function drawBomb() {
     ctx.strokeStyle = "rgba(255,255,255,0.7)";
     // 3 px line 8 px space repeat
     ctx.setLineDash([3, 8]);
+    // line width 3 px makes dash look like a dot
     ctx.lineWidth = 3;
 
     ctx.beginPath();

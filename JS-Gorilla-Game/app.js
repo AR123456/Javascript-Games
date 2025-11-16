@@ -176,7 +176,7 @@ function drawBomb() {
     ctx.lineWidth = 3;
 
     ctx.beginPath();
-    // start at center of circel
+    // start at center of circle
     ctx.moveTo(0, 0);
     ctx.lineTo(state.bomb.velocity.x, state.bomb.velocity.y);
     ctx.stroke();
@@ -191,10 +191,17 @@ function drawBomb() {
 }
 // event handlers
 function throwBomb() {
-  console.log("throwing bomb");
+  // mouse up kicks this off
+  state.phase = "in flight";
+  requestAnimationFrame(animate);
 }
 // calculate position of banana as it moves across the sky
-function animate(timestamp) {}
+function animate(timestamp) {
+  //throwBomb kicked this off
+
+  //continue the loop
+  requestAnimationFrame(animate);
+}
 function drawBackground() {
   const background = ctx.createLinearGradient(
     0,
@@ -428,6 +435,7 @@ window.addEventListener("mouseup", function (e) {
     throwBomb();
   }
 });
+
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

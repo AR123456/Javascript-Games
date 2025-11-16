@@ -198,6 +198,8 @@ function throwBomb() {
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
   //throwBomb kicked this off - each frame moves the bomb a little
+  const elapsedTime = timestamp - previousAnimationTimestamp;
+  moveBomb(elapsedTime);
   // hit detection
   const miss = false;
   const hit = false;
@@ -209,7 +211,9 @@ function animate(timestamp) {
     // stope animation
     return;
   }
+  draw();
   //continue the loop
+  previousAnimationTimestamp = timestamp;
   requestAnimationFrame(animate);
 }
 function drawBackground() {

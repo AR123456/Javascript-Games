@@ -190,11 +190,14 @@ function drawBomb() {
   // restore transformation
   ctx.restore();
 }
-// event handlers
+
 function throwBomb() {
   // mouse up kicks this off
   state.phase = "in flight";
   requestAnimationFrame(animate);
+}
+function moveBomb() {
+  const multiplier = elapsedTime / 200;
 }
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
@@ -216,7 +219,7 @@ function animate(timestamp) {
     return;
   }
   if (hit) {
-    // stope animation
+    // stop animation
     return;
   }
   draw();

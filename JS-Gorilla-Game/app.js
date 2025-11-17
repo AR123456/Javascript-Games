@@ -196,7 +196,7 @@ function throwBomb() {
   state.phase = "in flight";
   requestAnimationFrame(animate);
 }
-function moveBomb(elapsedTime) {
+function moveBomb() {
   const multiplier = elapsedTime / 200;
   // adjust trajectory by gravity
   state.bomb.velocity.y -= 20 * multiplier;

@@ -198,6 +198,13 @@ function throwBomb() {
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
   //throwBomb kicked this off - each frame moves the bomb a little
+  // first cycle has no previous time so account for that
+  if (previousAnimationTimestamp === undefined) {
+    previousAnimationTimestamp = timestamp;
+    requestAnimationFrame(animate);
+    return;
+  }
+  // time passed between animation cycles
   const elapsedTime = timestamp - previousAnimationTimestamp;
   moveBomb(elapsedTime);
   // hit detection
@@ -212,7 +219,8 @@ function animate(timestamp) {
     return;
   }
   draw();
-  //continue the loop
+  //continue the loop -
+  // previous is timestamp at end of this loop
   previousAnimationTimestamp = timestamp;
   requestAnimationFrame(animate);
 }

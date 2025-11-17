@@ -20,6 +20,7 @@ let isDragging = false;
 let dragStartX = undefined;
 let dragStartY = undefined;
 let deltaX, deltaY;
+let previousAnimationTimestamp = undefined;
 
 // new game
 newGame();

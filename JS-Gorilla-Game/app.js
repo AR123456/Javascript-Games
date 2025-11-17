@@ -196,13 +196,24 @@ function throwBomb() {
   state.phase = "in flight";
   requestAnimationFrame(animate);
 }
-function moveBomb() {
+function moveBomb(elapsedTime) {
+  // slow the bomb down
   const multiplier = elapsedTime / 200;
   // adjust trajectory by gravity
   state.bomb.velocity.y -= 20 * multiplier;
   //calculate new position
   state.bomb.x += state.bomb.velocity.x * multiplier;
   state.bomb.y += state.bomb.velocity.y * multiplier;
+}
+function checkFrameHit() {
+  if (
+    state.bomb.y < 0 ||
+    state.bomb.x < 0 ||
+    state.bomb.x > window.innerWidth / state.scale
+  ) {
+    console.log("hit edge");
+    return true;
+  }
 }
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
@@ -217,6 +228,7 @@ function animate(timestamp) {
   const elapsedTime = timestamp - previousAnimationTimestamp;
   moveBomb(elapsedTime);
   // hit detection
+  checkFrameHit();
   const miss = false;
   const hit = false;
   if (miss) {

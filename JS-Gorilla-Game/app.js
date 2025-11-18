@@ -182,6 +182,15 @@ function drawBomb() {
     ctx.beginPath();
     ctx.arc(0, 0, 6, 0, 2 * Math.PI);
     ctx.fill();
+  } else if (state.phase === "in flight") {
+    // this should be a banana
+  } else {
+    // default case is circle
+    // draw circle
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(0, 0, 6, 0, 2 * Math.PI);
+    ctx.fill();
   }
 
   // restore transformation

@@ -232,6 +232,9 @@ function animate(timestamp) {
   const hit = false;
   if (miss) {
     state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+    state.phase = "aiming";
+    initializeBombPosition();
+    draw();
     // stop animation
     return;
   }

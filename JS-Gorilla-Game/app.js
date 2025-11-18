@@ -211,7 +211,6 @@ function checkFrameHit() {
     state.bomb.x < 0 ||
     state.bomb.x > window.innerWidth / state.scale
   ) {
-    console.log("hit edge");
     return true;
   }
 }
@@ -229,9 +228,10 @@ function animate(timestamp) {
   moveBomb(elapsedTime);
   // hit detection
   checkFrameHit();
-  const miss = false;
+  const miss = checkFrameHit() || false;
   const hit = false;
   if (miss) {
+    state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
     // stop animation
     return;
   }

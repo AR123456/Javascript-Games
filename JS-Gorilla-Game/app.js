@@ -163,30 +163,27 @@ function draw() {
   ctx.restore();
 }
 function drawBomb() {
-  // translate the coord system, move origin to center of bomb position S
   ctx.save();
   ctx.translate(state.bomb.x, state.bomb.y);
-  if (state.phase === "aiming") {
-    // move bomb with mouse when aiming
-    ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
-    //  trajectory line
-    ctx.strokeStyle = "rgba(255,255,255,0.7)";
-    // 3 px line 8 px space repeat
-    ctx.setLineDash([3, 8]);
-    // line width 3 px makes dash look like a dot
-    ctx.lineWidth = 3;
 
+  if (state.phase === "aiming") {
+    // move bomb with mouse while aiming
+    ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
+    // show trajectory
+    ctx.strokeStyle = "rgba(255,255,255,0.7)";
+    ctx.setLineDash([3, 8]);
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    // start at center of circle
     ctx.moveTo(0, 0);
     ctx.lineTo(state.bomb.velocity.x, state.bomb.velocity.y);
     ctx.stroke();
+    // draw circle
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(0, 0, 6, 0, 2 * Math.PI);
+    ctx.fill();
   }
-  // draw circle
-  ctx.fillStyle = "white";
-  ctx.beginPath();
-  ctx.arc(0, 0, 6, 0, 2 * Math.PI);
-  ctx.fill();
+
   // restore transformation
   ctx.restore();
 }

@@ -481,8 +481,6 @@ window.addEventListener("mousemove", function (e) {
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = deltaY;
     setInfo(deltaX, deltaY);
-    console.log(deltaX, deltaY);
-
     draw();
   }
 });

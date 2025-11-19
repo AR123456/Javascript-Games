@@ -135,7 +135,7 @@ function initializeBombPosition() {
   // reset velocity
   state.bomb.velocity.x = 0;
   state.bomb.velocity.y = 0;
-  // reset rotaion
+  // reset rotation
   state.bomb.rotation = 0;
   // position the html grab area with the bomb
   const grabAreaRadius = 15;

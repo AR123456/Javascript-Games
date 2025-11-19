@@ -183,14 +183,7 @@ function drawBomb() {
     ctx.arc(0, 0, 6, 0, 2 * Math.PI);
     ctx.fill();
   } else if (state.phase === "in flight") {
-    // rotating banana
-    ctx.fillStyle = "white";
-    ctx.rotate(state.bomb.rotation);
-    ctx.beginPath();
-    ctx.moveTo(-8, -2);
-    ctx.quadraticCurveTo(0, 12, 8, -2);
-    ctx.quadraticCurveTo(0, 2, -8, -2);
-    ctx.fill();
+    // this should be a banana
   } else {
     // default case is circle
     // draw circle
@@ -481,6 +474,8 @@ window.addEventListener("mousemove", function (e) {
     state.bomb.velocity.x = -deltaX;
     state.bomb.velocity.y = deltaY;
     setInfo(deltaX, deltaY);
+    console.log(deltaX, deltaY);
+
     draw();
   }
 });

@@ -219,6 +219,9 @@ function moveBomb(elapsedTime) {
   //calculate new position
   state.bomb.x += state.bomb.velocity.x * multiplier;
   state.bomb.y += state.bomb.velocity.y * multiplier;
+  // rotate according to the direction
+  const direction = state.currentPlayer === 1 ? -1 : +1;
+  state.bomb.rotation += direction * 5 * multiplier;
 }
 function checkFrameHit() {
   if (

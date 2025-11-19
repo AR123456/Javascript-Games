@@ -132,9 +132,11 @@ function initializeBombPosition() {
   // position of bomb in hand
   state.bomb.x = gorillaX + gorillaHandOffsetX;
   state.bomb.y = gorillaY + gorillaHandOffsetY;
-  // velocity
+  // reset velocity
   state.bomb.velocity.x = 0;
   state.bomb.velocity.y = 0;
+  // reset rotaion
+  state.bomb.rotation = 0;
   // position the html grab area with the bomb
   const grabAreaRadius = 15;
   const left = state.bomb.x * state.scale - grabAreaRadius;

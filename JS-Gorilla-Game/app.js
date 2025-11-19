@@ -183,7 +183,14 @@ function drawBomb() {
     ctx.arc(0, 0, 6, 0, 2 * Math.PI);
     ctx.fill();
   } else if (state.phase === "in flight") {
-    // this should be a banana
+    // rotating banana
+    ctx.fillStyle = "white";
+    ctx.rotate(state.bomb.rotation);
+    ctx.beginPath();
+    ctx.moveTo(-8, -2);
+    ctx.quadraticCurveTo(0, 12, 8, -2);
+    ctx.quadraticCurveTo(0, 2, -8, -2);
+    ctx.fill();
   } else {
     // default case is circle
     // draw circle

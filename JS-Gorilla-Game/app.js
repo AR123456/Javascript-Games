@@ -233,10 +233,15 @@ function checkFrameHit() {
   }
 }
 function checkBuildingHit() {
-  for (let i = 0; i < state.building.length; i++) {
+  for (let i = 0; i < state.buildings.length; i++) {
     const building = state.buildings[i];
-    if (condition) {
-      ///
+    if (
+      state.bomb.x + 4 > building.x &&
+      state.bomb.x - 4 < building.x + building.width &&
+      state.bomb.y - 4 < 0 + building.height
+    ) {
+      // this is a hit
+      console.log("hit");
     }
   }
 }

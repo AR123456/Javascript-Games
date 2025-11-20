@@ -233,7 +233,12 @@ function checkFrameHit() {
   }
 }
 function checkBuildingHit() {
-  console.log("check build hit function ");
+  for (let i = 0; i < state.building.length; i++) {
+    const building = state.buildings[i];
+    if (condition) {
+      ///
+    }
+  }
 }
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {

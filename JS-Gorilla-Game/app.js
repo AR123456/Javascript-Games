@@ -232,6 +232,9 @@ function checkFrameHit() {
     return true;
   }
 }
+function checkBuildingHit() {
+  console.log("check build hit function ");
+}
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
   //throwBomb kicked this off - each frame moves the bomb a little
@@ -245,8 +248,8 @@ function animate(timestamp) {
   const elapsedTime = timestamp - previousAnimationTimestamp;
   moveBomb(elapsedTime);
   // hit detection
-  checkFrameHit();
-  const miss = checkFrameHit() || false;
+
+  const miss = checkFrameHit() || checkBuildingHit();
   const hit = false;
   if (miss) {
     state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;

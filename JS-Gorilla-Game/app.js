@@ -242,6 +242,7 @@ function checkBuildingHit() {
     ) {
       // this is a hit
       state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
+      console.log(state.blastHoles);
       return true;
     }
   }

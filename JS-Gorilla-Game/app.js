@@ -241,7 +241,8 @@ function checkBuildingHit() {
       state.bomb.y - 4 < 0 + building.height
     ) {
       // this is a hit
-      console.log("hit");
+      state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
+      return true;
     }
   }
 }

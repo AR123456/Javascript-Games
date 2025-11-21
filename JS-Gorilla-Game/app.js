@@ -233,6 +233,7 @@ function checkFrameHit() {
   }
 }
 function checkBuildingHit() {
+  // iterate over the buildings array and determine if bomb is touching one of them
   for (let i = 0; i < state.buildings.length; i++) {
     const building = state.buildings[i];
     if (
@@ -240,7 +241,7 @@ function checkBuildingHit() {
       state.bomb.x - 4 < building.x + building.width &&
       state.bomb.y - 4 < 0 + building.height
     ) {
-      // this is a hit
+      // this is a hit save the point of impact into the array
       state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
       console.log(state.blastHoles);
       return true;

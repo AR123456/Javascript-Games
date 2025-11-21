@@ -209,6 +209,7 @@ function drawBomb() {
 function throwBomb() {
   // mouse up kicks this off
   state.phase = "in flight";
+  previousAnimationTimestamp = undefined;
   requestAnimationFrame(animate);
 }
 function moveBomb(elapsedTime) {
@@ -275,6 +276,7 @@ function animate(timestamp) {
   }
   if (hit) {
     // stop animation
+
     return;
   }
   draw();

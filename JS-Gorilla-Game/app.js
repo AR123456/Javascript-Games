@@ -243,7 +243,7 @@ function checkBuildingHit() {
     ) {
       // this is a hit save the point of impact into the array
       state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
-      console.log(state.blastHoles);
+
       return true;
     }
   }
@@ -261,9 +261,10 @@ function animate(timestamp) {
   const elapsedTime = timestamp - previousAnimationTimestamp;
   moveBomb(elapsedTime);
   // hit detection
-
   const miss = checkFrameHit() || checkBuildingHit();
+  // did bomb hit enemy
   const hit = false;
+  // check miss bomb goes off screen or hits building
   if (miss) {
     state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
     state.phase = "aiming";

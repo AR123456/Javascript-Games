@@ -497,7 +497,7 @@ function drawBuildingsWithBlastHoles() {
       window.innerWidth / state.scale,
       window.innerHeight / state.scale
     );
-
+    ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
     ctx.clip();
   });

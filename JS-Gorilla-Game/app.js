@@ -488,7 +488,13 @@ function setInfo(deltaX, deltaY) {
   }
 }
 function drawBuildingsWithBlastHoles() {
-  //
+  ctx.save();
+  state.blastHoles.forEach((blastHole) => {
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
+    ctx.clip();
+  });
+  drawBuildings();
+  ctx.restore();
 }
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {

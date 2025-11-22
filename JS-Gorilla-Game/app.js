@@ -21,6 +21,7 @@ let dragStartX = undefined;
 let dragStartY = undefined;
 let deltaX, deltaY;
 let previousAnimationTimestamp = undefined;
+const blastHoles = 18;
 
 // new game
 newGame();
@@ -485,6 +486,15 @@ function setInfo(deltaX, deltaY) {
     angle2DOM.innerText = Math.round(angleInDegrees);
     velocity2DOM.innerText = Math.round(hypotenuse);
   }
+}
+function drawBuildingsWithBlastHoles() {
+  ctx.save();
+  state.blastHoles.forEach((blastHole) => {
+    //
+    ctx.clip();
+  });
+  drawBuildings();
+  ctx.restore();
 }
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {

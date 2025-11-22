@@ -488,13 +488,7 @@ function setInfo(deltaX, deltaY) {
   }
 }
 function drawBuildingsWithBlastHoles() {
-  ctx.save();
-  state.blastHoles.forEach((blastHole) => {
-    //
-    ctx.clip();
-  });
-  drawBuildings();
-  ctx.restore();
+  //
 }
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {

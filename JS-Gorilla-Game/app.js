@@ -261,7 +261,7 @@ function animate(timestamp) {
   // time passed between animation cycles
   const elapsedTime = timestamp - previousAnimationTimestamp;
   moveBomb(elapsedTime);
-  // hit detection
+  // hit detection - off screen or hit a building
   const miss = checkFrameHit() || checkBuildingHit();
   // did bomb hit enemy
   const hit = false;

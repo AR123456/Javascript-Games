@@ -490,6 +490,14 @@ function setInfo(deltaX, deltaY) {
 function drawBuildingsWithBlastHoles() {
   ctx.save();
   state.blastHoles.forEach((blastHole) => {
+    ctx.beginPath();
+    ctx.rect(
+      0,
+      0,
+      window.innerWidth / state.scale,
+      window.innerHeight / state.scale
+    );
+
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
     ctx.clip();
   });

@@ -263,6 +263,7 @@ function animate(timestamp) {
   }
   // time passed between animation cycles
   const elapsedTime = timestamp - previousAnimationTimestamp;
+  // call moveBomb 10 times for each animation cycle
   const hitDetectionPrecision = 10;
   for (let i = 0; i < hitDetectionPrecision; i++) {
     moveBomb(elapsedTime / hitDetectionPrecision);

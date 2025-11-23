@@ -22,6 +22,7 @@ let dragStartY = undefined;
 let deltaX, deltaY;
 let previousAnimationTimestamp = undefined;
 const blastHoles = 18;
+const blastHoleRadius = 18;
 
 // new game
 newGame();
@@ -157,7 +158,8 @@ function draw() {
   ///// call the draw functions
   drawBackground();
   drawBackgroundBuildings();
-  drawBuildings();
+  // drawBuildings();
+  drawBuildingsWithBlastHoles();
   drawGorilla(1);
   drawGorilla(2);
   drawBomb();

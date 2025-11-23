@@ -491,12 +491,15 @@ function drawBuildingsWithBlastHoles() {
   ctx.save();
   state.blastHoles.forEach((blastHole) => {
     ctx.beginPath();
+    // part of path clockwise behavior
     ctx.rect(
       0,
       0,
       window.innerWidth / state.scale,
       window.innerHeight / state.scale
     );
+    // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
     ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
     ctx.clip();

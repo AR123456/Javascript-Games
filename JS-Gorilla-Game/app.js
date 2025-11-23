@@ -245,6 +245,9 @@ function checkBuildingHit() {
       state.bomb.x - 4 < building.x + building.width &&
       state.bomb.y - 4 < 0 + building.height
     ) {
+      for (let j = 0; j < state.blastHoles.length; j++) {
+        console.log(state.blastHoles.length);
+      }
       // this is a hit save the point of impact into the array
       state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
 
@@ -284,7 +287,6 @@ function animate(timestamp) {
   }
   if (hit) {
     // stop animation
-
     return;
   }
   draw();

@@ -245,8 +245,9 @@ function checkBuildingHit() {
       state.bomb.x - 4 < building.x + building.width &&
       state.bomb.y - 4 < 0 + building.height
     ) {
+      //is the bomb in an area with impact already ?
       for (let j = 0; j < state.blastHoles.length; j++) {
-        console.log(state.blastHoles.length);
+        const blastHole = state.blastHoles[j];
       }
       // this is a hit save the point of impact into the array
       state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });

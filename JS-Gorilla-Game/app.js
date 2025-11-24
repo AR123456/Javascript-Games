@@ -248,10 +248,14 @@ function checkBuildingHit() {
       //is the bomb in an area with impact already ?
       for (let j = 0; j < state.blastHoles.length; j++) {
         const blastHole = state.blastHoles[j];
-        console.log(blastHole);
+
         //how far is this blastHole from center of prior
         const horizontalDistance = state.bomb.x - blastHole.x;
         const verticalDistance = (state.bomb.y = blastHole.y);
+        const distance = Math.sqrt(
+          horizontalDistance ** 2 + verticalDistance ** 2
+        );
+        console.log(distance);
       }
       // this is a hit save the point of impact into the array
       state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });

@@ -491,10 +491,7 @@ function drawGorilla(player) {
   ctx.translate(building.x + building.width / 2, building.height);
   // this function paints the body of the gorilla as a single path
   // can use isPointInPath canvas method
-  // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
-  drawGorillaBody();
-  let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);
-  console.log(hit);
+
   drawGorillaLeftArm(player);
   drawGorillaRightArm(player);
   drawGorillaFace(player);
@@ -533,6 +530,12 @@ function drawBuildingsWithBlastHoles() {
   });
   drawBuildings();
   ctx.restore();
+}
+function checkGorillaHit() {
+  // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
+  drawGorillaBody();
+  let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);
+  console.log(hit);
 }
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {

@@ -493,6 +493,8 @@ function drawGorilla(player) {
   // can use isPointInPath canvas method
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
+  let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);
+  console.log(hit);
   drawGorillaLeftArm(player);
   drawGorillaRightArm(player);
   drawGorillaFace(player);

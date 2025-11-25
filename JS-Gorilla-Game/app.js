@@ -532,6 +532,10 @@ function drawBuildingsWithBlastHoles() {
   ctx.restore();
 }
 function checkGorillaHit() {
+  const enemyPlayer = state.currentPlayer === 1 ? 2 : 1;
+  const enemyBuilding =
+    enemyPlayer === 1 ? state.buildings.at(1) : state.buildings.at(-2);
+  ctx.save();
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
   let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);

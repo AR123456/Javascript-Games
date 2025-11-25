@@ -489,6 +489,9 @@ function drawGorilla(player) {
   const building =
     player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
   ctx.translate(building.x + building.width / 2, building.height);
+  // this function paints the body of the gorilla as a single path
+  // can use isPointInPath canvas method
+  // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
   drawGorillaLeftArm(player);
   drawGorillaRightArm(player);

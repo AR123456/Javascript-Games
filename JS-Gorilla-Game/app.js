@@ -536,6 +536,10 @@ function checkGorillaHit() {
   const enemyBuilding =
     enemyPlayer === 1 ? state.buildings.at(1) : state.buildings.at(-2);
   ctx.save();
+  ctx.translate(
+    enemyBuilding.x + enemyBuilding.width / 2,
+    enemyBuilding.height
+  );
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
   let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);

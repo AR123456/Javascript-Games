@@ -543,7 +543,8 @@ function checkGorillaHit() {
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
   let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);
-  console.log(hit);
+  ctx.restore();
+  return hit;
 }
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {

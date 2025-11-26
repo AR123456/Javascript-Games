@@ -546,6 +546,11 @@ function checkGorillaHit() {
   drawGorillaBody();
   let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);
   // also need to check the gorillas arms
+  drawGorillaLeftArm(enemyPlayer);
+  hit ||= ctx.isPointInPath(state.bomb.x, state.bomb.y);
+
+  drawGorillaRightArm(enemyPlayer);
+  hit ||= ctx.isPointInPath(state.bomb.x, state.bomb.y);
   ctx.restore();
   return hit;
 }

@@ -491,7 +491,7 @@ function drawGorilla(player) {
   ctx.translate(building.x + building.width / 2, building.height);
   // this function paints the body of the gorilla as a single path
   // can use isPointInPath canvas method
-
+  drawGorillaBody();
   drawGorillaLeftArm(player);
   drawGorillaRightArm(player);
   drawGorillaFace(player);
@@ -533,9 +533,11 @@ function drawBuildingsWithBlastHoles() {
 }
 function checkGorillaHit() {
   const enemyPlayer = state.currentPlayer === 1 ? 2 : 1;
+  // which building is enemy on
   const enemyBuilding =
     enemyPlayer === 1 ? state.buildings.at(1) : state.buildings.at(-2);
   ctx.save();
+  // need to translate coordinate system to top of that building
   ctx.translate(
     enemyBuilding.x + enemyBuilding.width / 2,
     enemyBuilding.height
@@ -543,6 +545,7 @@ function checkGorillaHit() {
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
   let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);
+  // also need to check the gorillas arms
   ctx.restore();
   return hit;
 }

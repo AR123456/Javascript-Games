@@ -300,6 +300,7 @@ function animate(timestamp) {
     return;
   }
   if (hit) {
+    //TODO  bug here with hit get upside down in middle of screen
     state.phase = "celebrating";
     announceWinner();
     draw();

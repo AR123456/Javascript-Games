@@ -300,6 +300,7 @@ function animate(timestamp) {
     return;
   }
   if (hit) {
+    state.phase = "celebrating";
     // stop animation
     return;
   }

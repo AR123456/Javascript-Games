@@ -544,13 +544,16 @@ function checkGorillaHit() {
   );
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
+  // hit to body
   let hit = ctx.isPointInPath(state.bomb.x, state.bomb.y);
   // also need to check the gorillas arms
   drawGorillaLeftArm(enemyPlayer);
-  //arm is a path so need isPoint in stroke method
+  //arm is a path so need isPoint in stroke method - works because we are checking every px
+  // this is true if enemy is hit in body or arm
   hit ||= ctx.isPointInStroke(state.bomb.x, state.bomb.y);
 
   drawGorillaRightArm(enemyPlayer);
+  // this is true if enemy is hit in body or arm
   hit ||= ctx.isPointInStroke(state.bomb.x, state.bomb.y);
   ctx.restore();
   return hit;

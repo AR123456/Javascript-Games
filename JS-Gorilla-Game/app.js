@@ -288,7 +288,8 @@ function animate(timestamp) {
   // hit detection - off screen or hit a building
   const miss = checkFrameHit() || checkBuildingHit();
   // did bomb hit enemy
-  const hit = false;
+  // const hit = false;
+  const hit = checkGorillaHit();
   // check miss bomb goes off screen or hits building
   if (miss) {
     state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
@@ -556,6 +557,7 @@ function checkGorillaHit() {
   // this is true if enemy is hit in body or arm
   hit ||= ctx.isPointInStroke(state.bomb.x, state.bomb.y);
   ctx.restore();
+  //  sending this to the animate function
   return hit;
 }
 // event handler

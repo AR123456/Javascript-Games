@@ -301,6 +301,8 @@ function animate(timestamp) {
   }
   if (hit) {
     state.phase = "celebrating";
+    announceWinner();
+    draw();
     // stop animation
     return;
   }

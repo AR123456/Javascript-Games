@@ -288,8 +288,7 @@ function animate(timestamp) {
   // hit detection - off screen or hit a building
   const miss = checkFrameHit() || checkBuildingHit();
   // did bomb hit enemy
-  // const hit = false;
-  const hit = checkGorillaHit();
+  const hit = false;
   // check miss bomb goes off screen or hits building
   if (miss) {
     state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
@@ -300,10 +299,6 @@ function animate(timestamp) {
     return;
   }
   if (hit) {
-    //TODO  bug here with hit get upside down in middle of screen
-    state.phase = "celebrating";
-    announceWinner();
-    draw();
     // stop animation
     return;
   }
@@ -561,7 +556,6 @@ function checkGorillaHit() {
   // this is true if enemy is hit in body or arm
   hit ||= ctx.isPointInStroke(state.bomb.x, state.bomb.y);
   ctx.restore();
-  //  sending this to the animate function
   return hit;
 }
 // event handler

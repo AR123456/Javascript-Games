@@ -7,9 +7,6 @@ body {
   /* need this to avoid bomb drag glich later so we do not accidentally select the text  */
   user-select: none;
   -webkit-user-select: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 #info-left {

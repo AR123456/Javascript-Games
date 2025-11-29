@@ -16,6 +16,9 @@ const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
 // bomb grab area
 const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
+// winner
+const congratulationsDOM = document.getElementById("congratulations");
+const winnerDOM = document.getElementById("winner");
 let isDragging = false;
 let dragStartX = undefined;
 let dragStartY = undefined;

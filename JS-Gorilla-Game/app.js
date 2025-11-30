@@ -567,6 +567,10 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
+function announceWinner() {
+  winnerDOM.innerText = `Player $(state.currentPlayer)`;
+  congratulationsDOM.style.visibility = "visible";
+}
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
   // we only care about this if aiming

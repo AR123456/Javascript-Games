@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: monospace;
-  font-size: 14;
+  font-size: 14px;
   color: white;
   /* need this to avoid bomb drag glich later so we do not accidentally select the text  */
   user-select: none;

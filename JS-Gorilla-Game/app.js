@@ -19,6 +19,7 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 // winner
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
+const newGameButton = document.getElementById("new-game")
 let isDragging = false;
 let dragStartX = undefined;
 let dragStartY = undefined;

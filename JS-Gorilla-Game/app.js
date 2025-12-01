@@ -69,7 +69,8 @@ function newGame() {
   // call after gen building/position of gorilla is known
   initializeBombPosition();
   // re set HTML elements
-  congratulationsDOM.style.visibility = "hidden";
+  //TODO fix contratualtionsdom error
+  // congratulationsDOM.style.visibility = "hidden";
   angle1DOM.innerText = 0;
   velocity1DOM.innerText = 0;
   angle2DOM.innerText = 0;

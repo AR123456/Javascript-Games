@@ -16,6 +16,11 @@ body {
   overflow: hidden;
 }
 
+#info-left,
+#info-right {
+  position: absolute;
+  top: 20px;
+}
 #info-left {
   position: absolute;
   top: 20px;

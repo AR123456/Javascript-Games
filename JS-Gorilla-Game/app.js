@@ -31,7 +31,7 @@ const blastHoleRadius = 18;
 // new game
 newGame();
 
-//main game function
+//main game function -initilize or reset
 function newGame() {
   // reset game state
   state = {
@@ -69,12 +69,14 @@ function newGame() {
   // call after gen building/position of gorilla is known
   initializeBombPosition();
   // re set HTML elements
-  //TODO fix contratualtionsdom error
+  //TODO this code when un commented breakes the game
+  console.log(angle2DOM.innerText);
   // congratulationsDOM.style.visibility = "hidden";
-  angle1DOM.innerText = 0;
-  velocity1DOM.innerText = 0;
-  angle2DOM.innerText = 0;
-  velocity2DOM.innerText = 0;
+  // getting error in cons log of angle1DOM when player 2 throws
+  // angle1DOM.innerText = 0;
+  // velocity1DOM.innerText = 0;
+  // angle2DOM.innerText = 0;
+  // velocity2DOM.innerText = 0;
 
   //call draw function - paints the screen when called
   draw();
@@ -577,6 +579,9 @@ function checkGorillaHit() {
 }
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
+  //TODO  bug with game win
+  // when player 2 has hit getting error cannot read properties of null reading "style" at announceWinner at annimate line 318
+  // in the announcement the gorilla is upside down
   congratulationsDOM.style.visibility = "visible";
 }
 // event handler

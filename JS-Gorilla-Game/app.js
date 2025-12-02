@@ -16,7 +16,7 @@ const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
 // bomb grab area
 const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
-// winner
+// congratulations panel
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
@@ -71,10 +71,10 @@ function newGame() {
   // re set HTML elements
   //TODO fix contratualtionsdom error
   // congratulationsDOM.style.visibility = "hidden";
-  // angle1DOM.innerText = 0;
-  // velocity1DOM.innerText = 0;
-  // angle2DOM.innerText = 0;
-  // velocity2DOM.innerText = 0;
+  angle1DOM.innerText = 0;
+  velocity1DOM.innerText = 0;
+  angle2DOM.innerText = 0;
+  velocity2DOM.innerText = 0;
 
   //call draw function - paints the screen when called
   draw();

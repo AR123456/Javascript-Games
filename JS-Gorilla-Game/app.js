@@ -576,7 +576,7 @@ function checkGorillaHit() {
   return hit;
 }
 function announceWinner() {
-  winnerDOM.innerText = `Player $(state.currentPlayer)`;
+  winnerDOM.innerText = `Player ${state.currentPlayer}`;
   congratulationsDOM.style.visibility = "visible";
 }
 // event handler

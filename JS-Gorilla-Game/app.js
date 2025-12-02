@@ -71,10 +71,10 @@ function newGame() {
   // re set HTML elements
   //TODO fix contratualtionsdom error
   // congratulationsDOM.style.visibility = "hidden";
-  angle1DOM.innerText = 0;
-  velocity1DOM.innerText = 0;
-  angle2DOM.innerText = 0;
-  velocity2DOM.innerText = 0;
+  // angle1DOM.innerText = 0;
+  // velocity1DOM.innerText = 0;
+  // angle2DOM.innerText = 0;
+  // velocity2DOM.innerText = 0;
 
   //call draw function - paints the screen when called
   draw();

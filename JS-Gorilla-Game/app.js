@@ -225,12 +225,18 @@ function drawBomb() {
 }
 //  computer throw
 function runSimulations(numberOfSimulations) {
+  // the best throw is closest to enemy
   let bestThrow = {
     velocityX: undefined,
     velocityY: undefined,
-    distace: Infinity,
+    distance: Infinity,
   };
   simulationMode = true;
+  // calculate position of enemy gorilla
+  const enemyBuilding =
+    state.currentPlayer === 1 ? state.buildings.at(-2) : state.buildings.at(1);
+  const enemyX = enemyBuilding.x + enemyBuilding.width / 2;
+
   simulationMode = false;
   return bestThrow;
 }

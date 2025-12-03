@@ -70,7 +70,7 @@ function newGame() {
   initializeBombPosition();
   // re set HTML elements
   //TODO this code when un commented breakes the game
-  console.log(angle2DOM.innerText);
+  console.log(angle1DOM.innerText);
   // congratulationsDOM.style.visibility = "hidden";
   // getting error in cons log of angle1DOM when player 2 throws
   // angle1DOM.innerText = 0;
@@ -153,7 +153,8 @@ function initializeBombPosition() {
   // reset rotation
   state.bomb.rotation = 0;
   // position the html grab area with the bomb
-  const grabAreaRadius = 15;
+  // TODO temporarily increasing from 15 to 25
+  const grabAreaRadius = 25;
   const left = state.bomb.x * state.scale - grabAreaRadius;
   const bottom = state.bomb.y * state.scale - grabAreaRadius;
   bombGrabAreaDOM.style.left = `${left}px`;
@@ -315,6 +316,7 @@ function animate(timestamp) {
   if (hit) {
     //TODO  bug here with hit get upside down in middle of screen
     state.phase = "celebrating";
+    // TODO when this is called line 581 when play 1 wins on line  getting  null style error err
     announceWinner();
     draw();
     // stop animation
@@ -580,7 +582,7 @@ function checkGorillaHit() {
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   //TODO  bug with game win
-  // when player 2 has hit getting error cannot read properties of null reading "style" at announceWinner at annimate line 318
+  // when player 2 has hit getting error cannot read properties of null reading "style" at announceWinner at animate line 318
   // in the announcement the gorilla is upside down
   congratulationsDOM.style.visibility = "visible";
 }

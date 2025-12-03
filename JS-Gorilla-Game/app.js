@@ -223,7 +223,17 @@ function drawBomb() {
   // restore transformation
   ctx.restore();
 }
-
+//  computer throw
+function runSimulations(numberOfSimulations) {
+  let bestThrow = {
+    velocityX: undefined,
+    velocityY: undefined,
+    distace: Infinity,
+  };
+  simulationMode = true;
+  simulationMode = false;
+  return bestThrow;
+}
 function throwBomb() {
   // mouse up kicks this off
   state.phase = "in flight";

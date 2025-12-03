@@ -27,6 +27,7 @@ let deltaX, deltaY;
 let previousAnimationTimestamp = undefined;
 const blastHoles = 18;
 const blastHoleRadius = 18;
+let simulationMode = true;
 
 // new game
 newGame();
@@ -69,7 +70,7 @@ function newGame() {
   // call after gen building/position of gorilla is known
   initializeBombPosition();
   // re set HTML elements
-  //TODO this code when un commented breakes the game
+  //TODO this code when un commented breaks the game
   console.log(angle1DOM.innerText);
   // congratulationsDOM.style.visibility = "hidden";
   // getting error in cons log of angle1DOM when player 2 throws

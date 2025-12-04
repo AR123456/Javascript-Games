@@ -235,6 +235,8 @@ function runSimulations(numberOfSimulations) {
   // calculate position of enemy gorilla
   const enemyBuilding =
     state.currentPlayer === 1 ? state.buildings.at(-2) : state.buildings.at(1);
+  const enemyX = enemyBuilding.x + enemyBuilding.width / 2;
+  const enemyY = enemyBuilding.height + 30;
   simulationMode = false;
   return bestThrow;
 }

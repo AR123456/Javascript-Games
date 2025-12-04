@@ -241,6 +241,9 @@ function runSimulations(numberOfSimulations) {
   // for loop to run simulations
   for (let i = 0; i < numberOfSimulations; i++) {
     // pick a random angle and velocity
+    const angleInDegrees = 0 + Math.random() * 90;
+    const angleInRadians = (angleInDegrees / 100) * Math.PI;
+    const velocity = 40 + Math.random() * 100;
   }
 
   simulationMode = false;

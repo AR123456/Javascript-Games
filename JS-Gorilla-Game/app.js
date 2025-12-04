@@ -244,6 +244,10 @@ function runSimulations(numberOfSimulations) {
     const angleInDegrees = 0 + Math.random() * 90;
     const angleInRadians = (angleInDegrees / 100) * Math.PI;
     const velocity = 40 + Math.random() * 100;
+    // calculate the horizontal and vertical velocity
+    const direction = state.currentPlayer === 1 ? 1 : -1;
+    const velocityX = Math.cos(angleInRadians) * velocity * direction;
+    const velocityY = Math.sin(angleInRadians) * velocity;
   }
 
   simulationMode = false;

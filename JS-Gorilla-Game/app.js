@@ -244,10 +244,16 @@ function runSimulations(numberOfSimulations) {
     const angleInDegrees = 0 + Math.random() * 90;
     const angleInRadians = (angleInDegrees / 100) * Math.PI;
     const velocity = 40 + Math.random() * 100;
-    // calculate the horizontal and vertical velocity
+    // calculate the horizontal and vertical velocity - player one throws to the right, player 2 the left
+    // multiply horizontal velocity by +1  or -1 depending on the player
     const direction = state.currentPlayer === 1 ? 1 : -1;
     const velocityX = Math.cos(angleInRadians) * velocity * direction;
     const velocityY = Math.sin(angleInRadians) * velocity;
+    // reset bomb position and velocity
+    initializeBombPosition();
+    state.bomb.velocity.x = velocityX;
+    state.bomb.velocity.y = velocityY;
+    throwBomb();
   }
 
   simulationMode = false;

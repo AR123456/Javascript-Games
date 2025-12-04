@@ -235,8 +235,14 @@ function runSimulations(numberOfSimulations) {
   // calculate position of enemy gorilla
   const enemyBuilding =
     state.currentPlayer === 1 ? state.buildings.at(-2) : state.buildings.at(1);
+  // find center of gorilla
   const enemyX = enemyBuilding.x + enemyBuilding.width / 2;
   const enemyY = enemyBuilding.height + 30;
+  // for loop to run simulations
+  for (let i = 0; i < numberOfSimulations; i++) {
+    // pick a random angle and velocity
+  }
+
   simulationMode = false;
   return bestThrow;
 }

@@ -262,10 +262,16 @@ function runSimulations(numberOfSimulations) {
   return bestThrow;
 }
 function throwBomb() {
-  // mouse up kicks this off
-  state.phase = "in flight";
-  previousAnimationTimestamp = undefined;
-  requestAnimationFrame(animate);
+  // check if sim mode
+  if (simulationMode) {
+    previousAnimationTimestamp = 0;
+    animate(16);
+  } else {
+    // mouse up kicks this off
+    state.phase = "in flight";
+    previousAnimationTimestamp = undefined;
+    requestAnimationFrame(animate);
+  }
 }
 function moveBomb(elapsedTime) {
   // slow the bomb down

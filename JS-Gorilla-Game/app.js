@@ -27,7 +27,7 @@ let deltaX, deltaY;
 let previousAnimationTimestamp = undefined;
 const blastHoles = 18;
 const blastHoleRadius = 18;
-let simulationMode = true;
+let simulationMode = false;
 
 // new game
 newGame();
@@ -244,6 +244,7 @@ function runSimulations(numberOfSimulations) {
     const angleInDegrees = 0 + Math.random() * 90;
     const angleInRadians = (angleInDegrees / 100) * Math.PI;
     const velocity = 40 + Math.random() * 100;
+    // simulate throw
     // calculate the horizontal and vertical velocity - player one throws to the right, player 2 the left
     // multiply horizontal velocity by +1  or -1 depending on the player
     const direction = state.currentPlayer === 1 ? 1 : -1;
@@ -253,6 +254,7 @@ function runSimulations(numberOfSimulations) {
     initializeBombPosition();
     state.bomb.velocity.x = velocityX;
     state.bomb.velocity.y = velocityY;
+    // in sim mode so no painting scene - need to adjust throw bomb
     throwBomb();
   }
 

@@ -368,7 +368,8 @@ function animate(timestamp) {
     // stop animation
     return;
   }
-  draw();
+  // dont redraw if in sim mode
+  if (!simulationMode) draw();
   //continue the loop -
   // previous is timestamp at end of this loop
   previousAnimationTimestamp = timestamp;

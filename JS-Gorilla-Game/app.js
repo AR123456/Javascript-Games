@@ -265,6 +265,8 @@ function throwBomb() {
   // check if sim mode
   if (simulationMode) {
     previousAnimationTimestamp = 0;
+    // dont wait for animation frame run right away
+    // syncronus call every 16 mili seconds
     animate(16);
   } else {
     // mouse up kicks this off

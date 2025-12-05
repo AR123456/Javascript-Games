@@ -28,7 +28,7 @@ let previousAnimationTimestamp = undefined;
 const blastHoles = 18;
 const blastHoleRadius = 18;
 let simulationMode = false;
-
+let simulationImpact = {};
 // new game
 newGame();
 
@@ -372,7 +372,12 @@ function animate(timestamp) {
   //continue the loop -
   // previous is timestamp at end of this loop
   previousAnimationTimestamp = timestamp;
-  requestAnimationFrame(animate);
+  // check to see if in simulationMode
+  if (simulationMode) {
+    animate(timestamp + 16);
+  } else {
+    requestAnimationFrame(animate);
+  }
 }
 function drawBackground() {
   const background = ctx.createLinearGradient(

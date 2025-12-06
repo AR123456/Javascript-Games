@@ -249,6 +249,12 @@ function runSimulations(numberOfSimulations) {
     const direction = state.currentPlayer === 1 ? 1 : -1;
     const velocityX = Math.cos(angleInRadians) * velocity * direction;
     const velocityY = Math.sin(angleInRadians) * velocity;
+    // reset bomb position and velocity
+    initializeBombPosition();
+    state.bomb.velocity.x = velocityX;
+    state.bomb.velocity.y = velocityY;
+    // in sim mode so no painting scene - need to adjust throw bomb
+    throwBomb();
   }
 
   simulationMode = false;

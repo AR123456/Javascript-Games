@@ -27,8 +27,8 @@ let deltaX, deltaY;
 let previousAnimationTimestamp = undefined;
 const blastHoles = 18;
 const blastHoleRadius = 18;
-let simulationMode = false;
-let simulationImpact = {};
+let simulationMode = true;
+
 // new game
 newGame();
 
@@ -244,36 +244,21 @@ function runSimulations(numberOfSimulations) {
     const angleInDegrees = 0 + Math.random() * 90;
     const angleInRadians = (angleInDegrees / 100) * Math.PI;
     const velocity = 40 + Math.random() * 100;
-    // simulate throw
     // calculate the horizontal and vertical velocity - player one throws to the right, player 2 the left
     // multiply horizontal velocity by +1  or -1 depending on the player
     const direction = state.currentPlayer === 1 ? 1 : -1;
     const velocityX = Math.cos(angleInRadians) * velocity * direction;
     const velocityY = Math.sin(angleInRadians) * velocity;
-    // reset bomb position and velocity
-    initializeBombPosition();
-    state.bomb.velocity.x = velocityX;
-    state.bomb.velocity.y = velocityY;
-    // in sim mode so no painting scene - need to adjust throw bomb
-    throwBomb();
   }
 
   simulationMode = false;
   return bestThrow;
 }
 function throwBomb() {
-  // check if sim mode
-  if (simulationMode) {
-    previousAnimationTimestamp = 0;
-    // dont wait for animation frame run right away
-    // syncronus call every 16 mili seconds
-    animate(16);
-  } else {
-    // mouse up kicks this off
-    state.phase = "in flight";
-    previousAnimationTimestamp = undefined;
-    requestAnimationFrame(animate);
-  }
+  // mouse up kicks this off
+  state.phase = "in flight";
+  previousAnimationTimestamp = undefined;
+  requestAnimationFrame(animate);
 }
 function moveBomb(elapsedTime) {
   // slow the bomb down
@@ -368,17 +353,11 @@ function animate(timestamp) {
     // stop animation
     return;
   }
-  // dont redraw if in sim mode
-  if (!simulationMode) draw();
+  draw();
   //continue the loop -
   // previous is timestamp at end of this loop
   previousAnimationTimestamp = timestamp;
-  // check to see if in simulationMode
-  if (simulationMode) {
-    animate(timestamp + 16);
-  } else {
-    requestAnimationFrame(animate);
-  }
+  requestAnimationFrame(animate);
 }
 function drawBackground() {
   const background = ctx.createLinearGradient(

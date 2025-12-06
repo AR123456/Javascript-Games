@@ -256,6 +256,10 @@ function runSimulations(numberOfSimulations) {
     state.bomb.velocity.y = velocityY;
     // in sim mode so no painting scene - need to adjust throw bomb
     throwBomb();
+    // calculate dies between sim impact and enemy
+    const distance = Math.sqrt(
+      (enemyX - simulationImpact.x) ** 2 + (enemyY - simulationImpact.y) ** 2
+    );
   }
 
   simulationMode = false;

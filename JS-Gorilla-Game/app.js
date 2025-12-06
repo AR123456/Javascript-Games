@@ -260,6 +260,10 @@ function runSimulations(numberOfSimulations) {
     const distance = Math.sqrt(
       (enemyX - simulationImpact.x) ** 2 + (enemyY - simulationImpact.y) ** 2
     );
+    // if current impact is closer to enemy, than others pick this one
+    if (distance < bestThrow.distance) {
+      bestThrow = { velocityX, velocityY, distance };
+    }
   }
 
   simulationMode = false;

@@ -29,6 +29,7 @@ const blastHoles = 18;
 const blastHoleRadius = 18;
 let simulationMode = false;
 let simulationImpact = {};
+let numberOfPlayers = 1;
 // new game
 newGame();
 
@@ -225,6 +226,7 @@ function drawBomb() {
 }
 //  computer throw
 function computerThrow() {
+  // start with 5 sims and take the best of them, repeat and increase each round
   const numberOfSimulations = 2 + state.round * 3;
   const bestThrow = runSimulations(numberOfSimulations);
   initializeBombPosition();

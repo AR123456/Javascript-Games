@@ -224,6 +224,11 @@ function drawBomb() {
   ctx.restore();
 }
 //  computer throw
+function computerThrow() {
+  const numberOfSimulations = 2 + state.round * 3;
+  const bestThrow = runSimulations(numberOfSimulations);
+  initializeBombPosition();
+}
 function runSimulations(numberOfSimulations) {
   // the best throw is closest to enemy
   let bestThrow = {

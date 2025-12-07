@@ -41,6 +41,7 @@ function newGame() {
     phase: "aiming",
     // keep track of who the current player is
     currentPlayer: 1,
+    round: 1,
     bomb: {
       x: undefined,
       y: undefined,

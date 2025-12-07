@@ -228,6 +228,11 @@ function computerThrow() {
   const numberOfSimulations = 2 + state.round * 3;
   const bestThrow = runSimulations(numberOfSimulations);
   initializeBombPosition();
+  state.bomb.velocity.x = bestThrow.velocityX;
+  state.bomb.velocity.y = bestThrow.velocityY;
+  setInfo(bestThrow.velocityX, bestThrow.velocityY);
+  // draw aiming gorilla
+  // make it look like computer is thinking for one sec
 }
 function runSimulations(numberOfSimulations) {
   // the best throw is closest to enemy

@@ -232,7 +232,9 @@ function computerThrow() {
   state.bomb.velocity.y = bestThrow.velocityY;
   setInfo(bestThrow.velocityX, bestThrow.velocityY);
   // draw aiming gorilla
+  draw();
   // make it look like computer is thinking for one sec
+  setTimeout(throwBomb, 1000);
 }
 function runSimulations(numberOfSimulations) {
   // the best throw is closest to enemy

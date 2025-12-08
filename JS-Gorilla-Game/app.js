@@ -83,6 +83,8 @@ function newGame() {
 
   //call draw function - paints the screen when called
   draw();
+  // hand over game to computer
+  if (numberOfPlayers === 0) computerThrow();
 }
 function generateBackgroundBuilding(index) {
   const previousBuilding = state.backgroundBuildings[index - 1];

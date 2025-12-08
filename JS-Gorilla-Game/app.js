@@ -390,6 +390,10 @@ function animate(timestamp) {
     state.phase = "aiming";
     initializeBombPosition();
     draw();
+    const computerThrowsNext =
+      numberOfPlayers === 0 ||
+      (numberOfPlayers === 1 && state.currentPlayer === 2);
+    if (computerThrowsNext) setTimeout(computerThrow, 50);
     // stop animation
     return;
   }

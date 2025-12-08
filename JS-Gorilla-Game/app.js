@@ -390,6 +390,7 @@ function animate(timestamp) {
     state.phase = "aiming";
     initializeBombPosition();
     draw();
+    // whos turn is it?
     const computerThrowsNext =
       numberOfPlayers === 0 ||
       (numberOfPlayers === 1 && state.currentPlayer === 2);

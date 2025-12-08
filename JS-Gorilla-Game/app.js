@@ -340,7 +340,7 @@ function checkBuildingHit() {
         const distance = Math.sqrt(
           horizontalDistance ** 2 + verticalDistance ** 2
         );
-
+        console.log(blastHoleRadius);
         if (distance < blastHoleRadius) {
           // this is an a repeat blast
           return false;

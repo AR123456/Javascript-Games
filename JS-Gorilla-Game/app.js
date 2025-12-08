@@ -385,6 +385,8 @@ function animate(timestamp) {
   // check miss bomb goes off screen or hits building
   if (miss) {
     state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+    // if it is a one player game increment round
+    if (state.currentPlayer === 1) state.round++;
     state.phase = "aiming";
     initializeBombPosition();
     draw();

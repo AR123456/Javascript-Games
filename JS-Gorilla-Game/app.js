@@ -596,6 +596,9 @@ function drawGorillaFace(player) {
   }
   ctx.stroke();
 }
+function drawGorillaThoughtBubbles() {
+  //
+}
 function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();
@@ -609,6 +612,8 @@ function drawGorilla(player) {
   drawGorillaLeftArm(player);
   drawGorillaRightArm(player);
   drawGorillaFace(player);
+  // make one gorilla look a little different
+  drawGorillaThoughtBubbles(player);
   ctx.restore();
 }
 function setInfo(deltaX, deltaY) {

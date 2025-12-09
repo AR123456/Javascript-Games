@@ -601,7 +601,14 @@ function drawGorillaThoughtBubbles() {
     const currentPlayerIsComputer =
       (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
       (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
-    // then another if
+    if (currentPlayerIsComputer) {
+      ctx.save();
+      ctx.scale(1, -1);
+      ctx.font = "20px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("?", 0, -90);
+      ctx.font = "";
+    }
   }
 }
 function drawGorilla(player) {

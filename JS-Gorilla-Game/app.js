@@ -346,8 +346,11 @@ function checkBuildingHit() {
           return false;
         }
       }
-      // this is a hit save the point of impact into the array
-      state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
+      // if it is not sim mode push to blast hole array
+      if (!simulationMode) {
+        // this is a hit save the point of impact into the array
+        state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
+      }
 
       return true;
     }

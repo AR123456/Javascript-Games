@@ -597,7 +597,12 @@ function drawGorillaFace(player) {
   ctx.stroke();
 }
 function drawGorillaThoughtBubbles() {
-  //
+  if (state.phase === "aiming") {
+    const currentPlayerIsComputer =
+      (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
+      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
+    // then another if
+  }
 }
 function drawGorilla(player) {
   //  takes in player one or two

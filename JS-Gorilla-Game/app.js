@@ -73,7 +73,7 @@ function newGame() {
   initializeBombPosition();
   // re set HTML elements
   //TODO this code when un commented breaks the game
-  console.log(angle1DOM.innerText);
+
   // congratulationsDOM.style.visibility = "hidden";
   // getting error in cons log of angle1DOM when player 2 throws
   // angle1DOM.innerText = 0;

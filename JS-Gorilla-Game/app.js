@@ -1,6 +1,20 @@
 // State(game state) at start of game
 let state = {};
 
+let isDragging = false;
+let dragStartX = undefined;
+let dragStartY = undefined;
+
+let previousAnimationTimestamp = undefined;
+
+let simulationMode = false;
+let simulationImpact = {};
+let deltaX, deltaY;
+
+const blastHoles = 18;
+const blastHoleRadius = 18;
+
+let numberOfPlayers = 1;
 // main canvas element and its drawing context
 const canvas = document.getElementById("game");
 canvas.width = window.innerWidth;
@@ -20,16 +34,7 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
-let isDragging = false;
-let dragStartX = undefined;
-let dragStartY = undefined;
-let deltaX, deltaY;
-let previousAnimationTimestamp = undefined;
-const blastHoles = 18;
-const blastHoleRadius = 18;
-let simulationMode = false;
-let simulationImpact = {};
-let numberOfPlayers = 1;
+
 // new game
 newGame();
 
@@ -596,6 +601,7 @@ function drawGorillaFace(player) {
   }
   ctx.stroke();
 }
+// TODO  this function breaks game
 function drawGorillaThoughtBubbles(player) {
   if (state.phase === "aiming") {
     const currentPlayerIsComputer =

@@ -79,17 +79,26 @@ function newGame() {
   // re set HTML elements
   //TODO this code when un commented breaks the game
 
-  // congratulationsDOM.style.visibility = "hidden";
   // getting error in cons log of angle1DOM when player 2 throws
-  // angle1DOM.innerText = 0;
-  // velocity1DOM.innerText = 0;
-  // angle2DOM.innerText = 0;
-  // velocity2DOM.innerText = 0;
+  angle1DOM.innerText = 0;
+  velocity1DOM.innerText = 0;
+  angle2DOM.innerText = 0;
+  velocity2DOM.innerText = 0;
 
   //call draw function - paints the screen when called
   draw();
   // hand over game to computer
   if (numberOfPlayers === 0) computerThrow();
+}
+function showCongratulations() {
+  congratulationsDOM.style.opacity = 1;
+  congratulationsDOM.style.visibility = "hidden";
+  //
+}
+function showCongratulations() {
+  congratulationsDOM.style.opacity = 1;
+  congratulationsDOM.style.visibility = "hidden";
+  //
 }
 function generateBackgroundBuilding(index) {
   const previousBuilding = state.backgroundBuildings[index - 1];

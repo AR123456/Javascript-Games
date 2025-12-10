@@ -170,6 +170,7 @@ function initializeBombPosition() {
   bombGrabAreaDOM.style.left = `${left}px`;
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
+
 // draw function
 function draw() {
   ctx.save();
@@ -191,6 +192,202 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
+function drawBackground() {
+  const background = ctx.createLinearGradient(
+    0,
+    0,
+    0,
+    window.innerHeight / state.scale
+  );
+  // set up gradient
+  background.addColorStop(1, "#F8BA85");
+  background.addColorStop(0, "#FFC28E");
+
+  // draw sky
+  ctx.fillStyle = background;
+  ctx.fillRect(
+    0,
+    0,
+    // account for dynamic scale
+    window.innerWidth / state.scale,
+    window.innerHeight / state.scale
+  );
+  //  adding moon to background
+  ctx.fillStyle = "rgba(255,253,253,0.61)";
+  ctx.beginPath();
+  ctx.arc(300, 350, 60, 0, 2 * Math.PI);
+  ctx.fill();
+}
+function drawBackgroundBuildings() {
+  // just using the building part of state so give it a meaningful variable name
+  state.backgroundBuildings.forEach((building) => {
+    ctx.fillStyle = "#947283";
+    ctx.fillRect(building.x, 0, building.width, building.height);
+  });
+}
+function drawBuildings() {
+  //  starts same way as drawing the background buildings
+  state.buildings.forEach((building) => {
+    ctx.fillStyle = "#4A3C68";
+    ctx.fillRect(building.x, 0, building.width, building.height);
+    // draw windows
+    const windowWidth = 10;
+    const windowHeight = 12;
+    // use gap to position 1st window and space between windows
+    const gap = 15;
+    // determine number of floors - lowest floor will overflow screen but will be un seen
+    const numberOfFloors = Math.ceil(
+      (building.height - gap) / (windowHeight + gap)
+    );
+    // rooms per floor - round down so no window only partially fits building
+    const numberOfRoomsPerFloor = Math.floor(
+      (building.width - gap) / (windowWidth + gap)
+    );
+    // iterate to make grid
+    for (let floor = 0; floor < numberOfFloors; floor++) {
+      for (let room = 0; room < numberOfRoomsPerFloor; room++) {
+        // determine which lights are on map floor and room index to lightsOn boolean index
+        if (building.lightsOn[floor * numberOfRoomsPerFloor + room]) {
+          ctx.save();
+          // for ease flip the coordinate system so window is top left
+          ctx.translate(building.x + gap, building.height - gap);
+          ctx.scale(1, -1);
+          // paint- draw rectangle
+          const x = room * (windowWidth + gap);
+          const y = floor * (windowHeight + gap);
+          ctx.fillStyle = "#ebb6a2";
+          ctx.fillRect(x, y, windowWidth, windowHeight);
+
+          // must restore ctx so that the flip of coord system is just for windows
+          ctx.restore();
+        }
+      }
+    }
+  });
+}
+function drawGorillaBody() {
+  ctx.fillStyle = "black";
+  ctx.beginPath();
+  ctx.moveTo(0, 15);
+  ctx.lineTo(-7, 0);
+  ctx.lineTo(-20, 0);
+  ctx.lineTo(-17, 18);
+  ctx.lineTo(-20, 44);
+  ctx.lineTo(-11, 77);
+  ctx.lineTo(0, 84);
+  ctx.lineTo(11, 77);
+  ctx.lineTo(20, 44);
+  ctx.lineTo(17, 18);
+  ctx.lineTo(20, 0);
+  ctx.lineTo(7, 0);
+  ctx.fill();
+}
+function drawGorillaLeftArm(player) {
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 18;
+  ctx.beginPath();
+  // shoulder of gorilla
+  ctx.moveTo(-14, 50);
+  // check to see if the gorilla is aiming- gorilla on l is aiming by default
+  if (state.phase === "aiming" && state.currentPlayer === 1 && player === 1) {
+    // left hand goes up
+    ctx.quadraticCurveTo(
+      -44,
+      63,
+      -28 - state.bomb.velocity.x / 6.25,
+      107 - state.bomb.velocity.y / 6.25
+    );
+  } else if (state.phase === "celebrating" && state.currentPlayer === player) {
+    ctx.quadraticCurveTo(-44, 63, -28, 107);
+  } else {
+    ctx.quadraticCurveTo(-44, 45, -28, 12);
+  }
+  ctx.stroke();
+}
+function drawGorillaRightArm(player) {
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 18;
+  ctx.beginPath();
+  // move to shoulder of gorilla
+  ctx.moveTo(+14, 50);
+  // check to see if the gorilla is aiming- gorilla on r is aiming by default
+  if (state.phase === "aiming" && state.currentPlayer === 2 && player === 2) {
+    ctx.quadraticCurveTo(
+      +44,
+      63,
+      +28 - state.bomb.velocity.x / 6.25,
+      107 - state.bomb.velocity.y / 6.25
+    );
+  } else if (state.phase === "celebrating" && state.currentPlayer === player) {
+    ctx.quadraticCurveTo(+44, 63, +28, 107);
+  } else {
+    ctx.quadraticCurveTo(+44, 45, +28, 12);
+  }
+  ctx.stroke();
+}
+function drawGorillaFace(player) {
+  // face starts as an arc
+  ctx.fillStyle = "lightgray";
+  ctx.beginPath();
+  ctx.arc(0, 63, 9, 0, 2 * Math.PI);
+
+  // 2 more circles - mirrors of one another
+  ctx.moveTo(-3.5, 70);
+  ctx.arc(-3.5, 70, 4, 0, 2 * Math.PI);
+  ctx.moveTo(+3.5, 70);
+  ctx.arc(+3.5, 70, 4, 0, 2 * Math.PI);
+  ctx.fill();
+  // eyes
+  ctx.fillStyle = "black";
+  ctx.beginPath();
+  // ctx.arc(x,y,radius,startAngle, 2*Math.PI);
+  ctx.arc(-3.5, 70, 1.4, 0, 2 * Math.PI);
+  ctx.arc(+3.5, 70, 1.4, 0, 2 * Math.PI);
+  ctx.fill();
+  // stroke width for nose and mouth
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1.4;
+  // nose
+  ctx.beginPath();
+  ctx.moveTo(-3.5, 66.5);
+  ctx.lineTo(-1.5, 65);
+  ctx.moveTo(3.5, 66.5);
+  ctx.lineTo(1.5, 65);
+  ctx.stroke();
+  // mouth - fighting and celebrating
+  ctx.beginPath();
+  if (state.phase === "celebrating" && state.currentPlayer === player) {
+    ctx.moveTo(-5, 60);
+    ctx.quadraticCurveTo(0, 56, 5, 60);
+  } else {
+    // show fighting
+    ctx.moveTo(-5, 56);
+    ctx.quadraticCurveTo(0, 60, 5, 56);
+  }
+  ctx.stroke();
+}
+// TODO  this function breaks game
+function drawGorillaThoughtBubbles(player) {
+  // if (state.phase === "aiming") {
+  //   const currentPlayerIsComputer =
+  //     (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
+  //     (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
+  //   if (currentPlayerIsComputer) {
+  //     ctx.save();
+  //     ctx.scale(1, -1);
+  //     ctx.font = "20px sans-serif";
+  //     ctx.textAlign = "center";
+  //     ctx.fillText("?", 0, -90);
+  //     ctx.font = "10px sans-serif ";
+  //     ctx.rotate((5 / 180) * Math.PI);
+  //     ctx.fillText("?", 0, -90);
+  //     ctx.rotate((-10 / 180) * Math.PI);
+  //     ctx.fillText("?", 0, -90);
+  //     ctx.restore;
+  //   }
+  // }
+}
+
 function drawBomb() {
   ctx.save();
   ctx.translate(state.bomb.x, state.bomb.y);
@@ -232,6 +429,49 @@ function drawBomb() {
   // restore transformation
   ctx.restore();
 }
+// event handler
+bombGrabAreaDOM.addEventListener("mousedown", function (e) {
+  // we only care about this if aiming
+  if (state.phase === "aiming") {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    document.body.style.cursor = "grabbing";
+  }
+});
+
+window.addEventListener("mousemove", function (e) {
+  //  only track when we are dragging
+  if (isDragging) {
+    let deltaX = e.clientX - dragStartX;
+    let deltaY = e.clientY - dragStartY;
+    state.bomb.velocity.x = -deltaX;
+    state.bomb.velocity.y = deltaY;
+    setInfo(deltaX, deltaY);
+    draw();
+  }
+});
+function setInfo(deltaX, deltaY) {
+  // the trig to calc velocity ect
+  const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+  // convert to Radians
+  const angleInRadians = Math.asin(deltaY / hypotenuse);
+  const angleInDegrees = (angleInRadians / Math.PI) * 160;
+  if (state.currentPlayer === 1) {
+    angle1DOM.innerText = Math.round(angleInDegrees);
+    velocity1DOM.innerText = Math.round(hypotenuse);
+  } else {
+    angle2DOM.innerText = Math.round(angleInDegrees);
+    velocity2DOM.innerText = Math.round(hypotenuse);
+  }
+}
+window.addEventListener("mouseup", function (e) {
+  if (isDragging) {
+    isDragging = false;
+    this.document.body.style.cursor = "default";
+    throwBomb();
+  }
+});
 //  computer throw
 function computerThrow() {
   // start with 5 sims and take the best of them, repeat and increase each round
@@ -427,201 +667,7 @@ function animate(timestamp) {
     requestAnimationFrame(animate);
   }
 }
-function drawBackground() {
-  const background = ctx.createLinearGradient(
-    0,
-    0,
-    0,
-    window.innerHeight / state.scale
-  );
-  // set up gradient
-  background.addColorStop(1, "#F8BA85");
-  background.addColorStop(0, "#FFC28E");
 
-  // draw sky
-  ctx.fillStyle = background;
-  ctx.fillRect(
-    0,
-    0,
-    // account for dynamic scale
-    window.innerWidth / state.scale,
-    window.innerHeight / state.scale
-  );
-  //  adding moon to background
-  ctx.fillStyle = "rgba(255,253,253,0.61)";
-  ctx.beginPath();
-  ctx.arc(300, 350, 60, 0, 2 * Math.PI);
-  ctx.fill();
-}
-function drawBackgroundBuildings() {
-  // just using the building part of state so give it a meaningful variable name
-  state.backgroundBuildings.forEach((building) => {
-    ctx.fillStyle = "#947283";
-    ctx.fillRect(building.x, 0, building.width, building.height);
-  });
-}
-function drawBuildings() {
-  //  starts same way as drawing the background buildings
-  state.buildings.forEach((building) => {
-    ctx.fillStyle = "#4A3C68";
-    ctx.fillRect(building.x, 0, building.width, building.height);
-    // draw windows
-    const windowWidth = 10;
-    const windowHeight = 12;
-    // use gap to position 1st window and space between windows
-    const gap = 15;
-    // determine number of floors - lowest floor will overflow screen but will be un seen
-    const numberOfFloors = Math.ceil(
-      (building.height - gap) / (windowHeight + gap)
-    );
-    // rooms per floor - round down so no window only partially fits building
-    const numberOfRoomsPerFloor = Math.floor(
-      (building.width - gap) / (windowWidth + gap)
-    );
-    // iterate to make grid
-    for (let floor = 0; floor < numberOfFloors; floor++) {
-      for (let room = 0; room < numberOfRoomsPerFloor; room++) {
-        // determine which lights are on map floor and room index to lightsOn boolean index
-        if (building.lightsOn[floor * numberOfRoomsPerFloor + room]) {
-          ctx.save();
-          // for ease flip the coordinate system so window is top left
-          ctx.translate(building.x + gap, building.height - gap);
-          ctx.scale(1, -1);
-          // paint- draw rectangle
-          const x = room * (windowWidth + gap);
-          const y = floor * (windowHeight + gap);
-          ctx.fillStyle = "#ebb6a2";
-          ctx.fillRect(x, y, windowWidth, windowHeight);
-
-          // must restore ctx so that the flip of coord system is just for windows
-          ctx.restore();
-        }
-      }
-    }
-  });
-}
-function drawGorillaBody() {
-  ctx.fillStyle = "black";
-  ctx.beginPath();
-  ctx.moveTo(0, 15);
-  ctx.lineTo(-7, 0);
-  ctx.lineTo(-20, 0);
-  ctx.lineTo(-17, 18);
-  ctx.lineTo(-20, 44);
-  ctx.lineTo(-11, 77);
-  ctx.lineTo(0, 84);
-  ctx.lineTo(11, 77);
-  ctx.lineTo(20, 44);
-  ctx.lineTo(17, 18);
-  ctx.lineTo(20, 0);
-  ctx.lineTo(7, 0);
-  ctx.fill();
-}
-function drawGorillaLeftArm(player) {
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 18;
-  ctx.beginPath();
-  // shoulder of gorilla
-  ctx.moveTo(-14, 50);
-  // check to see if the gorilla is aiming- gorilla on l is aiming by default
-  if (state.phase === "aiming" && state.currentPlayer === 1 && player === 1) {
-    // left hand goes up
-    ctx.quadraticCurveTo(
-      -44,
-      63,
-      -28 - state.bomb.velocity.x / 6.25,
-      107 - state.bomb.velocity.y / 6.25
-    );
-  } else if (state.phase === "celebrating" && state.currentPlayer === player) {
-    ctx.quadraticCurveTo(-44, 63, -28, 107);
-  } else {
-    ctx.quadraticCurveTo(-44, 45, -28, 12);
-  }
-  ctx.stroke();
-}
-function drawGorillaRightArm(player) {
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 18;
-  ctx.beginPath();
-  // move to shoulder of gorilla
-  ctx.moveTo(+14, 50);
-  // check to see if the gorilla is aiming- gorilla on r is aiming by default
-  if (state.phase === "aiming" && state.currentPlayer === 2 && player === 2) {
-    ctx.quadraticCurveTo(
-      +44,
-      63,
-      +28 - state.bomb.velocity.x / 6.25,
-      107 - state.bomb.velocity.y / 6.25
-    );
-  } else if (state.phase === "celebrating" && state.currentPlayer === player) {
-    ctx.quadraticCurveTo(+44, 63, +28, 107);
-  } else {
-    ctx.quadraticCurveTo(+44, 45, +28, 12);
-  }
-  ctx.stroke();
-}
-function drawGorillaFace(player) {
-  // face starts as an arc
-  ctx.fillStyle = "lightgray";
-  ctx.beginPath();
-  ctx.arc(0, 63, 9, 0, 2 * Math.PI);
-
-  // 2 more circles - mirrors of one another
-  ctx.moveTo(-3.5, 70);
-  ctx.arc(-3.5, 70, 4, 0, 2 * Math.PI);
-  ctx.moveTo(+3.5, 70);
-  ctx.arc(+3.5, 70, 4, 0, 2 * Math.PI);
-  ctx.fill();
-  // eyes
-  ctx.fillStyle = "black";
-  ctx.beginPath();
-  // ctx.arc(x,y,radius,startAngle, 2*Math.PI);
-  ctx.arc(-3.5, 70, 1.4, 0, 2 * Math.PI);
-  ctx.arc(+3.5, 70, 1.4, 0, 2 * Math.PI);
-  ctx.fill();
-  // stroke width for nose and mouth
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 1.4;
-  // nose
-  ctx.beginPath();
-  ctx.moveTo(-3.5, 66.5);
-  ctx.lineTo(-1.5, 65);
-  ctx.moveTo(3.5, 66.5);
-  ctx.lineTo(1.5, 65);
-  ctx.stroke();
-  // mouth - fighting and celebrating
-  ctx.beginPath();
-  if (state.phase === "celebrating" && state.currentPlayer === player) {
-    ctx.moveTo(-5, 60);
-    ctx.quadraticCurveTo(0, 56, 5, 60);
-  } else {
-    // show fighting
-    ctx.moveTo(-5, 56);
-    ctx.quadraticCurveTo(0, 60, 5, 56);
-  }
-  ctx.stroke();
-}
-// TODO  this function breaks game
-function drawGorillaThoughtBubbles(player) {
-  if (state.phase === "aiming") {
-    const currentPlayerIsComputer =
-      (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
-      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
-    if (currentPlayerIsComputer) {
-      ctx.save();
-      ctx.scale(1, -1);
-      ctx.font = "20px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("?", 0, -90);
-      ctx.font = "10px sans-serif ";
-      ctx.rotate((5 / 180) * Math.PI);
-      ctx.fillText("?", 0, -90);
-      ctx.rotate((-10 / 180) * Math.PI);
-      ctx.fillText("?", 0, -90);
-      ctx.restore;
-    }
-  }
-}
 function drawGorilla(player) {
   //  takes in player one or two
   ctx.save();
@@ -639,20 +685,7 @@ function drawGorilla(player) {
   drawGorillaThoughtBubbles(player);
   ctx.restore();
 }
-function setInfo(deltaX, deltaY) {
-  // the trig to calc velocity ect
-  const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-  // convert to Radians
-  const angleInRadians = Math.asin(deltaY / hypotenuse);
-  const angleInDegrees = (angleInRadians / Math.PI) * 160;
-  if (state.currentPlayer === 1) {
-    angle1DOM.innerText = Math.round(angleInDegrees);
-    velocity1DOM.innerText = Math.round(hypotenuse);
-  } else {
-    angle2DOM.innerText = Math.round(angleInDegrees);
-    velocity2DOM.innerText = Math.round(hypotenuse);
-  }
-}
+
 function drawBuildingsWithBlastHoles() {
   ctx.save();
   state.blastHoles.forEach((blastHole) => {
@@ -708,36 +741,6 @@ function announceWinner() {
   // in the announcement the gorilla is upside down
   congratulationsDOM.style.visibility = "visible";
 }
-// event handler
-bombGrabAreaDOM.addEventListener("mousedown", function (e) {
-  // we only care about this if aiming
-  if (state.phase === "aiming") {
-    isDragging = true;
-    dragStartX = e.clientX;
-    dragStartY = e.clientY;
-    document.body.style.cursor = "grabbing";
-  }
-});
-
-window.addEventListener("mousemove", function (e) {
-  //  only track when we are dragging
-  if (isDragging) {
-    let deltaX = e.clientX - dragStartX;
-    let deltaY = e.clientY - dragStartY;
-    state.bomb.velocity.x = -deltaX;
-    state.bomb.velocity.y = deltaY;
-    setInfo(deltaX, deltaY);
-    draw();
-  }
-});
-
-window.addEventListener("mouseup", function (e) {
-  if (isDragging) {
-    isDragging = false;
-    this.document.body.style.cursor = "default";
-    throwBomb();
-  }
-});
 
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;

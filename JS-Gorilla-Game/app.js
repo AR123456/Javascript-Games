@@ -596,7 +596,7 @@ function drawGorillaFace(player) {
   }
   ctx.stroke();
 }
-function drawGorillaThoughtBubbles() {
+function drawGorillaThoughtBubbles(player) {
   if (state.phase === "aiming") {
     const currentPlayerIsComputer =
       (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
@@ -607,7 +607,12 @@ function drawGorillaThoughtBubbles() {
       ctx.font = "20px sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("?", 0, -90);
-      ctx.font = "";
+      ctx.font = "10px sans-serif ";
+      ctx.rotate((5 / 180) * Math.PI);
+      ctx.fillText("?", 0, -90);
+      ctx.rotate((-10 / 180) * Math.PI);
+      ctx.fillText("?", 0, -90);
+      ctx.restore;
     }
   }
 }

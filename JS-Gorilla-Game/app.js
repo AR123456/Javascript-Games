@@ -545,62 +545,6 @@ function throwBomb() {
     requestAnimationFrame(animate);
   }
 }
-function moveBomb(elapsedTime) {
-  // slow the bomb down
-  const multiplier = elapsedTime / 200;
-  // adjust trajectory by gravity
-  state.bomb.velocity.y -= 20 * multiplier;
-  //calculate new position
-  state.bomb.x += state.bomb.velocity.x * multiplier;
-  state.bomb.y += state.bomb.velocity.y * multiplier;
-  // rotate according to the direction
-  const direction = state.currentPlayer === 1 ? -1 : +1;
-  state.bomb.rotation += direction * 5 * multiplier;
-}
-function checkFrameHit() {
-  if (
-    state.bomb.y < 0 ||
-    state.bomb.x < 0 ||
-    state.bomb.x > window.innerWidth / state.scale
-  ) {
-    return true;
-  }
-}
-function checkBuildingHit() {
-  // iterate over the buildings array and determine if bomb is touching one of them
-  for (let i = 0; i < state.buildings.length; i++) {
-    const building = state.buildings[i];
-    if (
-      state.bomb.x + 4 > building.x &&
-      state.bomb.x - 4 < building.x + building.width &&
-      state.bomb.y - 4 < 0 + building.height
-    ) {
-      //is the bomb in an area with impact already ?
-      for (let j = 0; j < state.blastHoles.length; j++) {
-        const blastHole = state.blastHoles[j];
-
-        //how far is this blastHole from center of prior
-        const horizontalDistance = state.bomb.x - blastHole.x;
-        const verticalDistance = (state.bomb.y = blastHole.y);
-        const distance = Math.sqrt(
-          horizontalDistance ** 2 + verticalDistance ** 2
-        );
-
-        if (distance < blastHoleRadius) {
-          // this is an a repeat blast
-          return false;
-        }
-      }
-      // if it is not sim mode push to blast hole array
-      if (!simulationMode) {
-        // this is a hit save the point of impact into the array
-        state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
-      }
-
-      return true;
-    }
-  }
-}
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
   //throwBomb kicked this off - each frame moves the bomb a little
@@ -665,6 +609,63 @@ function animate(timestamp) {
     animate(timestamp + 16);
   } else {
     requestAnimationFrame(animate);
+  }
+}
+
+function moveBomb(elapsedTime) {
+  // slow the bomb down
+  const multiplier = elapsedTime / 200;
+  // adjust trajectory by gravity
+  state.bomb.velocity.y -= 20 * multiplier;
+  //calculate new position
+  state.bomb.x += state.bomb.velocity.x * multiplier;
+  state.bomb.y += state.bomb.velocity.y * multiplier;
+  // rotate according to the direction
+  const direction = state.currentPlayer === 1 ? -1 : +1;
+  state.bomb.rotation += direction * 5 * multiplier;
+}
+function checkFrameHit() {
+  if (
+    state.bomb.y < 0 ||
+    state.bomb.x < 0 ||
+    state.bomb.x > window.innerWidth / state.scale
+  ) {
+    return true;
+  }
+}
+function checkBuildingHit() {
+  // iterate over the buildings array and determine if bomb is touching one of them
+  for (let i = 0; i < state.buildings.length; i++) {
+    const building = state.buildings[i];
+    if (
+      state.bomb.x + 4 > building.x &&
+      state.bomb.x - 4 < building.x + building.width &&
+      state.bomb.y - 4 < 0 + building.height
+    ) {
+      //is the bomb in an area with impact already ?
+      for (let j = 0; j < state.blastHoles.length; j++) {
+        const blastHole = state.blastHoles[j];
+
+        //how far is this blastHole from center of prior
+        const horizontalDistance = state.bomb.x - blastHole.x;
+        const verticalDistance = (state.bomb.y = blastHole.y);
+        const distance = Math.sqrt(
+          horizontalDistance ** 2 + verticalDistance ** 2
+        );
+
+        if (distance < blastHoleRadius) {
+          // this is an a repeat blast
+          return false;
+        }
+      }
+      // if it is not sim mode push to blast hole array
+      if (!simulationMode) {
+        // this is a hit save the point of impact into the array
+        state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
+      }
+
+      return true;
+    }
   }
 }
 

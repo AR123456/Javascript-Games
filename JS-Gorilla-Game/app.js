@@ -77,9 +77,7 @@ function newGame() {
   // call after gen building/position of gorilla is known
   initializeBombPosition();
   // re set HTML elements
-  //TODO this code when un commented breaks the game
 
-  // getting error in cons log of angle1DOM when player 2 throws
   angle1DOM.innerText = 0;
   velocity1DOM.innerText = 0;
   angle2DOM.innerText = 0;
@@ -749,7 +747,7 @@ function announceWinner() {
   //TODO  bug with game win
   // when player 2 has hit getting error cannot read properties of null reading "style" at announceWinner at animate line 318
   // in the announcement the gorilla is upside down
-  congratulationsDOM.style.visibility = "visible";
+  showCongratulations();
 }
 
 window.addEventListener("resize", () => {

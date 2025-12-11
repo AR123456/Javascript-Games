@@ -1,6 +1,20 @@
 // State(game state) at start of game
 let state = {};
 
+let isDragging = false;
+let dragStartX = undefined;
+let dragStartY = undefined;
+
+let previousAnimationTimestamp = undefined;
+
+let simulationMode = false;
+let simulationImpact = {};
+let deltaX, deltaY;
+
+const blastHoles = 18;
+const blastHoleRadius = 18;
+
+let numberOfPlayers = 1;
 // main canvas element and its drawing context
 const canvas = document.getElementById("game");
 canvas.width = window.innerWidth;
@@ -20,16 +34,7 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
-let isDragging = false;
-let dragStartX = undefined;
-let dragStartY = undefined;
-let deltaX, deltaY;
-let previousAnimationTimestamp = undefined;
-const blastHoles = 18;
-const blastHoleRadius = 18;
-let simulationMode = false;
-let simulationImpact = {};
-let numberOfPlayers = 1;
+
 // new game
 newGame();
 
@@ -74,17 +79,26 @@ function newGame() {
   // re set HTML elements
   //TODO this code when un commented breaks the game
 
-  // congratulationsDOM.style.visibility = "hidden";
   // getting error in cons log of angle1DOM when player 2 throws
-  // angle1DOM.innerText = 0;
-  // velocity1DOM.innerText = 0;
-  // angle2DOM.innerText = 0;
-  // velocity2DOM.innerText = 0;
+  angle1DOM.innerText = 0;
+  velocity1DOM.innerText = 0;
+  angle2DOM.innerText = 0;
+  velocity2DOM.innerText = 0;
 
   //call draw function - paints the screen when called
   draw();
   // hand over game to computer
   if (numberOfPlayers === 0) computerThrow();
+}
+function showCongratulations() {
+  congratulationsDOM.style.opacity = 1;
+  congratulationsDOM.style.visibility = "visible";
+  //
+}
+function hideCongratulations() {
+  congratulationsDOM.style.opacity = 0;
+  congratulationsDOM.style.visibility = "hidden";
+  //
 }
 function generateBackgroundBuilding(index) {
   const previousBuilding = state.backgroundBuildings[index - 1];
@@ -165,6 +179,7 @@ function initializeBombPosition() {
   bombGrabAreaDOM.style.left = `${left}px`;
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
+
 // draw function
 function draw() {
   ctx.save();
@@ -185,242 +200,6 @@ function draw() {
 
   // reset/restore transformation
   ctx.restore();
-}
-function drawBomb() {
-  ctx.save();
-  ctx.translate(state.bomb.x, state.bomb.y);
-
-  if (state.phase === "aiming") {
-    // move bomb with mouse while aiming
-    ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
-    // show trajectory
-    ctx.strokeStyle = "rgba(255,255,255,0.7)";
-    ctx.setLineDash([3, 8]);
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(state.bomb.velocity.x, state.bomb.velocity.y);
-    ctx.stroke();
-    // draw circle
-    ctx.fillStyle = "white";
-    ctx.beginPath();
-    ctx.arc(0, 0, 6, 0, 2 * Math.PI);
-    ctx.fill();
-  } else if (state.phase === "in flight") {
-    // rotating banana
-    ctx.fillStyle = "white";
-    ctx.rotate(state.bomb.rotation);
-    ctx.beginPath();
-    ctx.moveTo(-8, -2);
-    ctx.quadraticCurveTo(0, 12, 8, -2);
-    ctx.quadraticCurveTo(0, 2, -8, -2);
-    ctx.fill();
-  } else {
-    // default case is circle
-    // draw circle
-    ctx.fillStyle = "white";
-    ctx.beginPath();
-    ctx.arc(0, 0, 6, 0, 2 * Math.PI);
-    ctx.fill();
-  }
-
-  // restore transformation
-  ctx.restore();
-}
-//  computer throw
-function computerThrow() {
-  // start with 5 sims and take the best of them, repeat and increase each round
-  const numberOfSimulations = 2 + state.round * 3;
-  const bestThrow = runSimulations(numberOfSimulations);
-  initializeBombPosition();
-  state.bomb.velocity.x = bestThrow.velocityX;
-  state.bomb.velocity.y = bestThrow.velocityY;
-  setInfo(bestThrow.velocityX, bestThrow.velocityY);
-  // draw aiming gorilla
-  draw();
-  // make it look like computer is thinking for one sec
-  setTimeout(throwBomb, 1000);
-}
-function runSimulations(numberOfSimulations) {
-  // the best throw is closest to enemy
-  let bestThrow = {
-    velocityX: undefined,
-    velocityY: undefined,
-    distance: Infinity,
-  };
-  simulationMode = true;
-  // calculate position of enemy gorilla
-  const enemyBuilding =
-    state.currentPlayer === 1 ? state.buildings.at(-2) : state.buildings.at(1);
-  // find center of gorilla
-  const enemyX = enemyBuilding.x + enemyBuilding.width / 2;
-  const enemyY = enemyBuilding.height + 30;
-  // for loop to run simulations
-  for (let i = 0; i < numberOfSimulations; i++) {
-    // pick a random angle and velocity
-    const angleInDegrees = 0 + Math.random() * 90;
-    const angleInRadians = (angleInDegrees / 100) * Math.PI;
-    const velocity = 40 + Math.random() * 100;
-    // simulate throw
-    // calculate the horizontal and vertical velocity - player one throws to the right, player 2 the left
-    // multiply horizontal velocity by +1  or -1 depending on the player
-    const direction = state.currentPlayer === 1 ? 1 : -1;
-    const velocityX = Math.cos(angleInRadians) * velocity * direction;
-    const velocityY = Math.sin(angleInRadians) * velocity;
-    // reset bomb position and velocity
-    initializeBombPosition();
-    state.bomb.velocity.x = velocityX;
-    state.bomb.velocity.y = velocityY;
-    // in sim mode so no painting scene - need to adjust throw bomb
-    throwBomb();
-    // calculate dies between sim impact and enemy
-    const distance = Math.sqrt(
-      (enemyX - simulationImpact.x) ** 2 + (enemyY - simulationImpact.y) ** 2
-    );
-    // if current impact is closer to enemy, than others pick this one
-    if (distance < bestThrow.distance) {
-      bestThrow = { velocityX, velocityY, distance };
-    }
-  }
-
-  simulationMode = false;
-  return bestThrow;
-}
-function throwBomb() {
-  // check if sim mode
-  if (simulationMode) {
-    previousAnimationTimestamp = 0;
-    // dont wait for animation frame run right away
-    // syncronus call every 16 mili seconds
-    animate(16);
-  } else {
-    // mouse up kicks this off
-    state.phase = "in flight";
-    previousAnimationTimestamp = undefined;
-    requestAnimationFrame(animate);
-  }
-}
-function moveBomb(elapsedTime) {
-  // slow the bomb down
-  const multiplier = elapsedTime / 200;
-  // adjust trajectory by gravity
-  state.bomb.velocity.y -= 20 * multiplier;
-  //calculate new position
-  state.bomb.x += state.bomb.velocity.x * multiplier;
-  state.bomb.y += state.bomb.velocity.y * multiplier;
-  // rotate according to the direction
-  const direction = state.currentPlayer === 1 ? -1 : +1;
-  state.bomb.rotation += direction * 5 * multiplier;
-}
-function checkFrameHit() {
-  if (
-    state.bomb.y < 0 ||
-    state.bomb.x < 0 ||
-    state.bomb.x > window.innerWidth / state.scale
-  ) {
-    return true;
-  }
-}
-function checkBuildingHit() {
-  // iterate over the buildings array and determine if bomb is touching one of them
-  for (let i = 0; i < state.buildings.length; i++) {
-    const building = state.buildings[i];
-    if (
-      state.bomb.x + 4 > building.x &&
-      state.bomb.x - 4 < building.x + building.width &&
-      state.bomb.y - 4 < 0 + building.height
-    ) {
-      //is the bomb in an area with impact already ?
-      for (let j = 0; j < state.blastHoles.length; j++) {
-        const blastHole = state.blastHoles[j];
-
-        //how far is this blastHole from center of prior
-        const horizontalDistance = state.bomb.x - blastHole.x;
-        const verticalDistance = (state.bomb.y = blastHole.y);
-        const distance = Math.sqrt(
-          horizontalDistance ** 2 + verticalDistance ** 2
-        );
-
-        if (distance < blastHoleRadius) {
-          // this is an a repeat blast
-          return false;
-        }
-      }
-      // if it is not sim mode push to blast hole array
-      if (!simulationMode) {
-        // this is a hit save the point of impact into the array
-        state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
-      }
-
-      return true;
-    }
-  }
-}
-// calculate position of banana as it moves across the sky
-function animate(timestamp) {
-  //throwBomb kicked this off - each frame moves the bomb a little
-  // first cycle has no previous time so account for that
-  if (previousAnimationTimestamp === undefined) {
-    previousAnimationTimestamp = timestamp;
-    requestAnimationFrame(animate);
-    return;
-  }
-  // time passed between animation cycles
-  const elapsedTime = timestamp - previousAnimationTimestamp;
-  // call moveBomb 10 times for each animation cycle
-  const hitDetectionPrecision = 10;
-  for (let i = 0; i < hitDetectionPrecision; i++) {
-    moveBomb(elapsedTime / hitDetectionPrecision);
-  }
-
-  // hit detection - off screen or hit a building
-  const miss = checkFrameHit() || checkBuildingHit();
-  // did bomb hit enemy
-  // const hit = false;
-  const hit = checkGorillaHit();
-  // check for a hit while in sim mode
-  if (simulationMode && (hit || miss)) {
-    // save position of impact
-    simulationImpact = { x: state.bomb.x, y: state.bomb.y };
-    return;
-  }
-
-  // check miss bomb goes off screen or hits building
-  if (miss) {
-    state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
-    // if it is a one player game increment round
-    if (state.currentPlayer === 1) state.round++;
-    state.phase = "aiming";
-    initializeBombPosition();
-    draw();
-    // whos turn is it?
-    const computerThrowsNext =
-      numberOfPlayers === 0 ||
-      (numberOfPlayers === 1 && state.currentPlayer === 2);
-    if (computerThrowsNext) setTimeout(computerThrow, 50);
-    // stop animation
-    return;
-  }
-  if (hit) {
-    //TODO  bug here with hit get upside down in middle of screen
-    state.phase = "celebrating";
-    // TODO when this is called line 581 when play 1 wins on line  getting  null style error err
-    announceWinner();
-    draw();
-    // stop animation
-    return;
-  }
-  // dont redraw if in sim mode
-  if (!simulationMode) draw();
-  //continue the loop -
-  // previous is timestamp at end of this loop
-  previousAnimationTimestamp = timestamp;
-  // check to see if in simulationMode
-  if (simulationMode) {
-    animate(timestamp + 16);
-  } else {
-    requestAnimationFrame(animate);
-  }
 }
 function drawBackground() {
   const background = ctx.createLinearGradient(
@@ -494,6 +273,23 @@ function drawBuildings() {
       }
     }
   });
+}
+function drawGorilla(player) {
+  //  takes in player one or two
+  ctx.save();
+  // building at index 1 or second to last index
+  const building =
+    player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
+  ctx.translate(building.x + building.width / 2, building.height);
+  // this function paints the body of the gorilla as a single path
+  // can use isPointInPath canvas method
+  drawGorillaBody();
+  drawGorillaLeftArm(player);
+  drawGorillaRightArm(player);
+  drawGorillaFace(player);
+  // make one gorilla look a little different
+  drawGorillaThoughtBubbles(player);
+  ctx.restore();
 }
 function drawGorillaBody() {
   ctx.fillStyle = "black";
@@ -596,43 +392,91 @@ function drawGorillaFace(player) {
   }
   ctx.stroke();
 }
+// TODO  this function breaks game
 function drawGorillaThoughtBubbles(player) {
-  if (state.phase === "aiming") {
-    const currentPlayerIsComputer =
-      (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
-      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
-    if (currentPlayerIsComputer) {
-      ctx.save();
-      ctx.scale(1, -1);
-      ctx.font = "20px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("?", 0, -90);
-      ctx.font = "10px sans-serif ";
-      ctx.rotate((5 / 180) * Math.PI);
-      ctx.fillText("?", 0, -90);
-      ctx.rotate((-10 / 180) * Math.PI);
-      ctx.fillText("?", 0, -90);
-      ctx.restore;
-    }
-  }
+  // if (state.phase === "aiming") {
+  //   const currentPlayerIsComputer =
+  //     (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
+  //     (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
+  //   if (currentPlayerIsComputer) {
+  //     ctx.save();
+  //     ctx.scale(1, -1);
+  //     ctx.font = "20px sans-serif";
+  //     ctx.textAlign = "center";
+  //     ctx.fillText("?", 0, -90);
+  //     ctx.font = "10px sans-serif ";
+  //     ctx.rotate((5 / 180) * Math.PI);
+  //     ctx.fillText("?", 0, -90);
+  //     ctx.rotate((-10 / 180) * Math.PI);
+  //     ctx.fillText("?", 0, -90);
+  //     ctx.restore;
+  //   }
+  // }
 }
-function drawGorilla(player) {
-  //  takes in player one or two
+
+function drawBomb() {
   ctx.save();
-  // building at index 1 or second to last index
-  const building =
-    player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
-  ctx.translate(building.x + building.width / 2, building.height);
-  // this function paints the body of the gorilla as a single path
-  // can use isPointInPath canvas method
-  drawGorillaBody();
-  drawGorillaLeftArm(player);
-  drawGorillaRightArm(player);
-  drawGorillaFace(player);
-  // make one gorilla look a little different
-  drawGorillaThoughtBubbles(player);
+  ctx.translate(state.bomb.x, state.bomb.y);
+
+  if (state.phase === "aiming") {
+    // move bomb with mouse while aiming
+    ctx.translate(-state.bomb.velocity.x / 6.25, -state.bomb.velocity.y / 6.25);
+    // show trajectory
+    ctx.strokeStyle = "rgba(255,255,255,0.7)";
+    ctx.setLineDash([3, 8]);
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(state.bomb.velocity.x, state.bomb.velocity.y);
+    ctx.stroke();
+    // draw circle
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(0, 0, 6, 0, 2 * Math.PI);
+    ctx.fill();
+  } else if (state.phase === "in flight") {
+    // rotating banana
+    ctx.fillStyle = "white";
+    ctx.rotate(state.bomb.rotation);
+    ctx.beginPath();
+    ctx.moveTo(-8, -2);
+    ctx.quadraticCurveTo(0, 12, 8, -2);
+    ctx.quadraticCurveTo(0, 2, -8, -2);
+    ctx.fill();
+  } else {
+    // default case is circle
+    // draw circle
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(0, 0, 6, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+
+  // restore transformation
   ctx.restore();
 }
+// event handler
+bombGrabAreaDOM.addEventListener("mousedown", function (e) {
+  // we only care about this if aiming
+  if (state.phase === "aiming") {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    document.body.style.cursor = "grabbing";
+  }
+});
+
+window.addEventListener("mousemove", function (e) {
+  //  only track when we are dragging
+  if (isDragging) {
+    let deltaX = e.clientX - dragStartX;
+    let deltaY = e.clientY - dragStartY;
+    state.bomb.velocity.x = -deltaX;
+    state.bomb.velocity.y = deltaY;
+    setInfo(deltaX, deltaY);
+    draw();
+  }
+});
 function setInfo(deltaX, deltaY) {
   // the trig to calc velocity ect
   const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
@@ -647,25 +491,208 @@ function setInfo(deltaX, deltaY) {
     velocity2DOM.innerText = Math.round(hypotenuse);
   }
 }
-function drawBuildingsWithBlastHoles() {
-  ctx.save();
-  state.blastHoles.forEach((blastHole) => {
-    ctx.beginPath();
-    // part of path clockwise behavior
-    ctx.rect(
-      0,
-      0,
-      window.innerWidth / state.scale,
-      window.innerHeight / state.scale
+window.addEventListener("mouseup", function (e) {
+  if (isDragging) {
+    isDragging = false;
+    this.document.body.style.cursor = "default";
+    throwBomb();
+  }
+});
+//  computer throw
+function computerThrow() {
+  // start with 5 sims and take the best of them, repeat and increase each round
+  const numberOfSimulations = 2 + state.round * 3;
+  const bestThrow = runSimulations(numberOfSimulations);
+  initializeBombPosition();
+  state.bomb.velocity.x = bestThrow.velocityX;
+  state.bomb.velocity.y = bestThrow.velocityY;
+  setInfo(bestThrow.velocityX, bestThrow.velocityY);
+  // draw aiming gorilla
+  draw();
+  // make it look like computer is thinking for one sec
+  setTimeout(throwBomb, 1000);
+}
+function runSimulations(numberOfSimulations) {
+  // the best throw is closest to enemy
+  let bestThrow = {
+    velocityX: undefined,
+    velocityY: undefined,
+    distance: Infinity,
+  };
+  simulationMode = true;
+  // calculate position of enemy gorilla
+  const enemyBuilding =
+    state.currentPlayer === 1 ? state.buildings.at(-2) : state.buildings.at(1);
+  // find center of gorilla
+  const enemyX = enemyBuilding.x + enemyBuilding.width / 2;
+  const enemyY = enemyBuilding.height + 30;
+  // for loop to run simulations
+  for (let i = 0; i < numberOfSimulations; i++) {
+    // pick a random angle and velocity
+    const angleInDegrees = 0 + Math.random() * 90;
+    const angleInRadians = (angleInDegrees / 100) * Math.PI;
+    const velocity = 40 + Math.random() * 100;
+    // simulate throw
+    // calculate the horizontal and vertical velocity - player one throws to the right, player 2 the left
+    // multiply horizontal velocity by +1  or -1 depending on the player
+    const direction = state.currentPlayer === 1 ? 1 : -1;
+    const velocityX = Math.cos(angleInRadians) * velocity * direction;
+    const velocityY = Math.sin(angleInRadians) * velocity;
+    // reset bomb position and velocity
+    initializeBombPosition();
+    state.bomb.velocity.x = velocityX;
+    state.bomb.velocity.y = velocityY;
+    // in sim mode so no painting scene - need to adjust throw bomb
+    throwBomb();
+    // calculate dies between sim impact and enemy
+    const distance = Math.sqrt(
+      (enemyX - simulationImpact.x) ** 2 + (enemyY - simulationImpact.y) ** 2
     );
-    // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
-    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
-    ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
-    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
-    ctx.clip();
-  });
-  drawBuildings();
-  ctx.restore();
+    // if current impact is closer to enemy, than others pick this one
+    if (distance < bestThrow.distance) {
+      bestThrow = { velocityX, velocityY, distance };
+    }
+  }
+
+  simulationMode = false;
+  return bestThrow;
+}
+function throwBomb() {
+  // check if sim mode
+  if (simulationMode) {
+    previousAnimationTimestamp = 0;
+    // dont wait for animation frame run right away
+    // syncronus call every 16 mili seconds
+    animate(16);
+  } else {
+    // mouse up kicks this off
+    state.phase = "in flight";
+    previousAnimationTimestamp = undefined;
+    requestAnimationFrame(animate);
+  }
+}
+// calculate position of banana as it moves across the sky
+function animate(timestamp) {
+  //throwBomb kicked this off - each frame moves the bomb a little
+  // first cycle has no previous time so account for that
+  if (previousAnimationTimestamp === undefined) {
+    previousAnimationTimestamp = timestamp;
+    requestAnimationFrame(animate);
+    return;
+  }
+  // time passed between animation cycles
+  const elapsedTime = timestamp - previousAnimationTimestamp;
+  // call moveBomb 10 times for each animation cycle
+  const hitDetectionPrecision = 10;
+  for (let i = 0; i < hitDetectionPrecision; i++) {
+    moveBomb(elapsedTime / hitDetectionPrecision);
+  }
+
+  // hit detection - off screen or hit a building
+  const miss = checkFrameHit() || checkBuildingHit();
+  // did bomb hit enemy
+  // const hit = false;
+  const hit = checkGorillaHit();
+  // check for a hit while in sim mode
+  if (simulationMode && (hit || miss)) {
+    // save position of impact
+    simulationImpact = { x: state.bomb.x, y: state.bomb.y };
+    return;
+  }
+
+  // check miss bomb goes off screen or hits building
+  if (miss) {
+    state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+    // if it is a one player game increment round
+    if (state.currentPlayer === 1) state.round++;
+    state.phase = "aiming";
+    initializeBombPosition();
+    draw();
+    // whos turn is it?
+    const computerThrowsNext =
+      numberOfPlayers === 0 ||
+      (numberOfPlayers === 1 && state.currentPlayer === 2);
+    if (computerThrowsNext) setTimeout(computerThrow, 50);
+    // stop animation
+    return;
+  }
+  if (hit) {
+    //TODO  bug here with hit get upside down in middle of screen
+    state.phase = "celebrating";
+    // TODO when this is called line 581 when play 1 wins on line  getting  null style error err
+    announceWinner();
+    draw();
+    // stop animation
+    return;
+  }
+  // dont redraw if in sim mode
+  if (!simulationMode) draw();
+  //continue the loop -
+  // previous is timestamp at end of this loop
+  previousAnimationTimestamp = timestamp;
+  // check to see if in simulationMode
+  if (simulationMode) {
+    animate(timestamp + 16);
+  } else {
+    requestAnimationFrame(animate);
+  }
+}
+
+function moveBomb(elapsedTime) {
+  // slow the bomb down
+  const multiplier = elapsedTime / 200;
+  // adjust trajectory by gravity
+  state.bomb.velocity.y -= 20 * multiplier;
+  //calculate new position
+  state.bomb.x += state.bomb.velocity.x * multiplier;
+  state.bomb.y += state.bomb.velocity.y * multiplier;
+  // rotate according to the direction
+  const direction = state.currentPlayer === 1 ? -1 : +1;
+  state.bomb.rotation += direction * 5 * multiplier;
+}
+function checkFrameHit() {
+  if (
+    state.bomb.y < 0 ||
+    state.bomb.x < 0 ||
+    state.bomb.x > window.innerWidth / state.scale
+  ) {
+    return true;
+  }
+}
+function checkBuildingHit() {
+  // iterate over the buildings array and determine if bomb is touching one of them
+  for (let i = 0; i < state.buildings.length; i++) {
+    const building = state.buildings[i];
+    if (
+      state.bomb.x + 4 > building.x &&
+      state.bomb.x - 4 < building.x + building.width &&
+      state.bomb.y - 4 < 0 + building.height
+    ) {
+      //is the bomb in an area with impact already ?
+      for (let j = 0; j < state.blastHoles.length; j++) {
+        const blastHole = state.blastHoles[j];
+
+        //how far is this blastHole from center of prior
+        const horizontalDistance = state.bomb.x - blastHole.x;
+        const verticalDistance = (state.bomb.y = blastHole.y);
+        const distance = Math.sqrt(
+          horizontalDistance ** 2 + verticalDistance ** 2
+        );
+
+        if (distance < blastHoleRadius) {
+          // this is an a repeat blast
+          return false;
+        }
+      }
+      // if it is not sim mode push to blast hole array
+      if (!simulationMode) {
+        // this is a hit save the point of impact into the array
+        state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
+      }
+
+      return true;
+    }
+  }
 }
 function checkGorillaHit() {
   const enemyPlayer = state.currentPlayer === 1 ? 2 : 1;
@@ -695,6 +722,28 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
+
+function drawBuildingsWithBlastHoles() {
+  ctx.save();
+  state.blastHoles.forEach((blastHole) => {
+    ctx.beginPath();
+    // part of path clockwise behavior
+    ctx.rect(
+      0,
+      0,
+      window.innerWidth / state.scale,
+      window.innerHeight / state.scale
+    );
+    // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
+    ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
+    ctx.clip();
+  });
+  drawBuildings();
+  ctx.restore();
+}
+
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   //TODO  bug with game win
@@ -702,36 +751,6 @@ function announceWinner() {
   // in the announcement the gorilla is upside down
   congratulationsDOM.style.visibility = "visible";
 }
-// event handler
-bombGrabAreaDOM.addEventListener("mousedown", function (e) {
-  // we only care about this if aiming
-  if (state.phase === "aiming") {
-    isDragging = true;
-    dragStartX = e.clientX;
-    dragStartY = e.clientY;
-    document.body.style.cursor = "grabbing";
-  }
-});
-
-window.addEventListener("mousemove", function (e) {
-  //  only track when we are dragging
-  if (isDragging) {
-    let deltaX = e.clientX - dragStartX;
-    let deltaY = e.clientY - dragStartY;
-    state.bomb.velocity.x = -deltaX;
-    state.bomb.velocity.y = deltaY;
-    setInfo(deltaX, deltaY);
-    draw();
-  }
-});
-
-window.addEventListener("mouseup", function (e) {
-  if (isDragging) {
-    isDragging = false;
-    this.document.body.style.cursor = "default";
-    throwBomb();
-  }
-});
 
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;

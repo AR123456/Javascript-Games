@@ -77,7 +77,7 @@ function newGame() {
   // call after gen building/position of gorilla is known
   initializeBombPosition();
   // re set HTML elements
-
+  hideCongratulations();
   angle1DOM.innerText = 0;
   velocity1DOM.innerText = 0;
   angle2DOM.innerText = 0;

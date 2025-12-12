@@ -170,8 +170,8 @@ function initializeBombPosition() {
   // reset rotation
   state.bomb.rotation = 0;
   // position the html grab area with the bomb
-  // TODO temporarily increasing from 15 to 25
-  const grabAreaRadius = 25;
+
+  const grabAreaRadius = 15;
   const left = state.bomb.x * state.scale - grabAreaRadius;
   const bottom = state.bomb.y * state.scale - grabAreaRadius;
   bombGrabAreaDOM.style.left = `${left}px`;
@@ -190,7 +190,7 @@ function draw() {
   ///// call the draw functions
   drawBackground();
   drawBackgroundBuildings();
-  // drawBuildings();
+
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
   drawGorilla(2);
@@ -390,7 +390,7 @@ function drawGorillaFace(player) {
   }
   ctx.stroke();
 }
-// TODO  this function breaks game
+
 function drawGorillaThoughtBubbles(player) {
   if (state.phase === "aiming") {
     const currentPlayerIsComputer =
@@ -615,9 +615,8 @@ function animate(timestamp) {
     return;
   }
   if (hit) {
-    //TODO  bug here with hit get upside down in middle of screen
     state.phase = "celebrating";
-    // TODO when this is called line 581 when play 1 wins on line  getting  null style error err
+
     announceWinner();
     draw();
     // stop animation
@@ -720,9 +719,10 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-
+// TODO blast holes are either along same x or not drawn
 function drawBuildingsWithBlastHoles() {
   ctx.save();
+
   state.blastHoles.forEach((blastHole) => {
     ctx.beginPath();
     // part of path clockwise behavior
@@ -734,6 +734,7 @@ function drawBuildingsWithBlastHoles() {
     );
     // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
+    // Inner shape counterclockwise
     ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
     ctx.clip();
@@ -744,9 +745,6 @@ function drawBuildingsWithBlastHoles() {
 
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
-  //TODO  bug with game win
-  // when player 2 has hit getting error cannot read properties of null reading "style" at announceWinner at animate line 318
-  // in the announcement the gorilla is upside down
   showCongratulations();
 }
 

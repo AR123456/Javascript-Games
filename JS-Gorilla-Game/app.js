@@ -656,6 +656,7 @@ function checkFrameHit() {
     return true;
   }
 }
+// TODO the blast hole bug is in this function
 function checkBuildingHit() {
   // iterate over the buildings array and determine if bomb is touching one of them
   for (let i = 0; i < state.buildings.length; i++) {
@@ -691,6 +692,8 @@ function checkBuildingHit() {
     }
   }
 }
+//
+
 function checkGorillaHit() {
   const enemyPlayer = state.currentPlayer === 1 ? 2 : 1;
   // which building is enemy on
@@ -719,7 +722,7 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-// TODO blast holes are either along same x or not drawn
+
 function drawBuildingsWithBlastHoles() {
   ctx.save();
 

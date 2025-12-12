@@ -395,7 +395,7 @@ function drawGorillaThoughtBubbles(player) {
   if (state.phase === "aiming") {
     const currentPlayerIsComputer =
       (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
-      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
+      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 2);
     if (currentPlayerIsComputer) {
       ctx.save();
       ctx.scale(1, -1);
@@ -407,7 +407,7 @@ function drawGorillaThoughtBubbles(player) {
       ctx.fillText("?", 0, -90);
       ctx.rotate((-10 / 180) * Math.PI);
       ctx.fillText("?", 0, -90);
-      ctx.restore;
+      ctx.restore();
     }
   }
 }

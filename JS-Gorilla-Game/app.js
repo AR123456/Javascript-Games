@@ -656,7 +656,7 @@ function checkFrameHit() {
     return true;
   }
 }
-// TODO the blast hole bug is in this function
+
 function checkBuildingHit() {
   // iterate over the buildings array and determine if bomb is touching one of them
   for (let i = 0; i < state.buildings.length; i++) {

@@ -77,19 +77,26 @@ function newGame() {
   // call after gen building/position of gorilla is known
   initializeBombPosition();
   // re set HTML elements
-  //TODO this code when un commented breaks the game
-
-  // congratulationsDOM.style.visibility = "hidden";
-  // getting error in cons log of angle1DOM when player 2 throws
-  // angle1DOM.innerText = 0;
-  // velocity1DOM.innerText = 0;
-  // angle2DOM.innerText = 0;
-  // velocity2DOM.innerText = 0;
+  hideCongratulations();
+  angle1DOM.innerText = 0;
+  velocity1DOM.innerText = 0;
+  angle2DOM.innerText = 0;
+  velocity2DOM.innerText = 0;
 
   //call draw function - paints the screen when called
   draw();
   // hand over game to computer
   if (numberOfPlayers === 0) computerThrow();
+}
+function showCongratulations() {
+  congratulationsDOM.style.opacity = 1;
+  congratulationsDOM.style.visibility = "visible";
+  //
+}
+function hideCongratulations() {
+  congratulationsDOM.style.opacity = 0;
+  congratulationsDOM.style.visibility = "hidden";
+  //
 }
 function generateBackgroundBuilding(index) {
   const previousBuilding = state.backgroundBuildings[index - 1];
@@ -163,8 +170,8 @@ function initializeBombPosition() {
   // reset rotation
   state.bomb.rotation = 0;
   // position the html grab area with the bomb
-  // TODO temporarily increasing from 15 to 25
-  const grabAreaRadius = 25;
+
+  const grabAreaRadius = 15;
   const left = state.bomb.x * state.scale - grabAreaRadius;
   const bottom = state.bomb.y * state.scale - grabAreaRadius;
   bombGrabAreaDOM.style.left = `${left}px`;
@@ -183,7 +190,7 @@ function draw() {
   ///// call the draw functions
   drawBackground();
   drawBackgroundBuildings();
-  // drawBuildings();
+
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
   drawGorilla(2);
@@ -264,6 +271,23 @@ function drawBuildings() {
       }
     }
   });
+}
+function drawGorilla(player) {
+  //  takes in player one or two
+  ctx.save();
+  // building at index 1 or second to last index
+  const building =
+    player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
+  ctx.translate(building.x + building.width / 2, building.height);
+  // this function paints the body of the gorilla as a single path
+  // can use isPointInPath canvas method
+  drawGorillaBody();
+  drawGorillaLeftArm(player);
+  drawGorillaRightArm(player);
+  drawGorillaFace(player);
+  // make one gorilla look a little different
+  drawGorillaThoughtBubbles(player);
+  ctx.restore();
 }
 function drawGorillaBody() {
   ctx.fillStyle = "black";
@@ -366,12 +390,12 @@ function drawGorillaFace(player) {
   }
   ctx.stroke();
 }
-// TODO  this function breaks game
+
 function drawGorillaThoughtBubbles(player) {
   if (state.phase === "aiming") {
     const currentPlayerIsComputer =
       (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
-      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 1);
+      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 2);
     if (currentPlayerIsComputer) {
       ctx.save();
       ctx.scale(1, -1);
@@ -383,11 +407,13 @@ function drawGorillaThoughtBubbles(player) {
       ctx.fillText("?", 0, -90);
       ctx.rotate((-10 / 180) * Math.PI);
       ctx.fillText("?", 0, -90);
-      ctx.restore;
+      ctx.restore();
     }
   }
 }
-
+// TODO  psudo code
+// in the draw bomb function add some code to factor in some wind.
+//
 function drawBomb() {
   ctx.save();
   ctx.translate(state.bomb.x, state.bomb.y);
@@ -414,6 +440,7 @@ function drawBomb() {
     ctx.rotate(state.bomb.rotation);
     ctx.beginPath();
     ctx.moveTo(-8, -2);
+    // TODO will this change speed velocity
     ctx.quadraticCurveTo(0, 12, 8, -2);
     ctx.quadraticCurveTo(0, 2, -8, -2);
     ctx.fill();
@@ -429,6 +456,50 @@ function drawBomb() {
   // restore transformation
   ctx.restore();
 }
+// event handler
+bombGrabAreaDOM.addEventListener("mousedown", function (e) {
+  // we only care about this if aiming
+  if (state.phase === "aiming") {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    document.body.style.cursor = "grabbing";
+  }
+});
+
+window.addEventListener("mousemove", function (e) {
+  //  only track when we are dragging
+  if (isDragging) {
+    let deltaX = e.clientX - dragStartX;
+    let deltaY = e.clientY - dragStartY;
+    state.bomb.velocity.x = -deltaX;
+    state.bomb.velocity.y = deltaY;
+    setInfo(deltaX, deltaY);
+    draw();
+  }
+});
+function setInfo(deltaX, deltaY) {
+  // the trig to calc velocity ect
+  const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+  // convert to Radians
+  const angleInRadians = Math.asin(deltaY / hypotenuse);
+  const angleInDegrees = (angleInRadians / Math.PI) * 160;
+  if (state.currentPlayer === 1) {
+    angle1DOM.innerText = Math.round(angleInDegrees);
+    velocity1DOM.innerText = Math.round(hypotenuse);
+  } else {
+    angle2DOM.innerText = Math.round(angleInDegrees);
+    velocity2DOM.innerText = Math.round(hypotenuse);
+  }
+}
+window.addEventListener("mouseup", function (e) {
+  if (isDragging) {
+    isDragging = false;
+    this.document.body.style.cursor = "default";
+    throwBomb();
+  }
+});
+// TODO change velocity with wind for computer
 //  computer throw
 function computerThrow() {
   // start with 5 sims and take the best of them, repeat and increase each round
@@ -488,6 +559,7 @@ function runSimulations(numberOfSimulations) {
   simulationMode = false;
   return bestThrow;
 }
+// TODO change velocity with wind for player
 function throwBomb() {
   // check if sim mode
   if (simulationMode) {
@@ -502,62 +574,7 @@ function throwBomb() {
     requestAnimationFrame(animate);
   }
 }
-function moveBomb(elapsedTime) {
-  // slow the bomb down
-  const multiplier = elapsedTime / 200;
-  // adjust trajectory by gravity
-  state.bomb.velocity.y -= 20 * multiplier;
-  //calculate new position
-  state.bomb.x += state.bomb.velocity.x * multiplier;
-  state.bomb.y += state.bomb.velocity.y * multiplier;
-  // rotate according to the direction
-  const direction = state.currentPlayer === 1 ? -1 : +1;
-  state.bomb.rotation += direction * 5 * multiplier;
-}
-function checkFrameHit() {
-  if (
-    state.bomb.y < 0 ||
-    state.bomb.x < 0 ||
-    state.bomb.x > window.innerWidth / state.scale
-  ) {
-    return true;
-  }
-}
-function checkBuildingHit() {
-  // iterate over the buildings array and determine if bomb is touching one of them
-  for (let i = 0; i < state.buildings.length; i++) {
-    const building = state.buildings[i];
-    if (
-      state.bomb.x + 4 > building.x &&
-      state.bomb.x - 4 < building.x + building.width &&
-      state.bomb.y - 4 < 0 + building.height
-    ) {
-      //is the bomb in an area with impact already ?
-      for (let j = 0; j < state.blastHoles.length; j++) {
-        const blastHole = state.blastHoles[j];
-
-        //how far is this blastHole from center of prior
-        const horizontalDistance = state.bomb.x - blastHole.x;
-        const verticalDistance = (state.bomb.y = blastHole.y);
-        const distance = Math.sqrt(
-          horizontalDistance ** 2 + verticalDistance ** 2
-        );
-
-        if (distance < blastHoleRadius) {
-          // this is an a repeat blast
-          return false;
-        }
-      }
-      // if it is not sim mode push to blast hole array
-      if (!simulationMode) {
-        // this is a hit save the point of impact into the array
-        state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
-      }
-
-      return true;
-    }
-  }
-}
+// TODO change velocity accounting for wind
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
   //throwBomb kicked this off - each frame moves the bomb a little
@@ -604,9 +621,8 @@ function animate(timestamp) {
     return;
   }
   if (hit) {
-    //TODO  bug here with hit get upside down in middle of screen
     state.phase = "celebrating";
-    // TODO when this is called line 581 when play 1 wins on line  getting  null style error err
+
     announceWinner();
     draw();
     // stop animation
@@ -624,58 +640,67 @@ function animate(timestamp) {
     requestAnimationFrame(animate);
   }
 }
-
-function drawGorilla(player) {
-  //  takes in player one or two
-  ctx.save();
-  // building at index 1 or second to last index
-  const building =
-    player === 1 ? state.buildings.at(1) : state.buildings.at(-2);
-  ctx.translate(building.x + building.width / 2, building.height);
-  // this function paints the body of the gorilla as a single path
-  // can use isPointInPath canvas method
-  drawGorillaBody();
-  drawGorillaLeftArm(player);
-  drawGorillaRightArm(player);
-  drawGorillaFace(player);
-  // make one gorilla look a little different
-  drawGorillaThoughtBubbles(player);
-  ctx.restore();
+// TODO change velocity according to wind
+function moveBomb(elapsedTime) {
+  // slow the bomb down
+  const multiplier = elapsedTime / 200;
+  // adjust trajectory by gravity
+  state.bomb.velocity.y -= 20 * multiplier;
+  //calculate new position
+  state.bomb.x += state.bomb.velocity.x * multiplier;
+  state.bomb.y += state.bomb.velocity.y * multiplier;
+  // rotate according to the direction
+  const direction = state.currentPlayer === 1 ? -1 : +1;
+  state.bomb.rotation += direction * 5 * multiplier;
 }
-function setInfo(deltaX, deltaY) {
-  // the trig to calc velocity ect
-  const hypotenuse = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-  // convert to Radians
-  const angleInRadians = Math.asin(deltaY / hypotenuse);
-  const angleInDegrees = (angleInRadians / Math.PI) * 160;
-  if (state.currentPlayer === 1) {
-    angle1DOM.innerText = Math.round(angleInDegrees);
-    velocity1DOM.innerText = Math.round(hypotenuse);
-  } else {
-    angle2DOM.innerText = Math.round(angleInDegrees);
-    velocity2DOM.innerText = Math.round(hypotenuse);
+function checkFrameHit() {
+  if (
+    state.bomb.y < 0 ||
+    state.bomb.x < 0 ||
+    state.bomb.x > window.innerWidth / state.scale
+  ) {
+    return true;
   }
 }
-function drawBuildingsWithBlastHoles() {
-  ctx.save();
-  state.blastHoles.forEach((blastHole) => {
-    ctx.beginPath();
-    // part of path clockwise behavior
-    ctx.rect(
-      0,
-      0,
-      window.innerWidth / state.scale,
-      window.innerHeight / state.scale
-    );
-    // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
-    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
-    ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
-    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
-    ctx.clip();
-  });
-  drawBuildings();
-  ctx.restore();
+
+function checkBuildingHit() {
+  // iterate over the buildings array and determine if bomb is touching one of them
+  for (let i = 0; i < state.buildings.length; i++) {
+    const building = state.buildings[i];
+    if (
+      state.bomb.x + 4 > building.x &&
+      state.bomb.x - 4 < building.x + building.width &&
+      state.bomb.y - 4 < 0 + building.height
+    ) {
+      //is the bomb in an area with impact already ?
+      for (let j = 0; j < state.blastHoles.length; j++) {
+        const blastHole = state.blastHoles[j];
+
+        //how far is this blastHole from center of prior
+        const horizontalDistance = state.bomb.x - blastHole.x;
+
+        const verticalDistance = state.bomb.y - blastHole.y;
+        const distance = Math.sqrt(
+          horizontalDistance ** 2 + verticalDistance ** 2
+        );
+
+        if (distance < blastHoleRadius) {
+          // this is an a repeat blast
+          return false;
+        }
+      }
+      // if it is not sim mode push to blast hole array
+      if (!simulationMode) {
+        // this is a hit save the point of impact into the array
+        state.blastHoles.push({ x: state.bomb.x, y: state.bomb.y });
+      }
+
+      return true;
+    }
+  }
 }
+//
+
 function checkGorillaHit() {
   const enemyPlayer = state.currentPlayer === 1 ? 2 : 1;
   // which building is enemy on
@@ -704,43 +729,37 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
+
+function drawBuildingsWithBlastHoles() {
+  ctx.save();
+
+  state.blastHoles.forEach((blastHole) => {
+    ctx.beginPath();
+
+    // Outer shape clockwise
+    ctx.rect(
+      0,
+      0,
+      window.innerWidth / state.scale,
+      window.innerHeight / state.scale
+    );
+    // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
+    // Inner shape counterclockwise
+    ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
+    ctx.clip();
+  });
+
+  drawBuildings();
+
+  ctx.restore();
+}
+
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
-  //TODO  bug with game win
-  // when player 2 has hit getting error cannot read properties of null reading "style" at announceWinner at animate line 318
-  // in the announcement the gorilla is upside down
-  congratulationsDOM.style.visibility = "visible";
+  showCongratulations();
 }
-// event handler
-bombGrabAreaDOM.addEventListener("mousedown", function (e) {
-  // we only care about this if aiming
-  if (state.phase === "aiming") {
-    isDragging = true;
-    dragStartX = e.clientX;
-    dragStartY = e.clientY;
-    document.body.style.cursor = "grabbing";
-  }
-});
-
-window.addEventListener("mousemove", function (e) {
-  //  only track when we are dragging
-  if (isDragging) {
-    let deltaX = e.clientX - dragStartX;
-    let deltaY = e.clientY - dragStartY;
-    state.bomb.velocity.x = -deltaX;
-    state.bomb.velocity.y = deltaY;
-    setInfo(deltaX, deltaY);
-    draw();
-  }
-});
-
-window.addEventListener("mouseup", function (e) {
-  if (isDragging) {
-    isDragging = false;
-    this.document.body.style.cursor = "default";
-    throwBomb();
-  }
-});
 
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;

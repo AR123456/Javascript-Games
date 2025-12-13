@@ -672,6 +672,7 @@ function checkBuildingHit() {
 
         //how far is this blastHole from center of prior
         const horizontalDistance = state.bomb.x - blastHole.x;
+        // this should be - not =
         const verticalDistance = (state.bomb.y = blastHole.y);
         const distance = Math.sqrt(
           horizontalDistance ** 2 + verticalDistance ** 2

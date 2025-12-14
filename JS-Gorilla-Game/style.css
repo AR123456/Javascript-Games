@@ -41,3 +41,9 @@ body {
   position: absolute;
   visibility: hidden;
 }
+#windmill {
+  position: absolute;
+  right: 0;
+  fill: rgba(225, 225, 225, 0.5);
+  transform-origin: bottom;
+}

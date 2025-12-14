@@ -411,8 +411,6 @@ function drawGorillaThoughtBubbles(player) {
     }
   }
 }
-// TODO  psudo code
-// in the draw bomb function add some code to factor in some wind.
 //
 function drawBomb() {
   ctx.save();
@@ -440,7 +438,6 @@ function drawBomb() {
     ctx.rotate(state.bomb.rotation);
     ctx.beginPath();
     ctx.moveTo(-8, -2);
-    // TODO will this change speed velocity
     ctx.quadraticCurveTo(0, 12, 8, -2);
     ctx.quadraticCurveTo(0, 2, -8, -2);
     ctx.fill();
@@ -456,6 +453,8 @@ function drawBomb() {
   // restore transformation
   ctx.restore();
 }
+// TODO draw the windmill
+function drawWindMill() {}
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
   // we only care about this if aiming
@@ -499,7 +498,7 @@ window.addEventListener("mouseup", function (e) {
     throwBomb();
   }
 });
-// TODO change velocity with wind for computer
+
 //  computer throw
 function computerThrow() {
   // start with 5 sims and take the best of them, repeat and increase each round
@@ -559,7 +558,7 @@ function runSimulations(numberOfSimulations) {
   simulationMode = false;
   return bestThrow;
 }
-// TODO change velocity with wind for player
+
 function throwBomb() {
   // check if sim mode
   if (simulationMode) {
@@ -574,7 +573,7 @@ function throwBomb() {
     requestAnimationFrame(animate);
   }
 }
-// TODO change velocity accounting for wind
+
 // calculate position of banana as it moves across the sky
 function animate(timestamp) {
   //throwBomb kicked this off - each frame moves the bomb a little
@@ -641,8 +640,10 @@ function animate(timestamp) {
   }
 }
 // TODO change velocity according to wind
+//psudo code
+// in the draw bomb function add some code to factor in some wind.
 function moveBomb(elapsedTime) {
-  // slow the bomb down
+  // slow the bomb down- a higher denominator = slower speed
   const multiplier = elapsedTime / 200;
   // adjust trajectory by gravity
   state.bomb.velocity.y -= 20 * multiplier;

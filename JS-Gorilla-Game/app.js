@@ -13,6 +13,7 @@ let deltaX, deltaY;
 
 const blastHoles = 18;
 const blastHoleRadius = 18;
+// TODO get windmill to DOM
 
 let numberOfPlayers = 1;
 // main canvas element and its drawing context
@@ -39,6 +40,7 @@ const newGameButton = document.getElementById("new-game");
 newGame();
 
 //main game function -initilize or reset
+//TODO in new game call initi wind mill position and set windmill rotation
 function newGame() {
   // reset game state
   state = {
@@ -177,7 +179,7 @@ function initializeBombPosition() {
   bombGrabAreaDOM.style.left = `${left}px`;
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
-
+// TODO create  initializeWindmillPosition
 // draw function
 function draw() {
   ctx.save();
@@ -453,7 +455,7 @@ function drawBomb() {
   // restore transformation
   ctx.restore();
 }
-// TODO draw the windmill
+
 function drawWindMill() {}
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
@@ -639,9 +641,7 @@ function animate(timestamp) {
     requestAnimationFrame(animate);
   }
 }
-// TODO change velocity according to wind
-//psudo code
-// in the draw bomb function add some code to factor in some wind.
+
 function moveBomb(elapsedTime) {
   // slow the bomb down- a higher denominator = slower speed
   const multiplier = elapsedTime / 200;
@@ -761,7 +761,7 @@ function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   showCongratulations();
 }
-
+// TODO create  setWindMillRotation   and  generateWindSpeed functions
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

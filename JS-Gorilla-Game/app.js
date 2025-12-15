@@ -766,6 +766,8 @@ function announceWinner() {
   showCongratulations();
 }
 // TODO create  setWindMillRotation   and  generateWindSpeed functions
+function generateWindSpeed() {}
+function setWindMillRotation() {}
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

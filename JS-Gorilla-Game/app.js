@@ -460,7 +460,6 @@ function drawBomb() {
   ctx.restore();
 }
 
-function drawWindMill() {}
 // event handler
 bombGrabAreaDOM.addEventListener("mousedown", function (e) {
   // we only care about this if aiming

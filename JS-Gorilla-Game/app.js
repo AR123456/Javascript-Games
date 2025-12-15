@@ -13,7 +13,6 @@ let deltaX, deltaY;
 
 const blastHoles = 18;
 const blastHoleRadius = 18;
-// TODO get windmill to DOM
 
 let numberOfPlayers = 1;
 // main canvas element and its drawing context
@@ -23,6 +22,8 @@ canvas.height = window.innerHeight;
 // draw function needs context
 const ctx = canvas.getContext("2d");
 // consts for js
+// windmill
+const windmillDOM = document.getElementById("windmill");
 // left info panel
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");

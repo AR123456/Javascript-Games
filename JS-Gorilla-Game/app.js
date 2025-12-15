@@ -24,6 +24,9 @@ const ctx = canvas.getContext("2d");
 // consts for js
 // windmill
 const windmillDOM = document.getElementById("windmill");
+const windmillHeadDOM = document.getElementById("windmill-head");
+const windInfoDOM = document.getElementById("wind-info");
+const windSpeedDOM = document.getElementById("speed-info");
 // left info panel
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");

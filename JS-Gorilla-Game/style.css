@@ -61,3 +61,9 @@ body {
     transform: rotate(360deg);
   }
 }
+#wind-info {
+  position: absolute;
+  width: 100px;
+  text-align: center;
+  margin-bottom: 30px;
+}

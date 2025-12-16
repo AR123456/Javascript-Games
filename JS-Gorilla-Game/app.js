@@ -190,9 +190,9 @@ function initializeBombPosition() {
 function initializeWindmillPosition() {
   const lastBuilding = state.buildings.at(-1);
   let rooftopY = lastBuilding.height * state.scale;
-  let rooftopX =
-    (lastBuilding.x + lastBuilding.width / 2) * state.scale + state.shift;
-  console.log(state.shift);
+  // TODO shift is undefined at this point when scale shift for resize implemented circle back
+  let rooftopX = (lastBuilding.x + lastBuilding.width / 2) * state.scale;
+  console.log(rooftopX, rooftopY);
 }
 
 // draw function

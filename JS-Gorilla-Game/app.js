@@ -192,7 +192,8 @@ function initializeWindmillPosition() {
   let rooftopY = lastBuilding.height * state.scale;
   // TODO shift is undefined at this point when scale shift for resize implemented circle back
   let rooftopX = (lastBuilding.x + lastBuilding.width / 2) * state.scale;
-  console.log(rooftopX, rooftopY);
+  windmillDOM.style.bottom = `${rooftopY}px`;
+  windmillDOM.style.left = `${rooftopX - 100}px`;
 }
 
 // draw function

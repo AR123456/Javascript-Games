@@ -184,6 +184,9 @@ function initializeBombPosition() {
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
 // TODO create  initializeWindmillPosition
+function initializeWindmillPosition() {
+  console.log(" calling int wm p ");
+}
 // draw function
 function draw() {
   ctx.save();

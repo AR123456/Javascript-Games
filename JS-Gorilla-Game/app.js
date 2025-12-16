@@ -189,7 +189,10 @@ function initializeBombPosition() {
 // TODO create  initializeWindmillPosition
 function initializeWindmillPosition() {
   const lastBuilding = state.buildings.at(-1);
-  console.log(lastBuilding);
+  let rooftopY = lastBuilding.height * state.scale;
+  let rooftopX =
+    (lastBuilding.x + lastBuilding.width / 2) * state.scale + state.shift;
+  console.log(state.shift);
 }
 
 // draw function

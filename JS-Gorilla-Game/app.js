@@ -82,6 +82,8 @@ function newGame() {
   calculateScale();
   // call after gen building/position of gorilla is known
   initializeBombPosition();
+  // set windmill pos when buildings known
+  initializeWindmillPosition();
   // re set HTML elements
   hideCongratulations();
   angle1DOM.innerText = 0;
@@ -187,6 +189,7 @@ function initializeBombPosition() {
 function initializeWindmillPosition() {
   console.log(" calling int wm p ");
 }
+// TODO at some point will need resize event listenter
 // draw function
 function draw() {
   ctx.save();

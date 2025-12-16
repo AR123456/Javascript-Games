@@ -185,11 +185,13 @@ function initializeBombPosition() {
   bombGrabAreaDOM.style.left = `${left}px`;
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
+// TODO at some point will need resize event listener
 // TODO create  initializeWindmillPosition
 function initializeWindmillPosition() {
-  console.log(" calling int wm p ");
+  const lastBuilding = state.buildings.at(-1);
+  console.log(lastBuilding);
 }
-// TODO at some point will need resize event listenter
+
 // draw function
 function draw() {
   ctx.save();

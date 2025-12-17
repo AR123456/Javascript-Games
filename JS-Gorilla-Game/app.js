@@ -194,6 +194,8 @@ function initializeWindmillPosition() {
   let rooftopX = (lastBuilding.x + lastBuilding.width / 2) * state.scale;
   windmillDOM.style.bottom = `${rooftopY}px`;
   windmillDOM.style.left = `${rooftopX - 100}px`;
+  // size the wm based on state scale
+  windmillDOM.style.scale = state.scale;
 }
 
 // draw function

@@ -44,7 +44,7 @@ const newGameButton = document.getElementById("new-game");
 newGame();
 
 //main game function -initilize or reset
-//TODO in new game call initi wind mill position and set windmill rotation
+//TODO in new game  set windmill rotation
 function newGame() {
   // reset game state
   state = {
@@ -84,6 +84,8 @@ function newGame() {
   initializeBombPosition();
   // set windmill pos when buildings known
   initializeWindmillPosition();
+  // set speed of windmill
+  setWindMillRotation();
   // re set HTML elements
   hideCongratulations();
   angle1DOM.innerText = 0;
@@ -186,7 +188,7 @@ function initializeBombPosition() {
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
 // TODO at some point will need resize event listener
-// TODO create  initializeWindmillPosition
+
 function initializeWindmillPosition() {
   const lastBuilding = state.buildings.at(-1);
   let rooftopY = lastBuilding.height * state.scale;
@@ -783,7 +785,10 @@ function announceWinner() {
 }
 // TODO create  setWindMillRotation   and  generateWindSpeed functions
 function generateWindSpeed() {}
-function setWindMillRotation() {}
+function setWindMillRotation() {
+  // find absolute speed
+  const rotationSpeed = Math.abs(50 / state.windSpeed);
+}
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

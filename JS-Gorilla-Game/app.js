@@ -788,6 +788,9 @@ function generateWindSpeed() {}
 function setWindMillRotation() {
   // find absolute speed
   const rotationSpeed = Math.abs(50 / state.windSpeed);
+  windmillHeadDOM.style.animationDirection =
+    state.windSpeed > 0 ? "normal" : "reverse";
+  console.log(state.windSpeed);
 }
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;

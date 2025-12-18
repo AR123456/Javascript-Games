@@ -792,6 +792,8 @@ function setWindMillRotation() {
   windmillHeadDOM.style.animationDirection =
     state.windSpeed > 0 ? "normal" : "reverse";
   windmillHeadDOM.style.animationDuration = `${rotationSpeed}s`;
+  //TODO this line of code breaks the display
+  // windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;

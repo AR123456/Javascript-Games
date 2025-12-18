@@ -784,8 +784,11 @@ function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   showCongratulations();
 }
-// TODO create  setWindMillRotation   and  generateWindSpeed functions
-function generateWindSpeed() {}
+// TODO create  setWindMillRotation
+function generateWindSpeed() {
+  // speed -10 to 10
+  return -10 + Math.random() * 20;
+}
 function setWindMillRotation() {
   // find absolute speed
   const rotationSpeed = Math.abs(50 / state.windSpeed);

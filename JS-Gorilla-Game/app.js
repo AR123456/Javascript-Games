@@ -53,6 +53,7 @@ function newGame() {
     // keep track of who the current player is
     currentPlayer: 1,
     round: 1,
+    windSpeed: 2,
     bomb: {
       x: undefined,
       y: undefined,

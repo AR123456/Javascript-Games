@@ -87,6 +87,8 @@ function newGame() {
   initializeWindmillPosition();
   // set speed of windmill
   setWindMillRotation();
+  // set windmill rotation
+  setWindMillRotation();
   // re set HTML elements
   hideCongratulations();
   angle1DOM.innerText = 0;
@@ -153,7 +155,7 @@ function generateBuilding(index) {
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
 }
-//TODO re name calculateScaleAndShift rework for resize
+//TODO re name calculateScaleAndShift rework for user zooming in on game
 function calculateScale() {
   // calc total width of city, add width of last building
   const lastBuilding = state.buildings.at(-1);
@@ -162,7 +164,7 @@ function calculateScale() {
 
   state.scale = window.innerWidth / totalWidthOfTheCity;
 }
-// handle user resize of browser
+// TODO handle user zooming in
 window.addEventListener("resize", () => {
   console.log(window.devicePixelRatio);
 });
@@ -192,7 +194,6 @@ function initializeBombPosition() {
   bombGrabAreaDOM.style.left = `${left}px`;
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
 }
-// TODO at some point will need resize event listener
 
 function initializeWindmillPosition() {
   const lastBuilding = state.buildings.at(-1);

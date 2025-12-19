@@ -166,8 +166,9 @@ function calculateScaleAndShift() {
 }
 // TODO handle user zooming in
 window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  // account for zooming by user
+  canvas.width = window.innerWidth * window.devicePixelRatio;
+  canvas.height = window.innerHeight * window.devicePixelRatio;
   calculateScaleAndShift();
   initializeBombPosition();
   draw();

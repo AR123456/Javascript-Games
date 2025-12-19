@@ -44,7 +44,7 @@ const newGameButton = document.getElementById("new-game");
 newGame();
 
 //main game function -initilize or reset
-//TODO in new game  set windmill rotation
+
 function newGame() {
   // reset game state
   state = {
@@ -80,7 +80,7 @@ function newGame() {
     generateBuilding(i);
   }
   // buildings generated but before bomb is positioned now calc scale
-  calculateScale();
+  calculateScaleAndShift();
   // call after gen building/position of gorilla is known
   initializeBombPosition();
   // set windmill pos when buildings known
@@ -155,8 +155,8 @@ function generateBuilding(index) {
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
 }
-//TODO re name calculateScaleAndShift rework for user zooming in on game
-function calculateScale() {
+//TODO re name calculateScaleAndShiftAndShiftAndShift rework for user zooming in on game
+function calculateScaleAndShift() {
   // calc total width of city, add width of last building
   const lastBuilding = state.buildings.at(-1);
   // ratio  of width of city to window
@@ -166,7 +166,11 @@ function calculateScale() {
 }
 // TODO handle user zooming in
 window.addEventListener("resize", () => {
-  console.log(window.devicePixelRatio);
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  calculateScaleAndShift();
+  initializeBombPosition();
+  draw();
 });
 function initializeBombPosition() {
   // depends on position of gorilla on building, so index 1 or second to last
@@ -803,11 +807,5 @@ function setWindMillRotation() {
 
   windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  calculateScale();
-  initializeBombPosition();
-  draw();
-});
+
 newGameButton.addEventListener("click", newGame);

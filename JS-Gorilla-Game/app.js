@@ -163,7 +163,9 @@ function calculateScale() {
   state.scale = window.innerWidth / totalWidthOfTheCity;
 }
 // handle user resize of browser
-
+window.addEventListener("resize", () => {
+  console.log(window.devicePixelRatio);
+});
 function initializeBombPosition() {
   // depends on position of gorilla on building, so index 1 or second to last
   const building =

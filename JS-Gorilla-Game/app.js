@@ -26,7 +26,7 @@ const ctx = canvas.getContext("2d");
 const windmillDOM = document.getElementById("windmill");
 const windmillHeadDOM = document.getElementById("windmill-head");
 const windInfoDOM = document.getElementById("wind-info");
-const windSpeedDOM = document.getElementById("speed-info");
+const windSpeedDOM = document.getElementById("wind-speed");
 // left info panel
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");
@@ -153,7 +153,7 @@ function generateBuilding(index) {
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
 }
-
+//TODO re name calculateScaleAndShift rework for resize
 function calculateScale() {
   // calc total width of city, add width of last building
   const lastBuilding = state.buildings.at(-1);
@@ -162,6 +162,8 @@ function calculateScale() {
 
   state.scale = window.innerWidth / totalWidthOfTheCity;
 }
+// handle user resize of browser
+
 function initializeBombPosition() {
   // depends on position of gorilla on building, so index 1 or second to last
   const building =
@@ -784,7 +786,7 @@ function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   showCongratulations();
 }
-// TODO create  setWindMillRotation
+
 function generateWindSpeed() {
   // speed -10 to 10
   return -10 + Math.random() * 20;
@@ -795,8 +797,8 @@ function setWindMillRotation() {
   windmillHeadDOM.style.animationDirection =
     state.windSpeed > 0 ? "normal" : "reverse";
   windmillHeadDOM.style.animationDuration = `${rotationSpeed}s`;
-  //TODO this line of code breaks the display
-  // windSpeedDOM.innerText = Math.round(state.windSpeed);
+
+  windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;

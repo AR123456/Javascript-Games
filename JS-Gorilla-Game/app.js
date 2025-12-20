@@ -162,8 +162,14 @@ function calculateScaleAndShift() {
   const totalWidthOfTheCity = lastBuilding.x + lastBuilding.width;
   // if the width/width of city null return 1
   const horizontalScale = window.innerWidth / totalWidthOfTheCity ?? 1;
+  const verticalScale = window.innerHeight / 500;
 
-  state.scale = window.innerWidth / totalWidthOfTheCity;
+  state.scale = Math.min(horizontalScale / verticalScale);
+  const sceneNeedsToBeShifted = horizontalScale > verticalScale;
+  // Ternary   condition ? expressionIfTrue : expressionIfFalse;
+  state.shift = sceneNeedsToBeShifted
+    ? (window.innerWidth - totalWidthOfTheCity * state.scale) / 2
+    : 0;
 }
 // TODO handle user zooming in
 window.addEventListener("resize", () => {

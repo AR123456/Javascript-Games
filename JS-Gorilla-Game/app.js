@@ -160,6 +160,7 @@ function calculateScaleAndShift() {
   const lastBuilding = state.buildings.at(-1);
   // ratio  of width of city to window
   const totalWidthOfTheCity = lastBuilding.x + lastBuilding.width;
+  // if the width/width of city null return 1
   const horizontalScale = window.innerWidth / totalWidthOfTheCity ?? 1;
 
   state.scale = window.innerWidth / totalWidthOfTheCity;

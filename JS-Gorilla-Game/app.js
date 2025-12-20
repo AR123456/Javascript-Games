@@ -164,9 +164,10 @@ function calculateScaleAndShift() {
   const horizontalScale = window.innerWidth / totalWidthOfTheCity ?? 1;
   const verticalScale = window.innerHeight / 500;
 
-  state.scale = Math.min(horizontalScale / verticalScale);
+  state.scale = Math.min(horizontalScale, verticalScale);
   const sceneNeedsToBeShifted = horizontalScale > verticalScale;
   // Ternary   condition ? expressionIfTrue : expressionIfFalse;
+
   state.shift = sceneNeedsToBeShifted
     ? (window.innerWidth - totalWidthOfTheCity * state.scale) / 2
     : 0;

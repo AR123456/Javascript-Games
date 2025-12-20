@@ -85,8 +85,7 @@ function newGame() {
   initializeBombPosition();
   // set windmill pos when buildings known
   initializeWindmillPosition();
-  // set speed of windmill
-  setWindMillRotation();
+
   // set windmill rotation
   setWindMillRotation();
   // re set HTML elements
@@ -155,12 +154,13 @@ function generateBuilding(index) {
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
 }
-//TODO re name calculateScaleAndShiftAndShiftAndShift rework for user zooming in on game
+//TODO complet this function
 function calculateScaleAndShift() {
   // calc total width of city, add width of last building
   const lastBuilding = state.buildings.at(-1);
   // ratio  of width of city to window
   const totalWidthOfTheCity = lastBuilding.x + lastBuilding.width;
+  const horizontalScale = window.innerWidth / totalWidthOfTheCity ?? 1;
 
   state.scale = window.innerWidth / totalWidthOfTheCity;
 }

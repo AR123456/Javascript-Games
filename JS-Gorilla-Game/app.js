@@ -154,7 +154,7 @@ function generateBuilding(index) {
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
 }
-//TODO complet this function
+
 function calculateScaleAndShift() {
   // calc total width of city, add width of last building
   const lastBuilding = state.buildings.at(-1);
@@ -172,7 +172,7 @@ function calculateScaleAndShift() {
     ? (window.innerWidth - totalWidthOfTheCity * state.scale) / 2
     : 0;
 }
-// TODO handle user zooming in
+
 window.addEventListener("resize", () => {
   // account for zooming by user
   canvas.width = window.innerWidth * window.devicePixelRatio;
@@ -215,7 +215,8 @@ function initializeWindmillPosition() {
   const lastBuilding = state.buildings.at(-1);
   let rooftopY = lastBuilding.height * state.scale;
   // TODO shift is undefined at this point when scale shift for resize implemented circle back
-  let rooftopX = (lastBuilding.x + lastBuilding.width / 2) * state.scale;
+  let rooftopX =
+    (lastBuilding.x + lastBuilding.width / 2) * state.scale + state.shift;
   windmillDOM.style.bottom = `${rooftopY}px`;
   windmillDOM.style.left = `${rooftopX - 100}px`;
   // size the wm based on state scale

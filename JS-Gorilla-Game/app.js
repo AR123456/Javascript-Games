@@ -154,7 +154,7 @@ function generateBuilding(index) {
   // push buildings to state object
   state.buildings.push({ x, width, height, lightsOn });
 }
-
+//TODO complet this function
 function calculateScaleAndShift() {
   // calc total width of city, add width of last building
   const lastBuilding = state.buildings.at(-1);
@@ -164,15 +164,10 @@ function calculateScaleAndShift() {
   const horizontalScale = window.innerWidth / totalWidthOfTheCity ?? 1;
   const verticalScale = window.innerHeight / 500;
 
-  state.scale = Math.min(horizontalScale, verticalScale);
+  state.scale = Math.min(horizontalScale / verticalScale);
   const sceneNeedsToBeShifted = horizontalScale > verticalScale;
-  // Ternary   condition ? expressionIfTrue : expressionIfFalse;
-
-  state.shift = sceneNeedsToBeShifted
-    ? (window.innerWidth - totalWidthOfTheCity * state.scale) / 2
-    : 0;
 }
-
+// TODO handle user zooming in
 window.addEventListener("resize", () => {
   // account for zooming by user
   canvas.width = window.innerWidth * window.devicePixelRatio;
@@ -202,11 +197,10 @@ function initializeBombPosition() {
   state.bomb.velocity.y = 0;
   // reset rotation
   state.bomb.rotation = 0;
-  // position the html grab area with the bomb-
+  // position the html grab area with the bomb
 
   const grabAreaRadius = 15;
-
-  const left = state.bomb.x * state.scale + state.shift - grabAreaRadius;
+  const left = state.bomb.x * state.scale - grabAreaRadius;
   const bottom = state.bomb.y * state.scale - grabAreaRadius;
   bombGrabAreaDOM.style.left = `${left}px`;
   bombGrabAreaDOM.style.bottom = `${bottom}px`;
@@ -215,9 +209,8 @@ function initializeBombPosition() {
 function initializeWindmillPosition() {
   const lastBuilding = state.buildings.at(-1);
   let rooftopY = lastBuilding.height * state.scale;
-
-  let rooftopX =
-    (lastBuilding.x + lastBuilding.width / 2) * state.scale + state.shift;
+  // TODO shift is undefined at this point when scale shift for resize implemented circle back
+  let rooftopX = (lastBuilding.x + lastBuilding.width / 2) * state.scale;
   windmillDOM.style.bottom = `${rooftopY}px`;
   windmillDOM.style.left = `${rooftopX - 100}px`;
   // size the wm based on state scale
@@ -230,20 +223,16 @@ function initializeWindmillPosition() {
 // draw function
 function draw() {
   ctx.save();
-  // TODO ctx.scale
-
-  // TODO drawBackgroundSky function
   // flip coordinate system to upside down - down the y axis by size of browser window
   ctx.translate(0, window.innerHeight);
+  // flip the x
   ctx.scale(1, -1);
-
-  // scale and shift view to center
-  ctx.translate(state.shift, 0);
   // use the calculated scale
   ctx.scale(state.scale, state.scale);
   ///// call the draw functions
   drawBackground();
   drawBackgroundBuildings();
+
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
   drawGorilla(2);
@@ -252,7 +241,6 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
-//TODO is this replaced by drawBackgroundSky?
 function drawBackground() {
   const background = ctx.createLinearGradient(
     0,
@@ -279,8 +267,6 @@ function drawBackground() {
   ctx.arc(300, 350, 60, 0, 2 * Math.PI);
   ctx.fill();
 }
-// TODO drawBackgroundSky
-//TODO drawBackgroundMoon
 function drawBackgroundBuildings() {
   // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {
@@ -708,11 +694,10 @@ function moveBomb(elapsedTime) {
   state.bomb.rotation += direction * 5 * multiplier;
 }
 function checkFrameHit() {
-  // Stop throw animation once the bomb gets out of the left, bottom, or right edge of the screen
   if (
     state.bomb.y < 0 ||
-    state.bomb.x < -state.shift / state.scale ||
-    state.bomb.x > window.innerWidth - state.shift / state.scale
+    state.bomb.x < 0 ||
+    state.bomb.x > window.innerWidth / state.scale
   ) {
     return true;
   }

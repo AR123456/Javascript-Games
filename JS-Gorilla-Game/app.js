@@ -202,10 +202,11 @@ function initializeBombPosition() {
   state.bomb.velocity.y = 0;
   // reset rotation
   state.bomb.rotation = 0;
-  // position the html grab area with the bomb
+  // position the html grab area with the bomb-
 
   const grabAreaRadius = 15;
-  const left = state.bomb.x * state.scale - grabAreaRadius;
+  // add state.shift
+  const left = state.bomb.x * state.scale + state.shift - grabAreaRadius;
   const bottom = state.bomb.y * state.scale - grabAreaRadius;
   bombGrabAreaDOM.style.left = `${left}px`;
   bombGrabAreaDOM.style.bottom = `${bottom}px`;

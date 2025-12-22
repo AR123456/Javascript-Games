@@ -230,8 +230,8 @@ function initializeWindmillPosition() {
 // draw function
 function draw() {
   ctx.save();
-  // TODO ctx.scale
 
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
   // TODO drawBackgroundSky function
   // flip coordinate system to upside down - down the y axis by size of browser window
   ctx.translate(0, window.innerHeight);

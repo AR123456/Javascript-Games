@@ -232,7 +232,8 @@ function draw() {
   ctx.save();
 
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  // TODO drawBackgroundSky function
+
+  drawBackgroundSky();
   // flip coordinate system to upside down - down the y axis by size of browser window
   ctx.translate(0, window.innerHeight);
   ctx.scale(1, -1);
@@ -242,6 +243,7 @@ function draw() {
   // use the calculated scale
   ctx.scale(state.scale, state.scale);
   ///// call the draw functions
+  // TODO is drawBackgroun now draw backgroundMoon or draw background sky
   drawBackground();
   drawBackgroundBuildings();
   drawBuildingsWithBlastHoles();
@@ -280,6 +282,9 @@ function drawBackground() {
   ctx.fill();
 }
 // TODO drawBackgroundSky
+function drawBackgroundSky() {
+  console.log("in draw background sky");
+}
 //TODO drawBackgroundMoon
 function drawBackgroundBuildings() {
   // just using the building part of state so give it a meaningful variable name

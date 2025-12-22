@@ -205,7 +205,7 @@ function initializeBombPosition() {
   // position the html grab area with the bomb-
 
   const grabAreaRadius = 15;
-  // add state.shift
+
   const left = state.bomb.x * state.scale + state.shift - grabAreaRadius;
   const bottom = state.bomb.y * state.scale - grabAreaRadius;
   bombGrabAreaDOM.style.left = `${left}px`;
@@ -215,7 +215,7 @@ function initializeBombPosition() {
 function initializeWindmillPosition() {
   const lastBuilding = state.buildings.at(-1);
   let rooftopY = lastBuilding.height * state.scale;
-  // TODO shift is undefined at this point when scale shift for resize implemented circle back
+
   let rooftopX =
     (lastBuilding.x + lastBuilding.width / 2) * state.scale + state.shift;
   windmillDOM.style.bottom = `${rooftopY}px`;
@@ -230,10 +230,15 @@ function initializeWindmillPosition() {
 // draw function
 function draw() {
   ctx.save();
+  // TODO ctx.scale
+
+  // TODO drawBackgroundSky function
   // flip coordinate system to upside down - down the y axis by size of browser window
   ctx.translate(0, window.innerHeight);
-  // flip the x
   ctx.scale(1, -1);
+
+  // scale and shift view to center
+  ctx.translate(state.shift, 0);
   // use the calculated scale
   ctx.scale(state.scale, state.scale);
   ///// call the draw functions

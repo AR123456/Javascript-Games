@@ -244,7 +244,6 @@ function draw() {
   ///// call the draw functions
   drawBackground();
   drawBackgroundBuildings();
-
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
   drawGorilla(2);
@@ -253,6 +252,7 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
+//TODO is this replaced by drawBackgroundSky?
 function drawBackground() {
   const background = ctx.createLinearGradient(
     0,
@@ -279,6 +279,8 @@ function drawBackground() {
   ctx.arc(300, 350, 60, 0, 2 * Math.PI);
   ctx.fill();
 }
+// TODO drawBackgroundSky
+//TODO drawBackgroundMoon
 function drawBackgroundBuildings() {
   // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {
@@ -286,6 +288,32 @@ function drawBackgroundBuildings() {
     ctx.fillRect(building.x, 0, building.width, building.height);
   });
 }
+function drawBuildingsWithBlastHoles() {
+  ctx.save();
+
+  state.blastHoles.forEach((blastHole) => {
+    ctx.beginPath();
+
+    // Outer shape clockwise
+    ctx.rect(
+      0,
+      0,
+      window.innerWidth / state.scale,
+      window.innerHeight / state.scale
+    );
+    // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
+    // Inner shape counterclockwise
+    ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
+    ctx.clip();
+  });
+
+  drawBuildings();
+
+  ctx.restore();
+}
+
 function drawBuildings() {
   //  starts same way as drawing the background buildings
   state.buildings.forEach((building) => {
@@ -706,10 +734,11 @@ function moveBomb(elapsedTime) {
   state.bomb.rotation += direction * 5 * multiplier;
 }
 function checkFrameHit() {
+  // Stop throw animation once the bomb gets out of the left, bottom, or right edge of the screen
   if (
     state.bomb.y < 0 ||
-    state.bomb.x < 0 ||
-    state.bomb.x > window.innerWidth / state.scale
+    state.bomb.x < -state.shift / state.scale ||
+    state.bomb.x > window.innerWidth - state.shift / state.scale
   ) {
     return true;
   }
@@ -780,32 +809,6 @@ function checkGorillaHit() {
   ctx.restore();
   //  sending this to the animate function
   return hit;
-}
-
-function drawBuildingsWithBlastHoles() {
-  ctx.save();
-
-  state.blastHoles.forEach((blastHole) => {
-    ctx.beginPath();
-
-    // Outer shape clockwise
-    ctx.rect(
-      0,
-      0,
-      window.innerWidth / state.scale,
-      window.innerHeight / state.scale
-    );
-    // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
-    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
-    // Inner shape counterclockwise
-    ctx.arc(blastHole.x, blastHole.y, blastHoleRadius, 0, 2 * Math.PI, true);
-    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
-    ctx.clip();
-  });
-
-  drawBuildings();
-
-  ctx.restore();
 }
 
 function announceWinner() {

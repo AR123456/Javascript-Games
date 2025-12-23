@@ -17,8 +17,9 @@ const blastHoleRadius = 18;
 let numberOfPlayers = 1;
 // main canvas element and its drawing context
 const canvas = document.getElementById("game");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+canvas.width = window.innerWidth * window.devicePixelRatio;
+canvas.height = window.innerHeight * window.devicePixelRatio;
 // draw function needs context
 const ctx = canvas.getContext("2d");
 // consts for js

@@ -254,12 +254,7 @@ function draw() {
 }
 //TODO  drawBackgroundSky?
 function drawBackgroundSky() {
-  const gradient = ctx.createLinearGradient(
-    0,
-    0,
-    0,
-    window.innerHeight / state.scale
-  );
+  const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
   // set up gradient
   gradient.addColorStop(1, "#F8BA85");
   gradient.addColorStop(0, "#FFC28E");

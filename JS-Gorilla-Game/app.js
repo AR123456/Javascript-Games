@@ -232,7 +232,6 @@ function draw() {
   ctx.save();
 
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  // TODO is drawBackgroun now draw backgroundMoon or draw background sky
 
   drawBackgroundSky();
   // flip coordinate system to upside down - down the y axis by size of browser window
@@ -244,7 +243,6 @@ function draw() {
   // use the calculated scale
   ctx.scale(state.scale, state.scale);
   ///// call the draw functions
-
   drawBackgroundBuildings();
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
@@ -256,18 +254,18 @@ function draw() {
 }
 //TODO  drawBackgroundSky?
 function drawBackgroundSky() {
-  const background = ctx.createLinearGradient(
+  const gradient = ctx.createLinearGradient(
     0,
     0,
     0,
     window.innerHeight / state.scale
   );
   // set up gradient
-  background.addColorStop(1, "#F8BA85");
-  background.addColorStop(0, "#FFC28E");
+  gradient.addColorStop(1, "#F8BA85");
+  gradient.addColorStop(0, "#FFC28E");
 
   // draw sky
-  ctx.fillStyle = background;
+  ctx.fillStyle = gradient;
   ctx.fillRect(
     0,
     0,

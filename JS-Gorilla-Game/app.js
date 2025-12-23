@@ -20,6 +20,9 @@ const canvas = document.getElementById("game");
 
 canvas.width = window.innerWidth * window.devicePixelRatio;
 canvas.height = window.innerHeight * window.devicePixelRatio;
+// define canvas width/height
+canvas.style.width = window.innerWidth + "px";
+canvas.style.height = window.innerHeight + "px";
 // draw function needs context
 const ctx = canvas.getContext("2d");
 // consts for js

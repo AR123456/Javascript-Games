@@ -9,7 +9,7 @@ let previousAnimationTimestamp = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
-let deltaX, deltaY;
+// let deltaX, deltaY;
 
 const blastHoles = 18;
 const blastHoleRadius = 18;

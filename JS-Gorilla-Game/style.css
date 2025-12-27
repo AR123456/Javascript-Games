@@ -62,7 +62,10 @@ button:hover {
 #settings {
   position: absolute;
   top: calc(20px + 16.385px- 10px);
-  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  right: 11em;
 }
 #windmill {
   position: absolute;

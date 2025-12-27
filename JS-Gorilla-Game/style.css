@@ -83,6 +83,11 @@ button:hover {
     visibility: hidden;
   } */
 }
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
 #windmill {
   position: absolute;
   right: 0;

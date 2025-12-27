@@ -16,6 +16,11 @@ body {
   overflow: hidden;
 }
 
+button {
+}
+button:hover {
+}
+
 #info-left,
 #info-right {
   position: absolute;
@@ -37,9 +42,15 @@ body {
   background-color: transparent;
   cursor: grab;
 }
+#instructions,
 #congratulations {
   position: absolute;
-  visibility: hidden;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+@media (min-height: 535px) {
+  #instructions {
+    min-height: 200px;
+  }
 }
 #windmill {
   position: absolute;

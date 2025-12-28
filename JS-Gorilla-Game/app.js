@@ -9,15 +9,15 @@ let previousAnimationTimestamp = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
-// let deltaX, deltaY;
+// TODO implement settings put players and mode of light or dark in it
 
+let numberOfPlayers = 1;
+// TODO move this into state as an array
 const blastHoles = 18;
 const blastHoleRadius = 18;
 
-let numberOfPlayers = 1;
 // main canvas element and its drawing context
 const canvas = document.getElementById("game");
-
 canvas.width = window.innerWidth * window.devicePixelRatio;
 canvas.height = window.innerHeight * window.devicePixelRatio;
 // define canvas width/height
@@ -25,25 +25,29 @@ canvas.style.width = window.innerWidth + "px";
 canvas.style.height = window.innerHeight + "px";
 // draw function needs context
 const ctx = canvas.getContext("2d");
-// consts for js
+
 // windmill
 const windmillDOM = document.getElementById("windmill");
 const windmillHeadDOM = document.getElementById("windmill-head");
 const windInfoDOM = document.getElementById("wind-info");
 const windSpeedDOM = document.getElementById("wind-speed");
 // left info panel
+//TODO add info and name
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");
 // right info panel
+// TODO add info and name
 const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
+// TODO add instructions panel
 // bomb grab area
 const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 // congratulations panel
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
-
+// TODO add settings toolbar
+// TODO add light dark mode button on click
 // new game
 newGame();
 

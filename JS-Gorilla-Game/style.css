@@ -16,11 +16,6 @@ body {
   overflow: hidden;
 }
 
-button {
-}
-button:hover {
-}
-
 #info-left,
 #info-right {
   position: absolute;
@@ -42,52 +37,10 @@ button:hover {
   background-color: transparent;
   cursor: grab;
 }
-#instructions,
 #congratulations {
   position: absolute;
-  transition: visibility 0s, opacity 0.5s linear;
+  visibility: hidden;
 }
-@media (min-height: 535px) {
-  #instructions {
-    min-height: 200px;
-  }
-}
-#congratulations {
-}
-#congratulations p a {
-}
-#congratulations button {
-}
-
-#settings {
-  position: absolute;
-  top: calc(20px + 16.385px- 10px);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  right: 11em;
-}
-#settings,
-#info-left,
-#info-right {
-  /* opacity: 0;
-  transition: opacity 3s; */
-}
-@media (max-width: 450px) {
-  /* #settings,
-  #info-left,
-  #info-right {
-    opacity: 0;
-  }
-  #instructions {
-    visibility: hidden;
-  } */
-}
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
 #windmill {
   position: absolute;
   right: 0;

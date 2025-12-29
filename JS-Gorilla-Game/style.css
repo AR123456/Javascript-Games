@@ -47,6 +47,11 @@ button:hover {
   position: absolute;
   transition: visibility 0s, opacity 0.5s linear;
 }
+@media (min-height: 535px) {
+  #instructions {
+    min-height: 200px;
+  }
+}
 #windmill {
   position: absolute;
   right: 0;

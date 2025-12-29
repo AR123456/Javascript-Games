@@ -52,6 +52,18 @@ button:hover {
     min-height: 200px;
   }
 }
+#congratulations {
+}
+#congratulations p a {
+}
+#congratulations button {
+}
+
+#settings {
+  position: absolute;
+  top: calc(20px + 16.385px- 10px);
+  color: inherit;
+}
 #windmill {
   position: absolute;
   right: 0;

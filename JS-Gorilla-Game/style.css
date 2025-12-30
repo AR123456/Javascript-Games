@@ -87,6 +87,12 @@ button:hover {
   position: relative;
   display: inline-block;
 }
+.dropbtn:after {
+  content: "▼";
+  margin-left: 7px;
+  font-size: 0.8em;
+  vertical-align: text-top;
+}
 
 #windmill {
   position: absolute;

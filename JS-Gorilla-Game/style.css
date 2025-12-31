@@ -108,6 +108,9 @@ button:hover {
   white-space: nowrap;
   font-size: 0.9rem;
 }
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
 #windmill {
   position: absolute;
   right: 0;

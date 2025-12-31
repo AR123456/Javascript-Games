@@ -17,6 +17,13 @@ body {
 }
 
 button {
+  cursor: pointer;
+  border: none;
+  color: white;
+  background: transparent;
+  font-family: "Inconsolata", monospace;
+  padding: 10px;
+  font-size: 1em;
 }
 button:hover {
 }

@@ -92,14 +92,14 @@ button:hover {
   transition: opacity 3s;
 }
 @media (max-width: 450px) {
-  /* #settings,
+  #settings,
   #info-left,
   #info-right {
     opacity: 0;
   }
   #instructions {
     visibility: hidden;
-  } */
+  }
 }
 .dropdown {
   position: relative;

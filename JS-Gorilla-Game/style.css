@@ -53,7 +53,7 @@ button:hover {
 #instructions,
 #congratulations {
   position: absolute;
-  /* transition: visibility 0s, opacity 0.5s linear; */
+  transition: visibility 0s, opacity 0.5s linear;
 }
 @media (min-height: 535px) {
   #instructions {
@@ -73,6 +73,8 @@ button:hover {
   color: inherit;
 }
 #congratulations button {
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  color: inherit;
 }
 
 #settings {
@@ -86,8 +88,8 @@ button:hover {
 #settings,
 #info-left,
 #info-right {
-  /* opacity: 0;
-  transition: opacity 3s; */
+  opacity: 0;
+  transition: opacity 3s;
 }
 @media (max-width: 450px) {
   /* #settings,

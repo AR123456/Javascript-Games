@@ -61,6 +61,13 @@ button:hover {
   }
 }
 #congratulations {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  padding: 50px 80px;
+  opacity: 0;
+  visibility: hidden;
+  max-width: 300px;
+  backdrop-filter: blur(5px);
 }
 #congratulations p a {
 }

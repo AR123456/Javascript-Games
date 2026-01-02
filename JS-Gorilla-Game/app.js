@@ -493,8 +493,12 @@ function drawGorillaFace(player) {
 function drawGorillaThoughtBubbles(player) {
   if (state.phase === "aiming") {
     const currentPlayerIsComputer =
-      (numberOfPlayers === 0 && state.currentPlayer === 1 && player === 1) ||
-      (numberOfPlayers !== 2 && state.currentPlayer === 2 && player === 2);
+      (settings.numberOfPlayers === 0 &&
+        state.currentPlayer === 1 &&
+        player === 1) ||
+      (settings.numberOfPlayers !== 2 &&
+        state.currentPlayer === 2 &&
+        player === 2);
     if (currentPlayerIsComputer) {
       ctx.save();
       ctx.scale(1, -1);
@@ -711,8 +715,8 @@ function animate(timestamp) {
     draw();
     // whos turn is it?
     const computerThrowsNext =
-      numberOfPlayers === 0 ||
-      (numberOfPlayers === 1 && state.currentPlayer === 2);
+      settings.numberOfPlayers === 0 ||
+      (settings.numberOfPlayers === 1 && state.currentPlayer === 2);
     if (computerThrowsNext) setTimeout(computerThrow, 50);
     // stop animation
     return;

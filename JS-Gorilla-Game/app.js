@@ -1,3 +1,5 @@
+const { StrictMode } = require("react");
+
 // State(game state) at start of game
 let state = {};
 
@@ -10,8 +12,11 @@ let previousAnimationTimestamp = undefined;
 let simulationMode = false;
 let simulationImpact = {};
 // TODO implement settings put players and mode of light or dark in it
+const settings = {
+  numberOfPlayers: 1,
+  mode: "light",
+};
 
-let numberOfPlayers = 1;
 // TODO move this into state as an array
 const blastHoles = 18;
 const blastHoleRadius = 18;
@@ -96,7 +101,14 @@ function newGame() {
 
   // set windmill rotation
   setWindMillRotation();
+  // TODO cancle anim and clear timeout
   // re set HTML elements
+
+  if (settings.numberOfPlayers > 0) {
+    showInstructions();
+  } else {
+    hideInstructions();
+  }
   hideCongratulations();
   angle1DOM.innerText = 0;
   velocity1DOM.innerText = 0;
@@ -106,7 +118,9 @@ function newGame() {
   //call draw function - paints the screen when called
   draw();
   // hand over game to computer
-  if (numberOfPlayers === 0) computerThrow();
+  if (settings.numberOfPlayers === 0) {
+    computerThrow();
+  }
 }
 function showCongratulations() {
   congratulationsDOM.style.opacity = 1;

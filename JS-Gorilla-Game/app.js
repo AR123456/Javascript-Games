@@ -1,5 +1,3 @@
-const { StrictMode } = require("react");
-
 // State(game state) at start of game
 let state = {};
 
@@ -11,7 +9,7 @@ let previousAnimationTimestamp = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
-// TODO implement settings put players and mode of light or dark in it
+// TODO find settings bug showinstructions not defined
 const settings = {
   numberOfPlayers: 1,
   mode: "light",
@@ -51,7 +49,13 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
-// TODO add settings toolbar
+// TODO add settings toolbar from dom
+const settingsDOM = document.getElementById("settings");
+//TODO refactor this inapporprate use of querySelector All
+const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
+const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
+const autoPlayerButtonDOM = document.querySelectorAll(".auto-play");
+const colorModeButtonDOM = document.getElementById("color-mode");
 // TODO add light dark mode button on click
 // new game
 newGame();
@@ -105,7 +109,8 @@ function newGame() {
   // re set HTML elements
 
   if (settings.numberOfPlayers > 0) {
-    showInstructions();
+    // TODO show ins not defined
+    // showInstructions();
   } else {
     hideInstructions();
   }

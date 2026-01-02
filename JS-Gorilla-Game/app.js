@@ -109,8 +109,7 @@ function newGame() {
   // re set HTML elements
 
   if (settings.numberOfPlayers > 0) {
-    // TODO show ins not defined
-    // showInstructions();
+    showInstructions();
   } else {
     hideInstructions();
   }
@@ -127,6 +126,13 @@ function newGame() {
     computerThrow();
   }
 }
+
+function showInstructions() {
+  singlePlayerButtonDOM.checked = true;
+  instructionsDOM.style.opacity = 1;
+  instructionsDOM.style.visibility = visible;
+}
+
 function showCongratulations() {
   congratulationsDOM.style.opacity = 1;
   congratulationsDOM.style.visibility = "visible";
@@ -831,7 +837,7 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-
+//TODO implement use of settings and more players
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   showCongratulations();

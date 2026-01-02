@@ -42,7 +42,9 @@ const velocity1DOM = document.querySelector("#info-left .velocity");
 // TODO add info and name
 const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
-// TODO add instructions panel
+// instructions panel
+const instructionsDOM = document.getElementById("instructions");
+const gameModeDOM = document.getElementById("game-mode");
 // bomb grab area
 const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 // congratulations panel

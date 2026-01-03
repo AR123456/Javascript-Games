@@ -60,7 +60,14 @@ const autoPlayerButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
 
 colorModeButtonDOM.addEventListener("click", () => {
-  console.log("clicked ");
+  if (settings.mode === "dark") {
+    settings.mode = "light";
+    colorModeButtonDOM.innerText = "Dark Mode";
+  } else {
+    settings.mode = "dark";
+    colorModeButtonDOM.innerText = "Light Mode";
+  }
+  draw();
 });
 
 // TODO add light dark mode button on click

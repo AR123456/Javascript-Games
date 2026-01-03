@@ -35,11 +35,13 @@ const windmillHeadDOM = document.getElementById("windmill-head");
 const windInfoDOM = document.getElementById("wind-info");
 const windSpeedDOM = document.getElementById("wind-speed");
 // left info panel
-//TODO add info and name
+const info1DOM = document.getElementById("info-left");
+const name1DOM = document.querySelector("#info-left .name");
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");
 // right info panel
-// TODO add info and name
+const info2DOM = document.getElementById("info-right");
+const name2DOM = document.querySelector("#info-right .name");
 const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
 // instructions panel
@@ -132,7 +134,7 @@ function newGame() {
 function showInstructions() {
   singlePlayerButtonDOM.checked = true;
   instructionsDOM.style.opacity = 1;
-  instructionsDOM.style.visibility = visible;
+  instructionsDOM.style.visibility = "visible";
 }
 
 function showCongratulations() {

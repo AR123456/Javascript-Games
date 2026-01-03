@@ -136,7 +136,11 @@ function showInstructions() {
   instructionsDOM.style.opacity = 1;
   instructionsDOM.style.visibility = "visible";
 }
-
+function hideInstructions() {
+  state.bomb.highlight = false;
+  instructionsDOM.style.opacity = 0;
+  instructionsDOM.style.visibility = "hidden";
+}
 function showCongratulations() {
   congratulationsDOM.style.opacity = 1;
   congratulationsDOM.style.visibility = "visible";

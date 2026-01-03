@@ -9,7 +9,7 @@ let previousAnimationTimestamp = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
-// TODO find settings bug showinstructions not defined
+
 const settings = {
   numberOfPlayers: 1,
   mode: "light",
@@ -87,9 +87,11 @@ function newGame() {
     buildings: [],
     // blasts
     blastHoles: [],
+    stars: [],
     // scale to screen-value depends on size of generated buildings
     // so after city is generated call function to calculate scale
     scale: 1,
+    shift: 0,
   };
 
   for (let i = 0; i < 11; i++) {
@@ -144,12 +146,10 @@ function hideInstructions() {
 function showCongratulations() {
   congratulationsDOM.style.opacity = 1;
   congratulationsDOM.style.visibility = "visible";
-  //
 }
 function hideCongratulations() {
   congratulationsDOM.style.opacity = 0;
   congratulationsDOM.style.visibility = "hidden";
-  //
 }
 function generateBackgroundBuilding(index) {
   const previousBuilding = state.backgroundBuildings[index - 1];

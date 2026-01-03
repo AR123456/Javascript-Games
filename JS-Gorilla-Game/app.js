@@ -15,8 +15,6 @@ const settings = {
   mode: "light",
 };
 
-// TODO move this into state as an array
-const blastHoles = 18;
 const blastHoleRadius = 18;
 
 // main canvas element and its drawing context
@@ -53,13 +51,18 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
-// TODO add settings toolbar from dom
+// settings
 const settingsDOM = document.getElementById("settings");
-//TODO refactor this inapporprate use of querySelector All
+//TODO why use of querySelector All
 const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
 const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
 const autoPlayerButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
+
+colorModeButtonDOM.addEventListener("click", () => {
+  console.log("clicked ");
+});
+
 // TODO add light dark mode button on click
 // new game
 newGame();

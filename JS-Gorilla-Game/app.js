@@ -102,7 +102,9 @@ function newGame() {
     scale: 1,
     shift: 0,
   };
-  // TODO generate stars
+  // TODO generate stars so they can be drawn
+  for (let i = 0; i < (window.innerWidth * window.innerHeight) / 12000; i++) {}
+
   // Generate background buildings
   for (let i = 0; i < 11; i++) {
     generateBackgroundBuilding(i);
@@ -304,7 +306,7 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
-//TODO  drawBackgroundSky?
+//
 function drawBackgroundSky() {
   const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
   if (settings.mode === "dark") {
@@ -318,7 +320,14 @@ function drawBackgroundSky() {
   // draw sky
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  //TODO account for dark mode-add stars
+  //TODO why no stars - need to generate them
+  if (settings.mode === "dark") {
+    ctx.fillStyle = "white";
+
+    state.stars.forEach((star) => {
+      ctx.fillRect(star.x, star.y, 1, 1);
+    });
+  }
   //  TODO make this its own function drabBackgroundMoon adding moon to background
   ctx.fillStyle = "rgba(255,253,253,0.61)";
   ctx.beginPath();

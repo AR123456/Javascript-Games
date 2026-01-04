@@ -102,9 +102,7 @@ function newGame() {
     scale: 1,
     shift: 0,
   };
-  // TODO generate stars so they can be drawn
-  for (let i = 0; i < (window.innerWidth * window.innerHeight) / 12000; i++) {}
-
+  // TODO generate stars
   // Generate background buildings
   for (let i = 0; i < 11; i++) {
     generateBackgroundBuilding(i);
@@ -320,10 +318,9 @@ function drawBackgroundSky() {
   // draw sky
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  //TODO why no stars - need to generate them
+  //TODO why no stars
   if (settings.mode === "dark") {
     ctx.fillStyle = "white";
-
     state.stars.forEach((star) => {
       ctx.fillRect(star.x, star.y, 1, 1);
     });

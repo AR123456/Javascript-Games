@@ -9,12 +9,14 @@ let previousAnimationTimestamp = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
-
+// TODO find settings bug showinstructions not defined
 const settings = {
   numberOfPlayers: 1,
   mode: "light",
 };
 
+// TODO move this into state as an array
+const blastHoles = 18;
 const blastHoleRadius = 18;
 
 // main canvas element and its drawing context
@@ -33,43 +35,28 @@ const windmillHeadDOM = document.getElementById("windmill-head");
 const windInfoDOM = document.getElementById("wind-info");
 const windSpeedDOM = document.getElementById("wind-speed");
 // left info panel
-const info1DOM = document.getElementById("info-left");
-const name1DOM = document.querySelector("#info-left .name");
+//TODO add info and name
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");
 // right info panel
-const info2DOM = document.getElementById("info-right");
-const name2DOM = document.querySelector("#info-right .name");
+// TODO add info and name
 const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
-// instructions panel
-const instructionsDOM = document.getElementById("instructions");
-const gameModeDOM = document.getElementById("game-mode");
+// TODO add instructions panel
 // bomb grab area
 const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 // congratulations panel
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
-// settings
+// TODO add settings toolbar from dom
 const settingsDOM = document.getElementById("settings");
-//TODO why use of querySelector All
+//TODO refactor this inapporprate use of querySelector All
 const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
 const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
 const autoPlayerButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
-
-colorModeButtonDOM.addEventListener("click", () => {
-  if (settings.mode === "dark") {
-    settings.mode = "light";
-    colorModeButtonDOM.innerText = "Dark Mode";
-  } else {
-    settings.mode = "dark";
-    colorModeButtonDOM.innerText = "Light Mode";
-  }
-  draw();
-});
-
+// TODO add light dark mode button on click
 // new game
 newGame();
 
@@ -96,18 +83,16 @@ function newGame() {
     buildings: [],
     // blasts
     blastHoles: [],
-    stars: [],
     // scale to screen-value depends on size of generated buildings
     // so after city is generated call function to calculate scale
     scale: 1,
-    shift: 0,
   };
-  // TODO generate stars
-  // Generate background buildings
+
   for (let i = 0; i < 11; i++) {
+    // init background buildings array in
     generateBackgroundBuilding(i);
   }
-  // generate buiildings
+
   for (let i = 0; i < 8; i++) {
     generateBuilding(i);
   }
@@ -120,11 +105,12 @@ function newGame() {
 
   // set windmill rotation
   setWindMillRotation();
-  // TODO cancel anim and clear timeout
+  // TODO cancle anim and clear timeout
+  // re set HTML elements
 
-  // Reset HTML elements
   if (settings.numberOfPlayers > 0) {
-    showInstructions();
+    // TODO show ins not defined
+    // showInstructions();
   } else {
     hideInstructions();
   }
@@ -134,8 +120,6 @@ function newGame() {
   angle2DOM.innerText = 0;
   velocity2DOM.innerText = 0;
 
-  // TODO reset simulation mode
-
   //call draw function - paints the screen when called
   draw();
   // hand over game to computer
@@ -143,24 +127,15 @@ function newGame() {
     computerThrow();
   }
 }
-
-function showInstructions() {
-  singlePlayerButtonDOM.checked = true;
-  instructionsDOM.style.opacity = 1;
-  instructionsDOM.style.visibility = "visible";
-}
-function hideInstructions() {
-  state.bomb.highlight = false;
-  instructionsDOM.style.opacity = 0;
-  instructionsDOM.style.visibility = "hidden";
-}
 function showCongratulations() {
   congratulationsDOM.style.opacity = 1;
   congratulationsDOM.style.visibility = "visible";
+  //
 }
 function hideCongratulations() {
   congratulationsDOM.style.opacity = 0;
   congratulationsDOM.style.visibility = "hidden";
+  //
 }
 function generateBackgroundBuilding(index) {
   const previousBuilding = state.backgroundBuildings[index - 1];
@@ -304,27 +279,17 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
-//
+//TODO  drawBackgroundSky?
 function drawBackgroundSky() {
   const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
-  if (settings.mode === "dark") {
-    gradient.addColorStop(1, "#27507F");
-    gradient.addColorStop(0, "#58a9d9");
-  } else {
-    // set up gradient
-    gradient.addColorStop(1, "#F8BA85");
-    gradient.addColorStop(0, "#FFC28E");
-  }
+  // set up gradient
+  gradient.addColorStop(1, "#F8BA85");
+  gradient.addColorStop(0, "#FFC28E");
+
   // draw sky
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  //TODO why no stars
-  if (settings.mode === "dark") {
-    ctx.fillStyle = "white";
-    state.stars.forEach((star) => {
-      ctx.fillRect(star.x, star.y, 1, 1);
-    });
-  }
+  //TODO account for dark mode-add stars
   //  TODO make this its own function drabBackgroundMoon adding moon to background
   ctx.fillStyle = "rgba(255,253,253,0.61)";
   ctx.beginPath();
@@ -750,8 +715,8 @@ function animate(timestamp) {
     draw();
     // whos turn is it?
     const computerThrowsNext =
-      settings.numberOfPlayers === 0 ||
-      (settings.numberOfPlayers === 1 && state.currentPlayer === 2);
+      numberOfPlayers === 0 ||
+      (numberOfPlayers === 1 && state.currentPlayer === 2);
     if (computerThrowsNext) setTimeout(computerThrow, 50);
     // stop animation
     return;
@@ -866,7 +831,7 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-//TODO implement use of settings and more players
+
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   showCongratulations();

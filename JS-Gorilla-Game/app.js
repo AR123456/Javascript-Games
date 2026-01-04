@@ -35,14 +35,17 @@ const windmillHeadDOM = document.getElementById("windmill-head");
 const windInfoDOM = document.getElementById("wind-info");
 const windSpeedDOM = document.getElementById("wind-speed");
 // left info panel
-//TODO add info and name
+const info1DOM = document.getElementById("info-left");
+const name1DOM = document.querySelector("#info-left .name");
 const angle1DOM = document.querySelector("#info-left .angle");
 const velocity1DOM = document.querySelector("#info-left .velocity");
 // right info panel
 // TODO add info and name
 const angle2DOM = document.querySelector("#info-right .angle");
 const velocity2DOM = document.querySelector("#info-right .velocity");
-// TODO add instructions panel
+// instructions panel
+const instructionsDOM = document.getElementById("instructions");
+const gameModeDOM = document.getElementById("game-mode");
 // bomb grab area
 const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 // congratulations panel
@@ -109,8 +112,7 @@ function newGame() {
   // re set HTML elements
 
   if (settings.numberOfPlayers > 0) {
-    // TODO show ins not defined
-    // showInstructions();
+    showInstructions();
   } else {
     hideInstructions();
   }
@@ -127,6 +129,13 @@ function newGame() {
     computerThrow();
   }
 }
+
+function showInstructions() {
+  singlePlayerButtonDOM.checked = true;
+  instructionsDOM.style.opacity = 1;
+  instructionsDOM.style.visibility = visible;
+}
+
 function showCongratulations() {
   congratulationsDOM.style.opacity = 1;
   congratulationsDOM.style.visibility = "visible";
@@ -715,8 +724,8 @@ function animate(timestamp) {
     draw();
     // whos turn is it?
     const computerThrowsNext =
-      numberOfPlayers === 0 ||
-      (numberOfPlayers === 1 && state.currentPlayer === 2);
+      settings.numberOfPlayers === 0 ||
+      (settings.numberOfPlayers === 1 && state.currentPlayer === 2);
     if (computerThrowsNext) setTimeout(computerThrow, 50);
     // stop animation
     return;
@@ -831,7 +840,7 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-
+//TODO implement use of settings and more players
 function announceWinner() {
   winnerDOM.innerText = `Player ${state.currentPlayer}`;
   showCongratulations();

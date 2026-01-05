@@ -102,7 +102,7 @@ function newGame() {
     scale: 1,
     shift: 0,
   };
-  // TODO generate stars so they can be drawn
+  // generate stars so they can be drawn
   for (let i = 0; i < (window.innerWidth * window.innerHeight) / 12000; i++) {
     // get random coord on which to draw a star
     const x = Math.floor(Math.random() * window.innerWidth);
@@ -302,6 +302,7 @@ function draw() {
   // use the calculated scale
   ctx.scale(state.scale, state.scale);
   ///// call the draw functions
+  drawBackgroundMoon();
   drawBackgroundBuildings();
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
@@ -325,7 +326,7 @@ function drawBackgroundSky() {
   // draw sky
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  //TODO why no stars - need to generate them
+  //draw stars
   if (settings.mode === "dark") {
     ctx.fillStyle = "white";
 
@@ -333,14 +334,13 @@ function drawBackgroundSky() {
       ctx.fillRect(star.x, star.y, 1, 1);
     });
   }
-  //  TODO make this its own function drabBackgroundMoon adding moon to background
-  ctx.fillStyle = "rgba(255,253,253,0.61)";
-  ctx.beginPath();
-  ctx.arc(300, 350, 60, 0, 2 * Math.PI);
-  ctx.fill();
 }
-
-//TODO drawBackgroundMoon
+//  TODO make this its own function drabBackgroundMoon adding moon to background
+function drawBackgroundMoon() {}
+ctx.fillStyle = "rgba(255,253,253,0.61)";
+ctx.beginPath();
+ctx.arc(300, 350, 60, 0, 2 * Math.PI);
+ctx.fill();
 function drawBackgroundBuildings() {
   // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {

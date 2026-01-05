@@ -103,7 +103,12 @@ function newGame() {
     shift: 0,
   };
   // TODO generate stars so they can be drawn
-  for (let i = 0; i < (window.innerWidth * window.innerHeight) / 12000; i++) {}
+  for (let i = 0; i < (window.innerWidth * window.innerHeight) / 12000; i++) {
+    // get random coord on which to draw a star
+    const x = Math.floor(Math.random() * window.innerWidth);
+    const y = Math.floor(Math.random() * window.innerHeight);
+    state.stars.push();
+  }
 
   // Generate background buildings
   for (let i = 0; i < 11; i++) {

@@ -6,8 +6,6 @@ let dragStartX = undefined;
 let dragStartY = undefined;
 
 let previousAnimationTimestamp = undefined;
-let animationFrameRequestID = undefined;
-let delayTimeoutID = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
@@ -104,14 +102,7 @@ function newGame() {
     scale: 1,
     shift: 0,
   };
-  // generate stars so they can be drawn
-  for (let i = 0; i < (window.innerWidth * window.innerHeight) / 12000; i++) {
-    // get random coord on which to draw a star
-    const x = Math.floor(Math.random() * window.innerWidth);
-    const y = Math.floor(Math.random() * window.innerHeight);
-    state.stars.push({ x, y });
-  }
-
+  // TODO generate stars
   // Generate background buildings
   for (let i = 0; i < 11; i++) {
     generateBackgroundBuilding(i);
@@ -129,11 +120,7 @@ function newGame() {
 
   // set windmill rotation
   setWindMillRotation();
-
-  // stop animation loop or a a one time callback from running
-  cancelAnimationFrame(animationFrameRequestID);
-  // prevent setTimeout from executing if the delay has not expired
-  clearTimeout(delayTimeoutID);
+  // TODO cancel anim and clear timeout
 
   // Reset HTML elements
   if (settings.numberOfPlayers > 0) {
@@ -147,9 +134,7 @@ function newGame() {
   angle2DOM.innerText = 0;
   velocity2DOM.innerText = 0;
 
-  // reset simulation mode
-  simulationMode = false;
-  simulationImpact = {};
+  // TODO reset simulation mode
 
   //call draw function - paints the screen when called
   draw();
@@ -310,7 +295,6 @@ function draw() {
   // use the calculated scale
   ctx.scale(state.scale, state.scale);
   ///// call the draw functions
-  drawBackgroundMoon();
   drawBackgroundBuildings();
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
@@ -320,7 +304,7 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
-//
+//TODO  drawBackgroundSky?
 function drawBackgroundSky() {
   const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
   if (settings.mode === "dark") {
@@ -334,36 +318,15 @@ function drawBackgroundSky() {
   // draw sky
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  //draw stars
-  if (settings.mode === "dark") {
-    ctx.fillStyle = "white";
-
-    state.stars.forEach((star) => {
-      ctx.fillRect(star.x, star.y, 1, 1);
-    });
-  }
+  //TODO account for dark mode-add stars
+  //  TODO make this its own function drabBackgroundMoon adding moon to background
+  ctx.fillStyle = "rgba(255,253,253,0.61)";
+  ctx.beginPath();
+  ctx.arc(300, 350, 60, 0, 2 * Math.PI);
+  ctx.fill();
 }
 
-function drawBackgroundMoon() {
-  if (settings.mode === "dark") {
-    ctx.fillStyle = "rgba(255,253,253,0.61)";
-    ctx.beginPath();
-    ctx.arc(
-      window.innerWidth / state.scale - state.shift - 200,
-      window.innerHeight / state.scale - 100,
-      120,
-      0,
-      2 * Math.PI
-    );
-    ctx.fill();
-  } else {
-    ctx.fillStyle = "rgba(255,253,253,0.61)";
-    ctx.beginPath();
-    ctx.arc(300, 350, 60, 0, 2 * Math.PI);
-    ctx.fill();
-  }
-}
-
+//TODO drawBackgroundMoon
 function drawBackgroundBuildings() {
   // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {
@@ -679,7 +642,7 @@ function computerThrow() {
   // draw aiming gorilla
   draw();
   // make it look like computer is thinking for one sec
-  delayTimeoutID = setTimeout(throwBomb, 1000);
+  setTimeout(throwBomb, 1000);
 }
 function runSimulations(numberOfSimulations) {
   // the best throw is closest to enemy
@@ -738,7 +701,7 @@ function throwBomb() {
     // mouse up kicks this off
     state.phase = "in flight";
     previousAnimationTimestamp = undefined;
-    animationFrameRequestID = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
 }
 
@@ -748,7 +711,7 @@ function animate(timestamp) {
   // first cycle has no previous time so account for that
   if (previousAnimationTimestamp === undefined) {
     previousAnimationTimestamp = timestamp;
-    animationFrameRequestID = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
     return;
   }
   // time passed between animation cycles
@@ -804,7 +767,7 @@ function animate(timestamp) {
   if (simulationMode) {
     animate(timestamp + 16);
   } else {
-    animationFrameRequestID = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
 }
 
@@ -899,30 +862,9 @@ function checkGorillaHit() {
 }
 //TODO implement use of settings and more players
 function announceWinner() {
-  if (settings.numberOfPlayers === 0) {
-    winnerDOM.innerText = `Computer ${state.currentPlayer}`;
-  } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 1) {
-    winnerDOM.innerText = `You`;
-  } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 2) {
-    winnerDOM.innerText = `Computer`;
-  } else {
-    winnerDOM.innerText = `Player ${state.currentPlayer}`;
-  }
-
+  winnerDOM.innerText = `Player ${state.currentPlayer}`;
   showCongratulations();
 }
-// TODO single play button
-singlePlayerButtonDOM.forEach((button) =>
-  button.addEventListener("click", () => {
-    settings.numberOfPlayers = 1;
-    gameModeDOM.innerHTML = "Player vs Computer";
-    name1DOM.innerText = "Player";
-    name2DOM.innerText = "Computer";
-    newGame();
-  })
-);
-// TODO two player button
-// TODO auto play button
 
 function generateWindSpeed() {
   // speed -10 to 10
@@ -937,13 +879,5 @@ function setWindMillRotation() {
 
   windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
-//TODO can there just be one mouse move adding the isDragging bit
-window.addEventListener("mousemove", function (e) {
-  settingsDOM.style.opacity = 1;
-  info1DOM.style.opacity = 1;
-  info2DOM.style.opacity = 1;
-});
-//TODO enter and exit full screen
-//TODO full screen toggle function
-//TODO when the play buttons get implemented on click will be in those functions
+
 newGameButton.addEventListener("click", newGame);

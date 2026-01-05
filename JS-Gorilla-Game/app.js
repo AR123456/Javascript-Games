@@ -107,7 +107,7 @@ function newGame() {
     // get random coord on which to draw a star
     const x = Math.floor(Math.random() * window.innerWidth);
     const y = Math.floor(Math.random() * window.innerHeight);
-    state.stars.push();
+    state.stars.push({ x, y });
   }
 
   // Generate background buildings

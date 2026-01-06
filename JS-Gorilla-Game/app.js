@@ -343,7 +343,7 @@ function drawBackgroundMoon() {
     ctx.arc(
       window.innerWidth / state.scale - state.shift - 200,
       window.innerHeight / state.scale - 100,
-      60,
+      120,
       0,
       2 * Math.PI
     );

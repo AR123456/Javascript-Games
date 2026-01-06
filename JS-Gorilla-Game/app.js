@@ -336,11 +336,17 @@ function drawBackgroundSky() {
   }
 }
 //  TODO make this its own function drabBackgroundMoon adding moon to background
-function drawBackgroundMoon() {}
-ctx.fillStyle = "rgba(255,253,253,0.61)";
-ctx.beginPath();
-ctx.arc(300, 350, 60, 0, 2 * Math.PI);
-ctx.fill();
+function drawBackgroundMoon() {
+  if (settings.mode === "dark") {
+    ctx.fillStyle = "rgba(255,253,253,0.61)";
+  } else {
+    ctx.fillStyle = "rgba(255,253,253,0.61)";
+    ctx.beginPath();
+    ctx.arc(300, 350, 60, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
 function drawBackgroundBuildings() {
   // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {

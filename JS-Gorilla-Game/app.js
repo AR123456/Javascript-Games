@@ -6,6 +6,8 @@ let dragStartX = undefined;
 let dragStartY = undefined;
 
 let previousAnimationTimestamp = undefined;
+let animationFrameRequestID = undefined;
+let delayTimeoutID = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
@@ -127,7 +129,11 @@ function newGame() {
 
   // set windmill rotation
   setWindMillRotation();
-  // TODO cancel anim and clear timeout
+
+  // stop animation loop or a a one time callback from running
+  cancelAnimationFrame(animationFrameRequestID);
+  // prevent setTimeout from executing if the delay has not expired
+  clearTimeout(delayTimeoutID);
 
   // Reset HTML elements
   if (settings.numberOfPlayers > 0) {
@@ -335,7 +341,7 @@ function drawBackgroundSky() {
     });
   }
 }
-//  TODO make this its own function drabBackgroundMoon adding moon to background
+
 function drawBackgroundMoon() {
   if (settings.mode === "dark") {
     ctx.fillStyle = "rgba(255,253,253,0.61)";
@@ -730,7 +736,7 @@ function throwBomb() {
     // mouse up kicks this off
     state.phase = "in flight";
     previousAnimationTimestamp = undefined;
-    requestAnimationFrame(animate);
+    animationFrameRequestID = requestAnimationFrame(animate);
   }
 }
 
@@ -740,7 +746,7 @@ function animate(timestamp) {
   // first cycle has no previous time so account for that
   if (previousAnimationTimestamp === undefined) {
     previousAnimationTimestamp = timestamp;
-    requestAnimationFrame(animate);
+    animationFrameRequestID = requestAnimationFrame(animate);
     return;
   }
   // time passed between animation cycles
@@ -796,7 +802,7 @@ function animate(timestamp) {
   if (simulationMode) {
     animate(timestamp + 16);
   } else {
-    requestAnimationFrame(animate);
+    animationFrameRequestID = requestAnimationFrame(animate);
   }
 }
 

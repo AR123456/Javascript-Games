@@ -339,6 +339,15 @@ function drawBackgroundSky() {
 function drawBackgroundMoon() {
   if (settings.mode === "dark") {
     ctx.fillStyle = "rgba(255,253,253,0.61)";
+    ctx.beginPath();
+    ctx.arc(
+      window.innerWidth / state.scale - state.shift - 200,
+      window.innerHeight / state.scale - 100,
+      60,
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
   } else {
     ctx.fillStyle = "rgba(255,253,253,0.61)";
     ctx.beginPath();

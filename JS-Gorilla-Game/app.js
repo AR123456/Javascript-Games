@@ -677,7 +677,7 @@ function computerThrow() {
   // draw aiming gorilla
   draw();
   // make it look like computer is thinking for one sec
-  setTimeout(throwBomb, 1000);
+  delayTimeoutID = setTimeout(throwBomb, 1000);
 }
 function runSimulations(numberOfSimulations) {
   // the best throw is closest to enemy

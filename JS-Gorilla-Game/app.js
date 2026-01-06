@@ -147,7 +147,9 @@ function newGame() {
   angle2DOM.innerText = 0;
   velocity2DOM.innerText = 0;
 
-  // TODO reset simulation mode
+  // reset simulation mode
+  simulationMode = false;
+  simulationImpact = {};
 
   //call draw function - paints the screen when called
   draw();

@@ -902,7 +902,7 @@ function announceWinner() {
   if (settings.numberOfPlayers === 0) {
     winnerDOM.innerText = `Player ${state.currentPlayer}`;
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 1) {
-    //
+    winnerDOM.innerText = `You`;
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 2) {
     //
   } else {

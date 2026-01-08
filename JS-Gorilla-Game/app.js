@@ -911,11 +911,23 @@ function announceWinner() {
 
   showCongratulations();
 }
-// TODO single play button
+// single play button
 singlePlayerButtonDOM.forEach((button) =>
-  button.addEventListener("click", () => {})
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 1;
+    gameModeDOM.innerHTML = "Player vs Computer";
+    name1DOM.innerText = "Player";
+    name2DOM.innerText = "Computer";
+    newGame();
+  })
 );
 // TODO two player button
+twoPlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 2;
+    gameModeDOM.innerHTML = "Player vs Player";
+  })
+);
 // TODO auto play button
 
 function generateWindSpeed() {

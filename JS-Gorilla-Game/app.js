@@ -926,6 +926,9 @@ twoPlayerButtonDOM.forEach((button) =>
   button.addEventListener("click", () => {
     settings.numberOfPlayers = 2;
     gameModeDOM.innerHTML = "Player vs Player";
+    name1DOM.innerText = "Player 1";
+    name2DOM.innerText = "Player 2";
+    newGame();
   })
 );
 // TODO auto play button

@@ -911,6 +911,9 @@ function announceWinner() {
 
   showCongratulations();
 }
+// TODO single play button
+// TODO two player button
+// TODO auto play button
 
 function generateWindSpeed() {
   // speed -10 to 10
@@ -925,5 +928,11 @@ function setWindMillRotation() {
 
   windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
-
+//TODO mouse over event-implement then see if there can just be one mouse move adding the isDragging bit
+window.addEventListener("mousemove", function (e) {
+  //
+});
+//TODO enter and exit full screen
+//TODO full screen toggle function
+//TODO when the play buttons get implemented on click will be in those functions
 newGameButton.addEventListener("click", newGame);

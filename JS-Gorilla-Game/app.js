@@ -904,9 +904,9 @@ function announceWinner() {
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 1) {
     winnerDOM.innerText = `You`;
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 2) {
-    //
+    winnerDOM.innerText = `Computer`;
   } else {
-    //
+    winnerDOM.innerText = `Player ${state.currentPlayer}`;
   }
 
   showCongratulations();

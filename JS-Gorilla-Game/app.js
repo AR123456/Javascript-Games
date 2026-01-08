@@ -900,7 +900,7 @@ function checkGorillaHit() {
 //TODO implement use of settings and more players
 function announceWinner() {
   if (settings.numberOfPlayers === 0) {
-    winnerDOM.innerText = `Player ${state.currentPlayer}`;
+    winnerDOM.innerText = `Computer ${state.currentPlayer}`;
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 1) {
     winnerDOM.innerText = `You`;
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 2) {

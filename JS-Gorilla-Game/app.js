@@ -912,6 +912,9 @@ function announceWinner() {
   showCongratulations();
 }
 // TODO single play button
+singlePlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {})
+);
 // TODO two player button
 // TODO auto play button
 
@@ -928,9 +931,11 @@ function setWindMillRotation() {
 
   windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
-//TODO mouse over event-implement then see if there can just be one mouse move adding the isDragging bit
+//TODO can there just be one mouse move adding the isDragging bit
 window.addEventListener("mousemove", function (e) {
-  //
+  settingsDOM.style.opacity = 1;
+  info1DOM.style.opacity = 1;
+  info2DOM.style.opacity = 1;
 });
 //TODO enter and exit full screen
 //TODO full screen toggle function

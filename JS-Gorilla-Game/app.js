@@ -933,7 +933,12 @@ twoPlayerButtonDOM.forEach((button) =>
 );
 // TODO auto play button
 autoPlayButtonDOM.forEach((button) =>
-  button.addEventListener("click", () => {})
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 0;
+    name1DOM.innerText = "Computer 1";
+    name2DOM.innerText = "Computer 2";
+    newGame();
+  })
 );
 
 function generateWindSpeed() {

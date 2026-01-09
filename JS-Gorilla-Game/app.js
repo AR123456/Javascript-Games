@@ -921,7 +921,7 @@ singlePlayerButtonDOM.forEach((button) =>
     newGame();
   })
 );
-// TODO two player button
+// two player button
 twoPlayerButtonDOM.forEach((button) =>
   button.addEventListener("click", () => {
     settings.numberOfPlayers = 2;
@@ -932,6 +932,9 @@ twoPlayerButtonDOM.forEach((button) =>
   })
 );
 // TODO auto play button
+autoPlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {})
+);
 
 function generateWindSpeed() {
   // speed -10 to 10

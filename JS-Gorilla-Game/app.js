@@ -933,7 +933,7 @@ twoPlayerButtonDOM.forEach((button) =>
     newGame();
   })
 );
-// TODO auto play button
+// auto play button
 autoPlayButtonDOM.forEach((button) =>
   button.addEventListener("click", () => {
     settings.numberOfPlayers = 0;
@@ -964,6 +964,7 @@ window.addEventListener("mousemove", function (e) {
   info2DOM.style.opacity = 1;
 });
 //TODO enter and exit full screen
+const enterFullscreen = document.getElementById("enter-fullscreen");
 //TODO full screen toggle function
 //TODO when the play buttons get implemented on click will be in those functions
 newGameButton.addEventListener("click", newGame);

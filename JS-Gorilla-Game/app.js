@@ -963,9 +963,16 @@ window.addEventListener("mousemove", function (e) {
   info1DOM.style.opacity = 1;
   info2DOM.style.opacity = 1;
 });
-//TODO enter and exit full screen
+// TODO this belongs at top
 const enterFullscreen = document.getElementById("enter-fullscreen");
 const exitFullscreen = document.getElementById("exit-fullscreen");
 //TODO full screen toggle function
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    console.log("not");
+  } else {
+    console.log("not not ");
+  }
+}
 //TODO when the play buttons get implemented on click will be in those functions
 newGameButton.addEventListener("click", newGame);

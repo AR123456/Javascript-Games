@@ -965,6 +965,7 @@ window.addEventListener("mousemove", function (e) {
 });
 //TODO enter and exit full screen
 const enterFullscreen = document.getElementById("enter-fullscreen");
+const exitFullscreen = document.getElementById("exit-fullscreen");
 //TODO full screen toggle function
 //TODO when the play buttons get implemented on click will be in those functions
 newGameButton.addEventListener("click", newGame);

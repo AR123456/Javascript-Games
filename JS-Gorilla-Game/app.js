@@ -6,6 +6,8 @@ let dragStartX = undefined;
 let dragStartY = undefined;
 
 let previousAnimationTimestamp = undefined;
+let animationFrameRequestID = undefined;
+let delayTimeoutID = undefined;
 
 let simulationMode = false;
 let simulationImpact = {};
@@ -51,14 +53,25 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
 const newGameButton = document.getElementById("new-game");
-// TODO add settings toolbar from dom
+// settings
 const settingsDOM = document.getElementById("settings");
-//TODO refactor this inapporprate use of querySelector All
+//TODO why use of querySelector All
 const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
 const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
 const autoPlayerButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
-// TODO add light dark mode button on click
+
+colorModeButtonDOM.addEventListener("click", () => {
+  if (settings.mode === "dark") {
+    settings.mode = "light";
+    colorModeButtonDOM.innerText = "Dark Mode";
+  } else {
+    settings.mode = "dark";
+    colorModeButtonDOM.innerText = "Light Mode";
+  }
+  draw();
+});
+
 // new game
 newGame();
 
@@ -91,12 +104,19 @@ function newGame() {
     scale: 1,
     shift: 0,
   };
-
-  for (let i = 0; i < 11; i++) {
-    // init background buildings array in
-    generateBackgroundBuilding(i);
+  // generate stars so they can be drawn
+  for (let i = 0; i < (window.innerWidth * window.innerHeight) / 12000; i++) {
+    // get random coord on which to draw a star
+    const x = Math.floor(Math.random() * window.innerWidth);
+    const y = Math.floor(Math.random() * window.innerHeight);
+    state.stars.push({ x, y });
   }
 
+  // Generate background buildings
+  for (let i = 0; i < 11; i++) {
+    generateBackgroundBuilding(i);
+  }
+  // generate buiildings
   for (let i = 0; i < 8; i++) {
     generateBuilding(i);
   }
@@ -109,9 +129,13 @@ function newGame() {
 
   // set windmill rotation
   setWindMillRotation();
-  // TODO cancle anim and clear timeout
-  // re set HTML elements
 
+  // stop animation loop or a a one time callback from running
+  cancelAnimationFrame(animationFrameRequestID);
+  // prevent setTimeout from executing if the delay has not expired
+  clearTimeout(delayTimeoutID);
+
+  // Reset HTML elements
   if (settings.numberOfPlayers > 0) {
     showInstructions();
   } else {
@@ -122,6 +146,10 @@ function newGame() {
   velocity1DOM.innerText = 0;
   angle2DOM.innerText = 0;
   velocity2DOM.innerText = 0;
+
+  // reset simulation mode
+  simulationMode = false;
+  simulationImpact = {};
 
   //call draw function - paints the screen when called
   draw();
@@ -282,6 +310,7 @@ function draw() {
   // use the calculated scale
   ctx.scale(state.scale, state.scale);
   ///// call the draw functions
+  drawBackgroundMoon();
   drawBackgroundBuildings();
   drawBuildingsWithBlastHoles();
   drawGorilla(1);
@@ -291,25 +320,50 @@ function draw() {
   // reset/restore transformation
   ctx.restore();
 }
-//TODO  drawBackgroundSky?
+//
 function drawBackgroundSky() {
   const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
-  // set up gradient
-  gradient.addColorStop(1, "#F8BA85");
-  gradient.addColorStop(0, "#FFC28E");
-
+  if (settings.mode === "dark") {
+    gradient.addColorStop(1, "#27507F");
+    gradient.addColorStop(0, "#58a9d9");
+  } else {
+    // set up gradient
+    gradient.addColorStop(1, "#F8BA85");
+    gradient.addColorStop(0, "#FFC28E");
+  }
   // draw sky
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  //TODO account for dark mode-add stars
-  //  TODO make this its own function drabBackgroundMoon adding moon to background
-  ctx.fillStyle = "rgba(255,253,253,0.61)";
-  ctx.beginPath();
-  ctx.arc(300, 350, 60, 0, 2 * Math.PI);
-  ctx.fill();
+  //draw stars
+  if (settings.mode === "dark") {
+    ctx.fillStyle = "white";
+
+    state.stars.forEach((star) => {
+      ctx.fillRect(star.x, star.y, 1, 1);
+    });
+  }
 }
 
-//TODO drawBackgroundMoon
+function drawBackgroundMoon() {
+  if (settings.mode === "dark") {
+    ctx.fillStyle = "rgba(255,253,253,0.61)";
+    ctx.beginPath();
+    ctx.arc(
+      window.innerWidth / state.scale - state.shift - 200,
+      window.innerHeight / state.scale - 100,
+      120,
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+  } else {
+    ctx.fillStyle = "rgba(255,253,253,0.61)";
+    ctx.beginPath();
+    ctx.arc(300, 350, 60, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
 function drawBackgroundBuildings() {
   // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {
@@ -625,7 +679,7 @@ function computerThrow() {
   // draw aiming gorilla
   draw();
   // make it look like computer is thinking for one sec
-  setTimeout(throwBomb, 1000);
+  delayTimeoutID = setTimeout(throwBomb, 1000);
 }
 function runSimulations(numberOfSimulations) {
   // the best throw is closest to enemy
@@ -684,7 +738,7 @@ function throwBomb() {
     // mouse up kicks this off
     state.phase = "in flight";
     previousAnimationTimestamp = undefined;
-    requestAnimationFrame(animate);
+    animationFrameRequestID = requestAnimationFrame(animate);
   }
 }
 
@@ -694,7 +748,7 @@ function animate(timestamp) {
   // first cycle has no previous time so account for that
   if (previousAnimationTimestamp === undefined) {
     previousAnimationTimestamp = timestamp;
-    requestAnimationFrame(animate);
+    animationFrameRequestID = requestAnimationFrame(animate);
     return;
   }
   // time passed between animation cycles
@@ -750,7 +804,7 @@ function animate(timestamp) {
   if (simulationMode) {
     animate(timestamp + 16);
   } else {
-    requestAnimationFrame(animate);
+    animationFrameRequestID = requestAnimationFrame(animate);
   }
 }
 
@@ -845,9 +899,42 @@ function checkGorillaHit() {
 }
 //TODO implement use of settings and more players
 function announceWinner() {
-  winnerDOM.innerText = `Player ${state.currentPlayer}`;
+  if (settings.numberOfPlayers === 0) {
+    winnerDOM.innerText = `Computer ${state.currentPlayer}`;
+  } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 1) {
+    winnerDOM.innerText = `You`;
+  } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 2) {
+    winnerDOM.innerText = `Computer`;
+  } else {
+    winnerDOM.innerText = `Player ${state.currentPlayer}`;
+  }
+
   showCongratulations();
 }
+// single play button
+singlePlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 1;
+    gameModeDOM.innerHTML = "Player vs Computer";
+    name1DOM.innerText = "Player";
+    name2DOM.innerText = "Computer";
+    newGame();
+  })
+);
+// two player button
+twoPlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 2;
+    gameModeDOM.innerHTML = "Player vs Player";
+    name1DOM.innerText = "Player 1";
+    name2DOM.innerText = "Player 2";
+    newGame();
+  })
+);
+// TODO auto play button
+autoPlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {})
+);
 
 function generateWindSpeed() {
   // speed -10 to 10
@@ -862,5 +949,13 @@ function setWindMillRotation() {
 
   windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
-
+//TODO can there just be one mouse move adding the isDragging bit
+window.addEventListener("mousemove", function (e) {
+  settingsDOM.style.opacity = 1;
+  info1DOM.style.opacity = 1;
+  info2DOM.style.opacity = 1;
+});
+//TODO enter and exit full screen
+//TODO full screen toggle function
+//TODO when the play buttons get implemented on click will be in those functions
 newGameButton.addEventListener("click", newGame);

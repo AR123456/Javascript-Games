@@ -58,7 +58,7 @@ const settingsDOM = document.getElementById("settings");
 //TODO why use of querySelector All
 const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
 const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
-const autoPlayerButtonDOM = document.querySelectorAll(".auto-play");
+const autoPlayButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
 
 colorModeButtonDOM.addEventListener("click", () => {
@@ -932,7 +932,7 @@ twoPlayerButtonDOM.forEach((button) =>
   })
 );
 // TODO auto play button
-autoPlayerButtonDOM.forEach((button) =>
+autoPlayButtonDOM.forEach((button) =>
   button.addEventListener("click", () => {})
 );
 

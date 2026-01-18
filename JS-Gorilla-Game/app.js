@@ -144,6 +144,7 @@ function newGame() {
   hideCongratulations();
   angle1DOM.innerText = 0;
   velocity1DOM.innerText = 0;
+  // TODO when in computer vs computer angle and velocity not updating
   angle2DOM.innerText = 0;
   velocity2DOM.innerText = 0;
 
@@ -897,7 +898,7 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-//TODO implement use of settings and more players
+
 function announceWinner() {
   if (settings.numberOfPlayers === 0) {
     winnerDOM.innerText = `Computer ${state.currentPlayer}`;
@@ -934,10 +935,8 @@ twoPlayerButtonDOM.forEach((button) =>
 );
 // TODO auto play button
 autoPlayButtonDOM.forEach((button) =>
-  button.addEventListener("click", (e) => {
-    e.preventDefault();
+  button.addEventListener("click", () => {
     settings.numberOfPlayers = 0;
-
     name1DOM.innerText = "Computer 1";
     name2DOM.innerText = "Computer 2";
 

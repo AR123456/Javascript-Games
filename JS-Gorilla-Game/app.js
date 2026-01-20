@@ -966,7 +966,7 @@ window.addEventListener("mousemove", function (e) {
 // TODO this belongs at top
 const enterFullscreen = document.getElementById("enter-fullscreen");
 const exitFullscreen = document.getElementById("exit-fullscreen");
-//TODO full screen toggle function
+//full screen toggle function
 function toggleFullscreen() {
   // if null
   if (!document.fullscreenElement) {

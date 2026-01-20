@@ -966,14 +966,18 @@ window.addEventListener("mousemove", function (e) {
 // TODO this belongs at top
 const enterFullscreen = document.getElementById("enter-fullscreen");
 const exitFullscreen = document.getElementById("exit-fullscreen");
-//TODO full screen toggle function this appears not implemented in source code
+//TODO full screen toggle function
 function toggleFullscreen() {
+  // if null
   if (!document.fullscreenElement) {
     //  https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen
-    // document.documentElement.requestFullscreen();
-    console.log(fullscreenElement);
+    document.documentElement.requestFullscreen();
+    enterFullscreen.setAttribute("stroke", "transparent");
+    exitFullscreen.setAttribute("stroke", "white");
   } else {
-    console.log("not not ");
+    document.exitFullscreen();
+    enterFullscreen.setAttribute("stroke", "white");
+    exitFullscreen.setAttribute("stroke", "transparent");
   }
 }
 //TODO when the play buttons get implemented on click will be in those functions

@@ -966,10 +966,12 @@ window.addEventListener("mousemove", function (e) {
 // TODO this belongs at top
 const enterFullscreen = document.getElementById("enter-fullscreen");
 const exitFullscreen = document.getElementById("exit-fullscreen");
-//TODO full screen toggle function
-function toggleFullScreen() {
+//TODO full screen toggle function this appears not implemented in source code
+function toggleFullscreen() {
   if (!document.fullscreenElement) {
-    console.log("not");
+    //  https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen
+    // document.documentElement.requestFullscreen();
+    console.log(fullscreenElement);
   } else {
     console.log("not not ");
   }

@@ -28,17 +28,17 @@
     </svg>
     <div id="wind-info">Wind Speed: <span id="wind-speed">0</span></div>
     <div id="info-left">
-      <h3><span class="name">Player</span></h3>
+      <h3>Player 1</h3>
       <p>Angle: <span class="angle">0</span> &deg</p>
       <p>Velocity: <span class="velocity">0</span></p>
     </div>
     <div id="info-right">
-      <h3><span class="name">Computer</span></h3>
+      <h3>Player 2</h3>
       <p>Angle: <span class="angle">0</span> &deg</p>
       <p>Velocity: <span class="velocity">0</span></p>
     </div>
     <div id="instructions">
-      <div id="game-mode">Player vs Computer</div>
+      <div id="game-mode">Player vs Conputer</div>
       <h1>Drag the bomb to aim</h1>
     </div>
     <div id="bomb-grab-area"></div>
@@ -51,15 +51,13 @@
       <div class="dropdown">
         <button class="dropbtn">New Game</button>
         <div class="dropdown-content">
-          <!-- TODO remove footgun implement this without the anchor tag  -->
           <a href="#" class="single-player"></a>
           <a href="#" class="two-player"></a>
-          <a href="#" class="auto-play"></a>
+          <a href="" class="auto-play"></a>
         </div>
       </div>
       <button id="color-mode">Dark Mode</button>
     </div>
-    <!-- TODO why is this on click in  the HTML instead of JS  -->
     <button id="fullscreen" onclick="toggleFullscreen()">
       <svg width="30" height="30">
         <path

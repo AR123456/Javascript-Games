@@ -58,7 +58,7 @@ const settingsDOM = document.getElementById("settings");
 //TODO why use of querySelector All
 const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
 const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
-const autoPlayerButtonDOM = document.querySelectorAll(".auto-play");
+const autoPlayButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
 
 colorModeButtonDOM.addEventListener("click", () => {
@@ -144,6 +144,7 @@ function newGame() {
   hideCongratulations();
   angle1DOM.innerText = 0;
   velocity1DOM.innerText = 0;
+  // TODO when in computer vs computer angle and velocity not updating
   angle2DOM.innerText = 0;
   velocity2DOM.innerText = 0;
 
@@ -897,20 +898,51 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-//TODO implement use of settings and more players
+
 function announceWinner() {
   if (settings.numberOfPlayers === 0) {
-    winnerDOM.innerText = `Player ${state.currentPlayer}`;
+    winnerDOM.innerText = `Computer ${state.currentPlayer}`;
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 1) {
     winnerDOM.innerText = `You`;
   } else if (settings.numberOfPlayers === 1 && state.currentPlayer === 2) {
     winnerDOM.innerText = `Computer`;
   } else {
-    //
+    winnerDOM.innerText = `Player ${state.currentPlayer}`;
   }
 
   showCongratulations();
 }
+// single play button
+singlePlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 1;
+    gameModeDOM.innerHTML = "Player vs Computer";
+
+    name1DOM.innerText = "Player";
+    name2DOM.innerText = "Computer";
+    newGame();
+  })
+);
+// two player button
+twoPlayerButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 2;
+    gameModeDOM.innerHTML = "Player vs Player";
+    name1DOM.innerText = "Player 1";
+    name2DOM.innerText = "Player 2";
+    newGame();
+  })
+);
+// auto play button
+autoPlayButtonDOM.forEach((button) =>
+  button.addEventListener("click", () => {
+    settings.numberOfPlayers = 0;
+    name1DOM.innerText = "Computer 1";
+    name2DOM.innerText = "Computer 2";
+
+    newGame();
+  })
+);
 
 function generateWindSpeed() {
   // speed -10 to 10
@@ -925,5 +957,22 @@ function setWindMillRotation() {
 
   windSpeedDOM.innerText = Math.round(state.windSpeed);
 }
-
+//TODO can there just be one mouse move adding the isDragging bit
+window.addEventListener("mousemove", function (e) {
+  settingsDOM.style.opacity = 1;
+  info1DOM.style.opacity = 1;
+  info2DOM.style.opacity = 1;
+});
+// TODO this belongs at top
+const enterFullscreen = document.getElementById("enter-fullscreen");
+const exitFullscreen = document.getElementById("exit-fullscreen");
+//TODO full screen toggle function
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    console.log("not");
+  } else {
+    console.log("not not ");
+  }
+}
+//TODO when the play buttons get implemented on click will be in those functions
 newGameButton.addEventListener("click", newGame);

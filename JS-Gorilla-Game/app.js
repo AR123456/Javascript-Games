@@ -968,13 +968,12 @@ const enterFullscreen = document.getElementById("enter-fullscreen");
 const exitFullscreen = document.getElementById("exit-fullscreen");
 //TODO full screen toggle function
 function toggleFullscreen() {
+  // if null
   if (!document.fullscreenElement) {
     //  https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen
     document.documentElement.requestFullscreen();
-    console.log(fullscreenElement);
   } else {
     document.exitFullscreen();
-    console.log("not not ");
   }
 }
 //TODO when the play buttons get implemented on click will be in those functions

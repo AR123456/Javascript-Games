@@ -972,6 +972,8 @@ function toggleFullscreen() {
   if (!document.fullscreenElement) {
     //  https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen
     document.documentElement.requestFullscreen();
+    enterFullscreen.setAttribute("stroke", "transparent");
+    exitFullscreen.setAttribute("stroke", "white");
   } else {
     document.exitFullscreen();
   }

@@ -98,8 +98,8 @@ button:hover {
 #info-left,
 #info-right {
   /*TODO  making visible while I work on buttons */
-  /* opacity: 0;
-  transition: opacity 3s; */
+  opacity: 0;
+  transition: opacity 3s;
 }
 
 @media (max-width: 450px) {

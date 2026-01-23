@@ -52,7 +52,7 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 // congratulations panel
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
-const newGameButton = document.getElementById("new-game");
+// const newGameButton = document.getElementById("new-game");
 // settings
 const settingsDOM = document.getElementById("settings");
 //TODO why use of querySelector All
@@ -966,7 +966,7 @@ window.addEventListener("mousemove", function (e) {
 // TODO this belongs at top
 const enterFullscreen = document.getElementById("enter-fullscreen");
 const exitFullscreen = document.getElementById("exit-fullscreen");
-//TODO full screen toggle function
+//full screen toggle function
 function toggleFullscreen() {
   // if null
   if (!document.fullscreenElement) {
@@ -976,7 +976,9 @@ function toggleFullscreen() {
     exitFullscreen.setAttribute("stroke", "white");
   } else {
     document.exitFullscreen();
+    enterFullscreen.setAttribute("stroke", "white");
+    exitFullscreen.setAttribute("stroke", "transparent");
   }
 }
 //TODO when the play buttons get implemented on click will be in those functions
-newGameButton.addEventListener("click", newGame);
+// newGameButton.addEventListener("click", newGame);

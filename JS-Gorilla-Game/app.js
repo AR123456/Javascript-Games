@@ -23,10 +23,8 @@ const blastHoleRadius = 18;
 const canvas = document.getElementById("game");
 canvas.width = window.innerWidth * window.devicePixelRatio;
 canvas.height = window.innerHeight * window.devicePixelRatio;
-// define canvas width/height
 canvas.style.width = window.innerWidth + "px";
 canvas.style.height = window.innerHeight + "px";
-// draw function needs context
 const ctx = canvas.getContext("2d");
 
 // windmill
@@ -52,7 +50,7 @@ const bombGrabAreaDOM = document.querySelector("#bomb-grab-area");
 // congratulations panel
 const congratulationsDOM = document.getElementById("congratulations");
 const winnerDOM = document.getElementById("winner");
-// const newGameButton = document.getElementById("new-game");
+const newGameButton = document.getElementById("new-game");
 // settings
 const settingsDOM = document.getElementById("settings");
 //TODO why use of querySelector All
@@ -60,6 +58,9 @@ const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
 const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
 const autoPlayButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
+// screen size
+const enterFullscreen = document.getElementById("enter-fullscreen");
+const exitFullscreen = document.getElementById("exit-fullscreen");
 
 colorModeButtonDOM.addEventListener("click", () => {
   if (settings.mode === "dark") {
@@ -354,7 +355,7 @@ function drawBackgroundMoon() {
       window.innerHeight / state.scale - 100,
       120,
       0,
-      2 * Math.PI
+      2 * Math.PI,
     );
     ctx.fill();
   } else {
@@ -383,7 +384,7 @@ function drawBuildingsWithBlastHoles() {
       0,
       0,
       window.innerWidth / state.scale,
-      window.innerHeight / state.scale
+      window.innerHeight / state.scale,
     );
     // arc default is to draw clockwise, 6th param "true" makes it go counterclockwise
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
@@ -410,11 +411,11 @@ function drawBuildings() {
     const gap = 15;
     // determine number of floors - lowest floor will overflow screen but will be un seen
     const numberOfFloors = Math.ceil(
-      (building.height - gap) / (windowHeight + gap)
+      (building.height - gap) / (windowHeight + gap),
     );
     // rooms per floor - round down so no window only partially fits building
     const numberOfRoomsPerFloor = Math.floor(
-      (building.width - gap) / (windowWidth + gap)
+      (building.width - gap) / (windowWidth + gap),
     );
     // iterate to make grid
     for (let floor = 0; floor < numberOfFloors; floor++) {
@@ -485,7 +486,7 @@ function drawGorillaLeftArm(player) {
       -44,
       63,
       -28 - state.bomb.velocity.x / 6.25,
-      107 - state.bomb.velocity.y / 6.25
+      107 - state.bomb.velocity.y / 6.25,
     );
   } else if (state.phase === "celebrating" && state.currentPlayer === player) {
     ctx.quadraticCurveTo(-44, 63, -28, 107);
@@ -506,7 +507,7 @@ function drawGorillaRightArm(player) {
       +44,
       63,
       +28 - state.bomb.velocity.x / 6.25,
-      107 - state.bomb.velocity.y / 6.25
+      107 - state.bomb.velocity.y / 6.25,
     );
   } else if (state.phase === "celebrating" && state.currentPlayer === player) {
     ctx.quadraticCurveTo(+44, 63, +28, 107);
@@ -716,7 +717,7 @@ function runSimulations(numberOfSimulations) {
     throwBomb();
     // calculate dies between sim impact and enemy
     const distance = Math.sqrt(
-      (enemyX - simulationImpact.x) ** 2 + (enemyY - simulationImpact.y) ** 2
+      (enemyX - simulationImpact.x) ** 2 + (enemyY - simulationImpact.y) ** 2,
     );
     // if current impact is closer to enemy, than others pick this one
     if (distance < bestThrow.distance) {
@@ -850,7 +851,7 @@ function checkBuildingHit() {
 
         const verticalDistance = state.bomb.y - blastHole.y;
         const distance = Math.sqrt(
-          horizontalDistance ** 2 + verticalDistance ** 2
+          horizontalDistance ** 2 + verticalDistance ** 2,
         );
 
         if (distance < blastHoleRadius) {
@@ -879,7 +880,7 @@ function checkGorillaHit() {
   // need to translate coordinate system to top of that building
   ctx.translate(
     enemyBuilding.x + enemyBuilding.width / 2,
-    enemyBuilding.height
+    enemyBuilding.height,
   );
   // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
   drawGorillaBody();
@@ -921,7 +922,7 @@ singlePlayerButtonDOM.forEach((button) =>
     name1DOM.innerText = "Player";
     name2DOM.innerText = "Computer";
     newGame();
-  })
+  }),
 );
 // two player button
 twoPlayerButtonDOM.forEach((button) =>
@@ -931,7 +932,7 @@ twoPlayerButtonDOM.forEach((button) =>
     name1DOM.innerText = "Player 1";
     name2DOM.innerText = "Player 2";
     newGame();
-  })
+  }),
 );
 // auto play button
 autoPlayButtonDOM.forEach((button) =>
@@ -941,7 +942,7 @@ autoPlayButtonDOM.forEach((button) =>
     name2DOM.innerText = "Computer 2";
 
     newGame();
-  })
+  }),
 );
 
 function generateWindSpeed() {
@@ -963,9 +964,7 @@ window.addEventListener("mousemove", function (e) {
   info1DOM.style.opacity = 1;
   info2DOM.style.opacity = 1;
 });
-// TODO this belongs at top
-const enterFullscreen = document.getElementById("enter-fullscreen");
-const exitFullscreen = document.getElementById("exit-fullscreen");
+
 //full screen toggle function
 function toggleFullscreen() {
   // if null
@@ -980,5 +979,5 @@ function toggleFullscreen() {
     exitFullscreen.setAttribute("stroke", "transparent");
   }
 }
-//TODO when the play buttons get implemented on click will be in those functions
-// newGameButton.addEventListener("click", newGame);
+
+newGameButton.addEventListener("click", newGame);

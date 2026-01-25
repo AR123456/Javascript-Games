@@ -60,6 +60,9 @@ const singlePlayerButtonDOM = document.querySelectorAll(".single-player");
 const twoPlayerButtonDOM = document.querySelectorAll(".two-player");
 const autoPlayButtonDOM = document.querySelectorAll(".auto-play");
 const colorModeButtonDOM = document.getElementById("color-mode");
+// screen size
+const enterFullscreen = document.getElementById("enter-fullscreen");
+const exitFullscreen = document.getElementById("exit-fullscreen");
 
 colorModeButtonDOM.addEventListener("click", () => {
   if (settings.mode === "dark") {
@@ -963,9 +966,7 @@ window.addEventListener("mousemove", function (e) {
   info1DOM.style.opacity = 1;
   info2DOM.style.opacity = 1;
 });
-// TODO this belongs at top
-const enterFullscreen = document.getElementById("enter-fullscreen");
-const exitFullscreen = document.getElementById("exit-fullscreen");
+
 //full screen toggle function
 function toggleFullscreen() {
   // if null
@@ -980,5 +981,5 @@ function toggleFullscreen() {
     exitFullscreen.setAttribute("stroke", "transparent");
   }
 }
-//TODO when the play buttons get implemented on click will be in those functions
+
 newGameButton.addEventListener("click", newGame);

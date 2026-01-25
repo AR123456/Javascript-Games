@@ -23,10 +23,8 @@ const blastHoleRadius = 18;
 const canvas = document.getElementById("game");
 canvas.width = window.innerWidth * window.devicePixelRatio;
 canvas.height = window.innerHeight * window.devicePixelRatio;
-// define canvas width/height
 canvas.style.width = window.innerWidth + "px";
 canvas.style.height = window.innerHeight + "px";
-// draw function needs context
 const ctx = canvas.getContext("2d");
 
 // windmill
@@ -227,17 +225,15 @@ function generateBuilding(index) {
 }
 
 function calculateScaleAndShift() {
-  // calc total width of city, add width of last building
   const lastBuilding = state.buildings.at(-1);
-  // ratio  of width of city to window
   const totalWidthOfTheCity = lastBuilding.x + lastBuilding.width;
-  // if the width/width of city null return 1
+
   const horizontalScale = window.innerWidth / totalWidthOfTheCity ?? 1;
   const verticalScale = window.innerHeight / 500;
 
   state.scale = Math.min(horizontalScale, verticalScale);
+
   const sceneNeedsToBeShifted = horizontalScale > verticalScale;
-  // Ternary   condition ? expressionIfTrue : expressionIfFalse;
 
   state.shift = sceneNeedsToBeShifted
     ? (window.innerWidth - totalWidthOfTheCity * state.scale) / 2
@@ -245,7 +241,6 @@ function calculateScaleAndShift() {
 }
 
 window.addEventListener("resize", () => {
-  // account for zooming by user
   canvas.width = window.innerWidth * window.devicePixelRatio;
   canvas.height = window.innerHeight * window.devicePixelRatio;
   canvas.style.width = window.innerWidth + "px";
@@ -329,19 +324,19 @@ function drawBackgroundSky() {
   const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
   if (settings.mode === "dark") {
     gradient.addColorStop(1, "#27507F");
-    gradient.addColorStop(0, "#58a9d9");
+    gradient.addColorStop(0, "#58A8D8");
   } else {
-    // set up gradient
     gradient.addColorStop(1, "#F8BA85");
     gradient.addColorStop(0, "#FFC28E");
   }
-  // draw sky
+
+  // Draw sky
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-  //draw stars
+
+  // Draw stars
   if (settings.mode === "dark") {
     ctx.fillStyle = "white";
-
     state.stars.forEach((star) => {
       ctx.fillRect(star.x, star.y, 1, 1);
     });

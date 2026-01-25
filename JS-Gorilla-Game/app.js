@@ -364,9 +364,8 @@ function drawBackgroundMoon() {
 }
 
 function drawBackgroundBuildings() {
-  // just using the building part of state so give it a meaningful variable name
   state.backgroundBuildings.forEach((building) => {
-    ctx.fillStyle = "#947283";
+    ctx.fillStyle = settings.mode === "dark" ? "#254D7E" : "#947285";
     ctx.fillRect(building.x, 0, building.width, building.height);
   });
 }

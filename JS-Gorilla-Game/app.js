@@ -895,7 +895,7 @@ function checkGorillaHit() {
   //  sending this to the animate function
   return hit;
 }
-
+// TODO when winner getting double buttons and ball lands and stays on gorrila face
 function announceWinner() {
   if (settings.numberOfPlayers === 0) {
     winnerDOM.innerText = `Computer ${state.currentPlayer}`;
